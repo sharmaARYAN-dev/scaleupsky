@@ -95,7 +95,7 @@ We'll map out exactly what can be automated, design the architecture, and show y
 
 ## 🌐 Website
 
-**[scaleupsky.com](https://scaleupsky.com)** — Built with React, Vite & Tailwind CSS. Deployed on Netlify.
+**[scaleupsky.com](https://scaleupsky.com)** — Built with React, Vite & Tailwind CSS.
 
 ---
 
