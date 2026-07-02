@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ========================================== */
+/* WEB ACCESSIBILITY (WAI) CUSTOM STYLING RULES */
+/* ========================================== */
+
+/* 1. High Contrast Mode Styles */
+.theme-high-contrast {
+  background-color: #0c0d0e !important;
+  color: #ffffff !important;
+}
+
+.theme-high-contrast section,
+.theme-high-contrast header,
+.theme-high-contrast footer,
+.theme-high-contrast div,
+.theme-high-contrast form {
+  background-color: #0c0d0e !important;
+  color: #ffffff !important;
+  border-color: #ffff00 !important;
+}
+
+.theme-high-contrast h1,
+.theme-high-contrast h2,
+.theme-high-contrast h3,
+.theme-high-contrast h4,
+.theme-high-contrast span,
+.theme-high-contrast p,
+.theme-high-contrast li,
+.theme-high-contrast a,
+.theme-high-contrast label {
+  color: #ffffff !important;
+}
+
+.theme-high-contrast a:hover,
+.theme-high-contrast button:hover {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  text-decoration: underline !important;
+}
+
+.theme-high-contrast button,
+.theme-high-contrast input,
+.theme-high-contrast textarea {
+  border: 2px solid #ffff00 !important;
+  background-color: #000000 !important;
+  color: #ffff00 !important;
+}
+
+.theme-high-contrast .bg-white,
+.theme-high-contrast .bg-\[\#f8f9fa\] {
+  background-color: #0c0d0e !important;
+}
+
+.theme-high-contrast .text-\[\#1a73e8\] {
+  color: #5599ff !important;
+}
+
+.theme-high-contrast .bg-\[\#e8f0fe\] {
+  background-color: #1a233a !important;
+  border-color: #ffff00 !important;
+}
+
+/* 2. Enlarged Text Mode Styles */
+.a11y-text-large {
+  font-size: 1.15rem !important;
+}
+
+.a11y-text-large p, 
+.a11y-text-large span, 
+.a11y-text-large li, 
+.a11y-text-large a {
+  font-size: 1.2rem !important;
+}
+
+.a11y-text-large h1 {
+  font-size: 4rem !important;
+}
+
+.a11y-text-large h2 {
+  font-size: 2.75rem !important;
+}
+
+/* 3. Text Spacing Styles (WCAG 1.4.12) */
+.a11y-spacing-wide {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.18em !important;
+  line-height: 1.8 !important;
+}
+
+/* 4. Highlight Links Styles */
+.a11y-highlight-links a {
+  text-decoration: underline !important;
+  outline: 3px solid #1a73e8 !important;
+  outline-offset: 2px !important;
+}
