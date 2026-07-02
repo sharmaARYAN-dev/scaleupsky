@@ -363,7 +363,7 @@ export default function App() {
       {/* NAVBAR */}
       <header
         role="banner"
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/dark:bg-[#464b4f]/95 backdrop-blur-md border-b border-[#dadce0] dark:border-white/10 py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/dark:bg-[#464b4f]/0 py-5'}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-[#393e41]/95 backdrop-blur-md border-b border-[#dadce0] dark:border-white/10 py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/0 dark:bg-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-3 group cursor-pointer">
@@ -391,13 +391,13 @@ export default function App() {
             
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 mr-2 rounded-full text-[#3c4043] dark:text-gray-200 dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-white/dark:bg-[#464b4f]/10 transition-colors"
+              className="p-2 mr-2 rounded-full text-[#3c4043] dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-[#464b4f]/50 transition-colors"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
             </button>
             <button
-
+              onClick={() => scrollToSection('contact')}
               className="px-5 py-2.5 bg-[#1a73e8] text-white font-semibold rounded-full hover:bg-[#1765cc] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200"
             >
               Book strategy call
@@ -484,14 +484,7 @@ export default function App() {
           >
             
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 mr-2 rounded-full text-[#3c4043] dark:text-gray-200 dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-white/dark:bg-[#464b4f]/10 transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
-            </button>
-            <button
-
+              onClick={() => scrollToSection('contact')}
               className="px-8 py-3.5 bg-[#1a73e8] text-white font-semibold font-display rounded-full hover:bg-[#1765cc] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200 flex items-center justify-center gap-2 group"
             >
               Book a strategy call <Icon name="arrowright" className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -961,7 +954,7 @@ export default function App() {
       </footer>
 
       {/* MOBILE STICKY CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/dark:bg-[#464b4f]/95 backdrop-blur-md border-t border-[#dadce0] dark:border-white/10 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/95 dark:bg-[#393e41]/95 backdrop-blur-md border-t border-[#dadce0] dark:border-white/10 z-50">
         <button
           onClick={() => scrollToSection('contact')}
           className="w-full py-3 bg-[#1a73e8] text-white font-semibold font-display rounded-xl"
