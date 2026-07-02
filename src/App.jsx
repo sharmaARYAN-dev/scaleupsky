@@ -338,16 +338,16 @@ export default function App() {
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-[#dadce0] py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/0 py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-0 group cursor-pointer">
+          <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-3 group cursor-pointer">
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="ScaleUpSky Logo"
-              className="h-20 w-auto object-contain"
+              className="h-10 md:h-12 w-auto object-contain"
               loading="eager"
               decoding="async"
             />
-            <span className="font-display font-bold text-xl tracking-tight text-[#1f1f1f]">
-              ScaleupSky
+            <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#1f1f1f]">
+              ScaleUpSky
             </span>
           </a>
 
