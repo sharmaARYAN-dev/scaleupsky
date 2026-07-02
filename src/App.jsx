@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Brain, Mail, Clock, Calendar, TrendingUp, MessageSquare,
-  Bot, Phone, Target, Users, Settings,
+  Bot, Phone, Target, Users, Settings, Moon, Sun,
   Stethoscope, Heart, Activity, ChevronDown, CheckCircle,
   ArrowRight, Building2, Utensils, Briefcase, ShoppingCart,
   Menu, X, Loader, Shield,
@@ -82,6 +82,8 @@ const ICON_MAP = {
   calendarcheck: CalendarCheck,
   hash: Hash,
   sparkles: Sparkles,
+  moon: Moon,
+  sun: Sun,
 };
 
 const Icon = ({ name, className = 'w-6 h-6' }) => {
@@ -173,6 +175,16 @@ const FAQS = [
 // Set VITE_FORM_ENDPOINT in your .env file (see .env.example).
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.io/f/mbdenkjk';
 
+
+const LogoSvg = ({ className }) => (
+<svg className={className} viewBox="0 0 928 1024" fill="currentColor" aria-hidden="true">
+<path d="M647.654724,497.531921 C642.086670,526.511963 636.609985,555.070007 631.061768,584.000916 C634.280151,584.530640 636.374634,583.127075 638.562317,582.144653 C655.727600,574.435791 673.562073,569.945862 692.448792,572.712708 C726.578857,577.712646 750.647705,596.958191 764.650696,627.779663 C776.496765,653.853760 776.682190,680.949341 764.008240,707.085388 C753.142029,729.493469 734.629089,742.956970 710.460388,748.213989 C687.196045,753.274231 663.539429,753.337830 639.843933,752.623596 C623.691345,752.136536 607.562073,751.400269 591.449280,750.213318 C566.706848,748.390686 541.964478,746.567566 517.220154,744.770447 C501.115723,743.600769 485.024475,742.054321 468.898102,741.423889 C439.108521,740.259338 409.321655,738.389038 379.484650,739.328796 C350.526001,740.240906 321.598602,741.632324 292.778137,744.870117 C277.890686,746.542542 262.960083,747.987915 248.010544,748.917542 C217.011826,750.845398 186.855927,732.368469 174.463135,703.417053 C161.897095,674.061096 162.135101,644.793701 181.274506,618.416260 C200.299942,592.195801 226.741333,580.861450 259.436707,586.414246 C261.077332,586.692871 262.763550,586.808044 264.352966,587.263245 C268.700653,588.508423 272.942841,590.038330 277.276001,587.037354 C283.168365,582.956604 287.669403,577.690735 290.667664,571.258118 C291.355804,569.781677 290.919067,567.626648 290.597137,565.857178 C286.904694,545.559692 283.100250,525.282593 279.407288,504.985199 C278.397430,499.434967 277.177032,493.858887 276.900879,488.252899 C276.368530,477.445343 284.776306,471.512695 294.833405,475.665466 C304.389313,479.611298 313.047119,485.364563 322.046875,490.421265 C338.168549,499.479675 354.384430,508.374542 370.382782,517.645203 C374.098175,519.798157 375.706451,519.045288 377.763275,515.674744 C396.330780,485.247681 415.037781,454.905701 433.698212,424.535248 C439.715088,414.742554 445.550659,404.833740 451.766266,395.169098 C458.877594,384.111664 468.068726,384.188660 475.146790,395.573212 C487.107391,414.810944 498.648102,434.309174 510.458069,453.641205 C522.963379,474.111420 535.673462,494.457336 548.062012,514.997498 C550.554810,519.130554 552.632568,520.070862 557.052002,517.518127 C578.403137,505.185211 599.922729,493.143799 621.399414,481.028839 C624.588867,479.229675 627.765869,477.349457 631.124573,475.920471 C640.778076,471.813416 649.749817,478.215424 649.125061,488.738770 C648.958313,491.546570 648.221252,494.320496 647.654724,497.531921 z"/>
+<path d="M450.952911,360.162231 C439.600739,349.383362 441.223694,333.813843 454.106659,326.848297 C462.442169,322.341431 471.771454,324.114319 478.012909,331.391327 C484.505219,338.960693 484.562744,349.518188 478.155273,357.505951 C472.662384,364.353485 462.693054,366.459564 454.667023,362.431549 C453.483063,361.837372 452.386047,361.069855 450.952911,360.162231 z"/>
+<path d="M278.998169,423.610046 C287.439056,427.803192 292.129822,434.184967 291.060516,443.355988 C290.077179,451.789703 285.237885,457.713135 276.868195,460.333740 C269.538422,462.628723 261.139862,460.019196 256.184723,453.898743 C251.433594,448.030273 250.905060,438.918793 254.903046,431.805206 C258.771881,424.921448 266.053528,421.260193 273.781372,422.383942 C275.418335,422.621979 277.021759,423.090515 278.998169,423.610046 z"/>
+<path d="M660.928223,460.196350 C651.520142,461.543457 644.092957,458.432465 640.303894,451.797089 C635.913574,444.108826 636.365112,435.214111 641.465576,428.913757 C646.445007,422.762909 654.431885,420.366150 662.125916,422.713928 C669.943909,425.099548 675.545715,432.554138 675.907776,441.054169 C676.271606,449.594788 670.992920,456.493805 660.928223,460.196350 z"/>
+</svg>
+);
+
 // --- REUSABLE SHELL COMPONENTS ---
 const SectionHeading = ({ title, subtitle }) => (
   <div className="text-center mb-14 md:mb-20">
@@ -181,7 +193,7 @@ const SectionHeading = ({ title, subtitle }) => (
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="text-3xl md:text-[2.75rem] font-medium font-display tracking-tight text-[#1f1f1f] mb-5 leading-[1.1]"
+      className="text-3xl md:text-[2.75rem] font-medium font-display tracking-tight text-[#1f1f1f] dark:text-white mb-5 leading-[1.1]"
     >
       {title}
     </motion.h2>
@@ -191,7 +203,7 @@ const SectionHeading = ({ title, subtitle }) => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.08, duration: 0.5 }}
-        className="text-[#5f6368] font-sans font-normal max-w-2xl mx-auto text-lg leading-relaxed"
+        className="text-[#5f6368] dark:text-gray-300 font-sans font-normal max-w-2xl mx-auto text-lg leading-relaxed"
       >
         {subtitle}
       </motion.p>
@@ -200,7 +212,7 @@ const SectionHeading = ({ title, subtitle }) => (
 );
 
 const Card = ({ children, className = '' }) => (
-  <div className={`bg-white border border-[#dadce0] rounded-2xl p-6 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] hover:border-[#dadce0] transition-shadow duration-300 ${className}`}>
+  <div className={`bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-2xl p-6 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] hover:border-[#dadce0] dark:border-white/10 transition-shadow duration-300 ${className}`}>
     {children}
   </div>
 );
@@ -219,6 +231,22 @@ export default function App() {
 
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | submitting | success | error
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
 
   // Scroll event — throttled via requestAnimationFrame for performance
   const rafRef = useRef(null);
@@ -309,7 +337,7 @@ export default function App() {
   }, []);
 
   const wrapperClasses = [
-    'min-h-screen bg-white text-[#1f1f1f] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden',
+    'min-h-screen bg-[#f7f7f7] dark:bg-[#393e41] text-[#1f1f1f] dark:text-white dark:text-[#f7f7f7] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden',
     a11yContrast ? 'theme-high-contrast' : '',
     a11yTextSize === 'large' ? 'a11y-text-large' : '',
     a11ySpacing === 'wide' ? 'a11y-spacing-wide' : '',
@@ -335,23 +363,17 @@ export default function App() {
       {/* NAVBAR */}
       <header
         role="banner"
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md border-b border-[#dadce0] py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/0 py-5'}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/dark:bg-[#464b4f]/95 backdrop-blur-md border-b border-[#dadce0] dark:border-white/10 py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/dark:bg-[#464b4f]/0 py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-3 group cursor-pointer">
-            <img
-              src="/logo.png"
-              alt="ScaleUpSky Logo"
-              className="h-10 md:h-12 w-auto object-contain"
-              loading="eager"
-              decoding="async"
-            />
-            <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#1f1f1f]">
+            <LogoSvg className="h-10 md:h-12 w-auto text-[#1f1f1f] dark:text-white" />
+            <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#1f1f1f] dark:text-white">
               ScaleUpSky
             </span>
           </a>
 
-          <nav aria-label="Main navigation" className="hidden md:flex gap-8 items-center text-sm font-medium text-[#3c4043] font-sans">
+          <nav aria-label="Main navigation" className="hidden md:flex gap-8 items-center text-sm font-medium text-[#3c4043] dark:text-gray-200 font-sans">
             {NAV_LINKS.map(link => {
               const id = link.toLowerCase();
               const isActive = activeSection === id || (id === 'solutions' && activeSection === '');
@@ -359,15 +381,23 @@ export default function App() {
                 <a
                   key={link}
                   href={`#${id}`}
-                  className={`hover:text-[#1a73e8] transition-colors duration-200 ${isActive ? 'text-[#1a73e8] font-semibold' : ''}`}
+                  className={`hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-200 ${isActive ? 'text-[#1a73e8] dark:text-[#60a5fa] font-semibold' : ''}`}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {link}
                 </a>
               );
             })}
+            
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 mr-2 rounded-full text-[#3c4043] dark:text-gray-200 dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-white/dark:bg-[#464b4f]/10 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
+            </button>
+            <button
+
               className="px-5 py-2.5 bg-[#1a73e8] text-white font-semibold rounded-full hover:bg-[#1765cc] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200"
             >
               Book strategy call
@@ -375,7 +405,7 @@ export default function App() {
           </nav>
 
           <button
-            className="md:hidden text-[#3c4043] hover:text-[#1f1f1f] transition-colors"
+            className="md:hidden text-[#3c4043] dark:text-gray-200 hover:text-[#1f1f1f] dark:text-white transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileMenuOpen}
@@ -395,7 +425,7 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-white pt-24 px-6 md:hidden flex flex-col gap-6 text-xl font-display"
+            className="fixed inset-0 z-40 bg-white dark:bg-[#464b4f] pt-24 px-6 md:hidden flex flex-col gap-6 text-xl font-display"
             aria-label="Mobile navigation"
           >
             {NAV_LINKS.map(link => (
@@ -403,7 +433,7 @@ export default function App() {
                 key={link}
                 href={`#${link.toLowerCase()}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="border-b border-[#dadce0] pb-4 text-[#1f1f1f] hover:text-[#1a73e8]"
+                className="border-b border-[#dadce0] dark:border-white/10 pb-4 text-[#1f1f1f] dark:text-white hover:text-[#1a73e8] dark:text-[#60a5fa]"
               >
                 {link}
               </a>
@@ -414,12 +444,12 @@ export default function App() {
 
       <main id="main-content">
         {/* SECTION 1: HERO */}
-        <section aria-labelledby="hero-heading" className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white">
+        <section aria-labelledby="hero-heading" className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#464b4f]">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-[#1a73e8]" style={{ animation: 'dotpulse 2s ease-in-out infinite' }} aria-hidden="true" />
             Accepting enterprise clients for 2026
@@ -430,10 +460,10 @@ export default function App() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-[5.25rem] font-display font-extrabold tracking-tight mb-7 leading-[1.05] text-[#1f1f1f]"
+            className="text-5xl md:text-7xl lg:text-[5.25rem] font-display font-extrabold tracking-tight mb-7 leading-[1.05] text-[#1f1f1f] dark:text-white"
           >
-            <span className="block text-2xl md:text-3xl lg:text-4xl text-[#5f6368] font-semibold mb-4 tracking-tight">AI Automation Agency</span>
-            Stop doing <span className="text-[#1a73e8]">repetitive work.</span><br />
+            <span className="block text-2xl md:text-3xl lg:text-4xl text-[#5f6368] dark:text-gray-300 font-semibold mb-4 tracking-tight">AI Automation Agency</span>
+            Stop doing <span className="text-[#1a73e8] dark:text-[#60a5fa]">repetitive work.</span><br />
             Let AI run it.
           </motion.h1>
 
@@ -441,7 +471,7 @@ export default function App() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-lg md:text-xl text-[#5f6368] font-sans font-normal max-w-2xl mb-11 leading-relaxed"
+            className="text-lg md:text-xl text-[#5f6368] dark:text-gray-300 font-sans font-normal max-w-2xl mb-11 leading-relaxed"
           >
             We design and deploy AI agents and business automations that save time, increase revenue, and eliminate manual work.
           </motion.p>
@@ -452,15 +482,23 @@ export default function App() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto z-10"
           >
+            
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className="p-2 mr-2 rounded-full text-[#3c4043] dark:text-gray-200 dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-white/dark:bg-[#464b4f]/10 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
+            </button>
+            <button
+
               className="px-8 py-3.5 bg-[#1a73e8] text-white font-semibold font-display rounded-full hover:bg-[#1765cc] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200 flex items-center justify-center gap-2 group"
             >
               Book a strategy call <Icon name="arrowright" className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
             <button
               onClick={() => scrollToSection('services')}
-              className="px-8 py-3.5 bg-white text-[#3c4043] font-semibold font-display rounded-full hover:bg-[#f8f9fa] transition-all duration-200 border border-[#dadce0]"
+              className="px-8 py-3.5 bg-white dark:bg-[#464b4f] text-[#3c4043] dark:text-gray-200 font-semibold font-display rounded-full hover:bg-[#f8f9fa] dark:bg-[#323639] transition-all duration-200 border border-[#dadce0] dark:border-white/10"
             >
               See what we automate
             </button>
@@ -468,7 +506,7 @@ export default function App() {
         </section>
 
         {/* SECTION 2: PROBLEMS */}
-        <section aria-labelledby="solutions-heading" className="py-20 px-6 border-t border-[#dadce0]" id="solutions">
+        <section aria-labelledby="solutions-heading" className="py-20 px-6 border-t border-[#dadce0] dark:border-white/10" id="solutions">
           <div className="max-w-7xl mx-auto">
             <SectionHeading
               title="Business Process & Workflow Automation"
@@ -484,11 +522,11 @@ export default function App() {
                   transition={{ delay: i * 0.08, duration: 0.45 }}
                 >
                   <Card className="h-full">
-                    <div className="w-11 h-11 rounded-xl bg-[#e8f0fe] flex items-center justify-center text-[#1a73e8] mb-5" aria-hidden="true">
+                    <div className="w-11 h-11 rounded-xl bg-[#e8f0fe] dark:bg-[#3b82f6]/20 flex items-center justify-center text-[#1a73e8] dark:text-[#60a5fa] mb-5" aria-hidden="true">
                       <Icon name={point.icon} className="w-5 h-5" />
                     </div>
-                    <h3 className="text-lg font-semibold font-display text-[#1f1f1f] mb-2.5">{point.title}</h3>
-                    <p className="text-[#5f6368] font-sans text-sm leading-relaxed">{point.desc}</p>
+                    <h3 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white mb-2.5">{point.title}</h3>
+                    <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm leading-relaxed">{point.desc}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -497,7 +535,7 @@ export default function App() {
         </section>
 
         {/* SECTION 3: WHAT WE AUTOMATE & HEALTHCARE */}
-        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#f8f9fa]" id="services">
+        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#323639]" id="services">
           <div className="max-w-7xl mx-auto">
             <SectionHeading title="WhatsApp, CRM & Chatbot Automation Systems" subtitle="Tailor-made AI automation pipelines to put your standard operational workflows on autopilot." />
 
@@ -509,29 +547,29 @@ export default function App() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35 }}
-                  className="bg-white border border-[#dadce0] rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] transition-shadow duration-300 cursor-default group"
+                  className="bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] transition-shadow duration-300 cursor-default group"
                 >
-                  <div className="text-[#5f6368] group-hover:text-[#1a73e8] transition-colors duration-200" aria-hidden="true">
+                  <div className="text-[#5f6368] dark:text-gray-300 group-hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-200" aria-hidden="true">
                     <Icon name={service.icon} className="w-6 h-6" />
                   </div>
-                  <span className="font-display font-medium text-sm tracking-tight text-[#3c4043] group-hover:text-[#1f1f1f] transition-colors">{service.title}</span>
+                  <span className="font-display font-medium text-sm tracking-tight text-[#3c4043] dark:text-gray-200 group-hover:text-[#1f1f1f] dark:text-white transition-colors">{service.title}</span>
                 </motion.div>
               ))}
             </div>
 
             {/* Healthcare Highlight */}
-            <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#dadce0] relative overflow-hidden" id="healthcare">
+            <div className="bg-white dark:bg-[#464b4f] rounded-3xl p-8 md:p-12 border border-[#dadce0] dark:border-white/10 relative overflow-hidden" id="healthcare">
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e6f4ea] border border-[#ceead6] text-[#137333] text-xs font-semibold font-sans mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 border border-[#ceead6] dark:border-[#137333]/30 text-[#137333] text-xs font-semibold font-sans mb-6">
                   <Icon name="activity" className="w-3.5 h-3.5" /> Specialized industry focus
                 </div>
-                <h3 className="text-3xl md:text-4xl font-display font-bold text-[#1f1f1f] mb-4">Healthcare & clinic automation</h3>
-                <p className="text-[#5f6368] font-sans max-w-xl mb-8 text-sm md:text-base leading-relaxed">Automating patient pathways, scaling down clinic phone lines, and optimizing doctor calendars with precision integration.</p>
+                <h3 className="text-3xl md:text-4xl font-display font-bold text-[#1f1f1f] dark:text-white mb-4">Healthcare & clinic automation</h3>
+                <p className="text-[#5f6368] dark:text-gray-300 font-sans max-w-xl mb-8 text-sm md:text-base leading-relaxed">Automating patient pathways, scaling down clinic phone lines, and optimizing doctor calendars with precision integration.</p>
                 <div className="grid sm:grid-cols-2 gap-3.5">
                   {HEALTHCARE_SERVICES.map((service, i) => (
-                    <div key={i} className="flex items-center gap-4 bg-[#f8f9fa] p-4 rounded-xl border border-[#dadce0]">
-                      <div className="text-[#1a73e8]" aria-hidden="true"><Icon name={service.icon} className="w-5 h-5" /></div>
-                      <span className="font-display font-medium text-sm text-[#3c4043]">{service.title}</span>
+                    <div key={i} className="flex items-center gap-4 bg-[#f8f9fa] dark:bg-[#323639] p-4 rounded-xl border border-[#dadce0] dark:border-white/10">
+                      <div className="text-[#1a73e8] dark:text-[#60a5fa]" aria-hidden="true"><Icon name={service.icon} className="w-5 h-5" /></div>
+                      <span className="font-display font-medium text-sm text-[#3c4043] dark:text-gray-200">{service.title}</span>
                     </div>
                   ))}
                 </div>
@@ -541,12 +579,12 @@ export default function App() {
         </section>
 
         {/* SECTION 4: TOOLS WE INTEGRATE (CONTINUOUS AUTOMATED HORIZONTAL TICKER) */}
-        <section aria-label="Tools and integrations" className="py-16 border-y border-[#dadce0] overflow-hidden relative bg-white">
+        <section aria-label="Tools and integrations" className="py-16 border-y border-[#dadce0] dark:border-white/10 overflow-hidden relative bg-white dark:bg-[#464b4f]">
           <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" aria-hidden="true" />
           <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" aria-hidden="true" />
 
           <div className="w-full flex flex-col items-center">
-            <p className="text-xs font-bold text-[#5f6368] font-sans tracking-widest uppercase mb-9">Seamless integration with your stack</p>
+            <p className="text-xs font-bold text-[#5f6368] dark:text-gray-300 font-sans tracking-widest uppercase mb-9">Seamless integration with your stack</p>
 
             <div className="w-full relative flex items-center overflow-x-hidden" aria-hidden="true">
               <motion.div
@@ -559,7 +597,7 @@ export default function App() {
                 }}
               >
                 {[...TOOLS, ...TOOLS].map((tool, i) => (
-                  <span key={i} className="text-2xl md:text-3xl font-display font-bold tracking-tight text-[#9aa0a6] hover:text-[#1a73e8] transition-colors duration-300 cursor-default">
+                  <span key={i} className="text-2xl md:text-3xl font-display font-bold tracking-tight text-[#9aa0a6] hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-300 cursor-default">
                     {tool}
                   </span>
                 ))}
@@ -576,7 +614,7 @@ export default function App() {
         <section aria-labelledby="process-heading" className="py-20 px-6">
           <div className="max-w-4xl mx-auto">
             <SectionHeading title="The automation journey" subtitle="Our proven 6-step framework to transition your business from manual to automated." />
-            <div className="relative border-l border-[#dadce0] ml-4 md:ml-0 md:space-y-10">
+            <div className="relative border-l border-[#dadce0] dark:border-white/10 ml-4 md:ml-0 md:space-y-10">
               {PROCESS.map((step, i) => (
                 <motion.div
                   key={i}
@@ -589,10 +627,10 @@ export default function App() {
                   <div className="absolute left-[-5px] md:relative md:left-auto w-2.5 h-2.5 rounded-full bg-[#1a73e8] mt-2 ring-4 ring-white" aria-hidden="true" />
                   <Card className="w-full !p-5">
                     <div className="flex items-center gap-4 mb-2">
-                      <span className="text-[#1a73e8] font-mono text-xs font-bold bg-[#e8f0fe] px-2 py-0.5 rounded" aria-hidden="true">{step.step}</span>
-                      <h4 className="text-lg font-semibold font-display text-[#1f1f1f]">{step.title}</h4>
+                      <span className="text-[#1a73e8] dark:text-[#60a5fa] font-mono text-xs font-bold bg-[#e8f0fe] dark:bg-[#3b82f6]/20 px-2 py-0.5 rounded" aria-hidden="true">{step.step}</span>
+                      <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white">{step.title}</h4>
                     </div>
-                    <p className="text-[#5f6368] font-sans text-sm leading-relaxed">{step.desc}</p>
+                    <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm leading-relaxed">{step.desc}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -601,21 +639,21 @@ export default function App() {
         </section>
 
         {/* SECTION 6: AUTOMATION EXAMPLES */}
-        <section aria-labelledby="flows-heading" className="py-20 px-6 bg-[#f8f9fa]">
+        <section aria-labelledby="flows-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#323639]">
           <div className="max-w-7xl mx-auto">
             <SectionHeading title="How data flows" subtitle="Real architectural examples of automated pipelines built by ScaleUpSky." />
             <div className="grid md:grid-cols-3 gap-6">
               {FLOWS.map((flow, i) => (
                 <Card key={i} className="flex flex-col">
-                  <h4 className="text-lg font-semibold font-display mb-6 text-[#1a73e8]">{flow.title}</h4>
+                  <h4 className="text-lg font-semibold font-display mb-6 text-[#1a73e8] dark:text-[#60a5fa]">{flow.title}</h4>
                   <div className="flex flex-col gap-3">
                     {flow.steps.map((step, j) => (
                       <React.Fragment key={j}>
-                        <div className="bg-[#f8f9fa] border border-[#dadce0] p-4 rounded-xl text-center text-sm font-medium font-sans text-[#3c4043]">
+                        <div className="bg-[#f8f9fa] dark:bg-[#323639] border border-[#dadce0] dark:border-white/10 p-4 rounded-xl text-center text-sm font-medium font-sans text-[#3c4043] dark:text-gray-200">
                           {step}
                         </div>
                         {j < flow.steps.length - 1 && (
-                          <div className="flex justify-center text-[#1a73e8] text-lg font-bold" aria-hidden="true">
+                          <div className="flex justify-center text-[#1a73e8] dark:text-[#60a5fa] text-lg font-bold" aria-hidden="true">
                             ↓
                           </div>
                         )}
@@ -630,7 +668,7 @@ export default function App() {
 
         {/* SECTION 7: RESULTS */}
         <section aria-labelledby="results-heading" className="py-20 px-6" id="results">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-[#dadce0] py-14">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-[#dadce0] dark:border-white/10 py-14">
             {STATS.map((stat, i) => (
               <motion.div
                 key={i}
@@ -640,10 +678,10 @@ export default function App() {
                 transition={{ duration: 0.4 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-6xl font-display font-extrabold text-[#1a73e8] mb-2">
+                <div className="text-4xl md:text-6xl font-display font-extrabold text-[#1a73e8] dark:text-[#60a5fa] mb-2">
                   {stat.value}
                 </div>
-                <div className="text-xs md:text-sm text-[#5f6368] font-semibold font-sans uppercase tracking-wider">{stat.label}</div>
+                <div className="text-xs md:text-sm text-[#5f6368] dark:text-gray-300 font-semibold font-sans uppercase tracking-wider">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -656,20 +694,20 @@ export default function App() {
             <div className="grid md:grid-cols-3 gap-6">
               {CASE_STUDIES.map((study, i) => (
                 <Card key={i} className="flex flex-col relative overflow-hidden">
-                  <h4 className="text-xl font-semibold font-display text-[#1f1f1f] mb-6">{study.industry}</h4>
+                  <h4 className="text-xl font-semibold font-display text-[#1f1f1f] dark:text-white mb-6">{study.industry}</h4>
                   <div className="space-y-4 mb-6 flex-grow">
                     <div>
                       <span className="text-xs text-[#d93025] font-bold uppercase font-sans tracking-wide">Before ScaleUpSky</span>
-                      <p className="text-sm text-[#5f6368] mt-1 font-sans">{study.before}</p>
+                      <p className="text-sm text-[#5f6368] dark:text-gray-300 mt-1 font-sans">{study.before}</p>
                     </div>
                     <div>
                       <span className="text-xs text-[#137333] font-bold uppercase font-sans tracking-wide">After automation</span>
-                      <p className="text-sm text-[#3c4043] mt-1 font-sans">{study.after}</p>
+                      <p className="text-sm text-[#3c4043] dark:text-gray-200 mt-1 font-sans">{study.after}</p>
                     </div>
                   </div>
-                  <div className="bg-[#e8f0fe] border border-[#d2e3fc] p-4 rounded-xl">
-                    <span className="text-xs text-[#1a73e8] font-bold uppercase font-sans tracking-wide block mb-1">Business impact</span>
-                    <p className="font-semibold font-display text-[#1f1f1f] text-base">{study.impact}</p>
+                  <div className="bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] p-4 rounded-xl">
+                    <span className="text-xs text-[#1a73e8] dark:text-[#60a5fa] font-bold uppercase font-sans tracking-wide block mb-1">Business impact</span>
+                    <p className="font-semibold font-display text-[#1f1f1f] dark:text-white text-base">{study.impact}</p>
                   </div>
                 </Card>
               ))}
@@ -678,13 +716,13 @@ export default function App() {
         </section>
 
         {/* SECTION 9: INDUSTRIES */}
-        <section aria-labelledby="industries-heading" className="py-20 px-6 bg-[#f8f9fa]">
+        <section aria-labelledby="industries-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#323639]">
           <div className="max-w-7xl mx-auto text-center">
-            <h2 id="industries-heading" className="text-2xl font-semibold font-display mb-10 text-[#1f1f1f] tracking-tight">Industries we specialize in</h2>
+            <h2 id="industries-heading" className="text-2xl font-semibold font-display mb-10 text-[#1f1f1f] dark:text-white tracking-tight">Industries we specialize in</h2>
             <div className="flex flex-wrap justify-center gap-3">
               {INDUSTRIES.map((ind, i) => (
-                <div key={i} className="flex items-center gap-2.5 bg-white border border-[#dadce0] px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] text-[#3c4043] transition-shadow duration-300 cursor-default">
-                  <span className="text-[#1a73e8]" aria-hidden="true"><Icon name={ind.icon} className="w-4 h-4" /></span> {ind.title}
+                <div key={i} className="flex items-center gap-2.5 bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] text-[#3c4043] dark:text-gray-200 transition-shadow duration-300 cursor-default">
+                  <span className="text-[#1a73e8] dark:text-[#60a5fa]" aria-hidden="true"><Icon name={ind.icon} className="w-4 h-4" /></span> {ind.title}
                 </div>
               ))}
             </div>
@@ -701,16 +739,16 @@ export default function App() {
                 const panelId = `faq-panel-${i}`;
                 const buttonId = `faq-btn-${i}`;
                 return (
-                  <div key={i} className="border border-[#dadce0] rounded-xl bg-white overflow-hidden" role="listitem">
+                  <div key={i} className="border border-[#dadce0] dark:border-white/10 rounded-xl bg-white dark:bg-[#464b4f] overflow-hidden" role="listitem">
                     <button
                       id={buttonId}
-                      className="w-full px-6 py-4 flex justify-between items-center text-left font-semibold font-display text-[#1f1f1f] hover:text-[#1a73e8] transition-colors"
+                      className="w-full px-6 py-4 flex justify-between items-center text-left font-semibold font-display text-[#1f1f1f] dark:text-white hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors"
                       onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                       aria-expanded={activeFaq === i}
                       aria-controls={panelId}
                     >
                       {faq.q}
-                      <Icon name="chevrondown" className={`w-4 h-4 text-[#1a73e8] transition-transform duration-300 flex-shrink-0 ml-4 ${activeFaq === i ? 'rotate-180' : ''}`} />
+                      <Icon name="chevrondown" className={`w-4 h-4 text-[#1a73e8] dark:text-[#60a5fa] transition-transform duration-300 flex-shrink-0 ml-4 ${activeFaq === i ? 'rotate-180' : ''}`} />
                     </button>
                     <AnimatePresence>
                       {activeFaq === i && (
@@ -723,7 +761,7 @@ export default function App() {
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.25 }}
-                          className="px-6 pb-5 text-[#5f6368] font-sans text-sm leading-relaxed"
+                          className="px-6 pb-5 text-[#5f6368] dark:text-gray-300 font-sans text-sm leading-relaxed"
                         >
                           {faq.a}
                         </motion.div>
@@ -737,19 +775,19 @@ export default function App() {
         </section>
 
         {/* SECTION 12 & 13: FINAL CTA & CONTACT FORM */}
-        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#f8f9fa]" id="contact">
+        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#323639]" id="contact">
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-center">
             <div>
-              <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-extrabold text-[#1f1f1f] mb-6 leading-tight tracking-tight">
+              <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-extrabold text-[#1f1f1f] dark:text-white mb-6 leading-tight tracking-tight">
                 Your competitors are already automating.
               </h2>
-              <p className="text-[#5f6368] font-sans text-base md:text-lg mb-8 leading-relaxed">
+              <p className="text-[#5f6368] dark:text-gray-300 font-sans text-base md:text-lg mb-8 leading-relaxed">
                 Book a free architecture discovery call to see exactly how ScaleUpSky designs, tests, and deploys high-yield AI pipelines.
               </p>
               <ul className="space-y-3.5 mb-8">
                 {['Custom automation blueprint', 'Clear ROI projection', 'No technical overhead', 'Zero obligation call'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#3c4043]">
-                    <Icon name="checkcircle" className="w-5 h-5 text-[#1a73e8] flex-shrink-0" /> {item}
+                  <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#3c4043] dark:text-gray-200">
+                    <Icon name="checkcircle" className="w-5 h-5 text-[#1a73e8] dark:text-[#60a5fa] flex-shrink-0" /> {item}
                   </li>
                 ))}
               </ul>
@@ -758,14 +796,14 @@ export default function App() {
             <Card className="!p-7">
               {formStatus === 'success' ? (
                 <div className="flex flex-col items-center text-center py-10" role="alert" aria-live="polite">
-                  <div className="w-14 h-14 rounded-full bg-[#e6f4ea] flex items-center justify-center mb-5" aria-hidden="true">
+                  <div className="w-14 h-14 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 flex items-center justify-center mb-5" aria-hidden="true">
                     <Icon name="checkcircle" className="w-7 h-7 text-[#137333]" />
                   </div>
-                  <h4 className="text-lg font-semibold font-display text-[#1f1f1f] mb-2">Request sent</h4>
-                  <p className="text-sm text-[#5f6368] font-sans mb-6">We'll be in touch within one business day.</p>
+                  <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white mb-2">Request sent</h4>
+                  <p className="text-sm text-[#5f6368] dark:text-gray-300 font-sans mb-6">We'll be in touch within one business day.</p>
                   <button
                     onClick={() => setFormStatus('idle')}
-                    className="text-sm font-semibold font-display text-[#1a73e8] hover:underline"
+                    className="text-sm font-semibold font-display text-[#1a73e8] dark:text-[#60a5fa] hover:underline"
                   >
                     Send another request
                   </button>
@@ -789,7 +827,7 @@ export default function App() {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="bg-white border border-[#dadce0] rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                        className="bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                       />
                     </div>
                     <div>
@@ -803,7 +841,7 @@ export default function App() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="bg-white border border-[#dadce0] rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                        className="bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                       />
                     </div>
                   </div>
@@ -817,7 +855,7 @@ export default function App() {
                       autoComplete="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="bg-white border border-[#dadce0] rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                      className="bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                     />
                   </div>
                   <div>
@@ -830,7 +868,7 @@ export default function App() {
                       required
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="bg-white border border-[#dadce0] rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full resize-none"
+                      className="bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full resize-none"
                     />
                   </div>
                   {formStatus === 'error' && (
@@ -860,76 +898,70 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer role="contentinfo" className="border-t border-[#dadce0] bg-white pt-14 pb-8 px-6">
+      <footer role="contentinfo" className="border-t border-[#dadce0] dark:border-white/10 bg-white dark:bg-[#464b4f] pt-14 pb-8 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-0.2 mb-6 cursor-pointer">
-              <img
-                src="/logo.svg"
-                alt="ScaleUpSky Logo"
-                className="h-20 w-auto object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-              <span className="font-display font-bold text-lg text-[#1f1f1f]">
+              <LogoSvg className="h-20 w-auto text-[#1f1f1f] dark:text-white" />
+              <span className="font-display font-bold text-lg text-[#1f1f1f] dark:text-white">
                 ScaleUpSky
               </span>
             </a>
-            <p className="text-[#5f6368] font-sans text-sm mb-6 leading-relaxed">Building enterprise production-ready AI automation ecosystems.</p>
+            <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm mb-6 leading-relaxed">Building enterprise production-ready AI automation ecosystems.</p>
             <div className="flex gap-4">
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleUpSky on Twitter">
-                <Icon name="twitter" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] cursor-pointer transition-colors" />
+                <Icon name="twitter" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Connect with ScaleUpSky on LinkedIn">
-                <Icon name="linkedin" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] cursor-pointer transition-colors" />
+                <Icon name="linkedin" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
               </a>
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleUpSky on Facebook">
-                <Icon name="facebook" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] cursor-pointer transition-colors" />
+                <Icon name="facebook" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
               </a>
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="View ScaleUpSky on GitHub">
-                <Icon name="github" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] cursor-pointer transition-colors" />
+                <Icon name="github" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
               </a>
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f]">Services</h4>
-            <ul className="space-y-2 text-sm text-[#5f6368] font-sans">
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">AI chatbots</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">Voice AI receptionists</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">CRM automation</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">Custom AI agents</a></li>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Services</h4>
+            <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">AI chatbots</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Voice AI receptionists</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">CRM automation</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Custom AI agents</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f]">Industries</h4>
-            <ul className="space-y-2 text-sm text-[#5f6368] font-sans">
-              <li><a href="#healthcare" className="hover:text-[#1a73e8] transition-colors">Healthcare</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">Real estate</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">Agencies</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] transition-colors">E-commerce</a></li>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Industries</h4>
+            <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
+              <li><a href="#healthcare" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Healthcare</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Real estate</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Agencies</a></li>
+              <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">E-commerce</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f]">Company</h4>
-            <ul className="space-y-2 text-sm text-[#5f6368] font-sans">
-              <li><a href="#results" className="hover:text-[#1a73e8] transition-colors">About us</a></li>
-              <li><a href="#results" className="hover:text-[#1a73e8] transition-colors">Case studies</a></li>
-              <li><a href="#contact" className="hover:text-[#1a73e8] transition-colors">Contact</a></li>
-              <li><a href="#contact" className="hover:text-[#1a73e8] transition-colors">Privacy & security</a></li>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Company</h4>
+            <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
+              <li><a href="#results" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">About us</a></li>
+              <li><a href="#results" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Case studies</a></li>
+              <li><a href="#contact" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Contact</a></li>
+              <li><a href="#contact" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Privacy & security</a></li>
             </ul>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-8 border-t border-[#dadce0] text-center text-xs text-[#9aa0a6] font-sans">
+        <div className="max-w-7xl mx-auto pt-8 border-t border-[#dadce0] dark:border-white/10 text-center text-xs text-[#9aa0a6] font-sans">
           © {new Date().getFullYear()} ScaleUpSky. All rights reserved.
         </div>
       </footer>
 
       {/* MOBILE STICKY CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/95 backdrop-blur-md border-t border-[#dadce0] z-50">
+      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/dark:bg-[#464b4f]/95 backdrop-blur-md border-t border-[#dadce0] dark:border-white/10 z-50">
         <button
           onClick={() => scrollToSection('contact')}
           className="w-full py-3 bg-[#1a73e8] text-white font-semibold font-display rounded-xl"
@@ -961,16 +993,16 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              className="absolute bottom-16 left-0 bg-white border border-[#dadce0] rounded-2xl p-5 shadow-[0_4px_24px_rgba(0,0,0,0.15)] w-72"
+              className="absolute bottom-16 left-0 bg-white dark:bg-[#464b4f] border border-[#dadce0] dark:border-white/10 rounded-2xl p-5 shadow-[0_4px_24px_rgba(0,0,0,0.15)] w-72"
               role="dialog"
               aria-modal="true"
               aria-label="Accessibility Options"
             >
-              <div className="flex justify-between items-center mb-4 border-b border-[#dadce0] pb-3">
-                <span className="font-display font-bold text-sm text-[#1f1f1f]">Accessibility Options (WAI)</span>
+              <div className="flex justify-between items-center mb-4 border-b border-[#dadce0] dark:border-white/10 pb-3">
+                <span className="font-display font-bold text-sm text-[#1f1f1f] dark:text-white">Accessibility Options (WAI)</span>
                 <button
                   onClick={() => setA11yWidgetOpen(false)}
-                  className="text-[#5f6368] hover:text-[#1f1f1f] text-xs font-semibold"
+                  className="text-[#5f6368] dark:text-gray-300 hover:text-[#1f1f1f] dark:text-white text-xs font-semibold"
                   aria-label="Close Accessibility Panel"
                 >
                   Close
@@ -980,10 +1012,10 @@ export default function App() {
               <div className="space-y-4">
                 {/* Contrast Toggle */}
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-[#3c4043]" id="a11y-contrast-label">High Contrast Mode</span>
+                  <span className="text-xs font-medium text-[#3c4043] dark:text-gray-200" id="a11y-contrast-label">High Contrast Mode</span>
                   <button
                     onClick={() => setA11yContrast(!a11yContrast)}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yContrast ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yContrast ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white dark:bg-[#464b4f] text-[#3c4043] dark:text-gray-200 border-[#dadce0] dark:border-white/10'
                       }`}
                     aria-pressed={a11yContrast}
                     aria-labelledby="a11y-contrast-label"
@@ -994,10 +1026,10 @@ export default function App() {
 
                 {/* Text Size Toggle */}
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-[#3c4043]" id="a11y-textsize-label">Enlarged Text</span>
+                  <span className="text-xs font-medium text-[#3c4043] dark:text-gray-200" id="a11y-textsize-label">Enlarged Text</span>
                   <button
                     onClick={() => setA11yTextSize(a11yTextSize === 'large' ? 'normal' : 'large')}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yTextSize === 'large' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yTextSize === 'large' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white dark:bg-[#464b4f] text-[#3c4043] dark:text-gray-200 border-[#dadce0] dark:border-white/10'
                       }`}
                     aria-pressed={a11yTextSize === 'large'}
                     aria-labelledby="a11y-textsize-label"
@@ -1008,10 +1040,10 @@ export default function App() {
 
                 {/* Text Spacing Toggle */}
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-[#3c4043]" id="a11y-spacing-label">Text Spacing</span>
+                  <span className="text-xs font-medium text-[#3c4043] dark:text-gray-200" id="a11y-spacing-label">Text Spacing</span>
                   <button
                     onClick={() => setA11ySpacing(a11ySpacing === 'wide' ? 'normal' : 'wide')}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11ySpacing === 'wide' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11ySpacing === 'wide' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white dark:bg-[#464b4f] text-[#3c4043] dark:text-gray-200 border-[#dadce0] dark:border-white/10'
                       }`}
                     aria-pressed={a11ySpacing === 'wide'}
                     aria-labelledby="a11y-spacing-label"
@@ -1022,10 +1054,10 @@ export default function App() {
 
                 {/* Highlight Links Toggle */}
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-medium text-[#3c4043]" id="a11y-links-label">Highlight Links</span>
+                  <span className="text-xs font-medium text-[#3c4043] dark:text-gray-200" id="a11y-links-label">Highlight Links</span>
                   <button
                     onClick={() => setA11yHighlightLinks(!a11yHighlightLinks)}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yHighlightLinks ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yHighlightLinks ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white dark:bg-[#464b4f] text-[#3c4043] dark:text-gray-200 border-[#dadce0] dark:border-white/10'
                       }`}
                     aria-pressed={a11yHighlightLinks}
                     aria-labelledby="a11y-links-label"
@@ -1043,7 +1075,7 @@ export default function App() {
                   setA11ySpacing('normal');
                   setA11yHighlightLinks(false);
                 }}
-                className="w-full mt-4 py-2 border border-[#dadce0] rounded-xl text-xs font-semibold text-[#5f6368] hover:bg-[#f8f9fa] hover:text-[#1f1f1f] transition-colors"
+                className="w-full mt-4 py-2 border border-[#dadce0] dark:border-white/10 rounded-xl text-xs font-semibold text-[#5f6368] dark:text-gray-300 hover:bg-[#f8f9fa] dark:bg-[#323639] hover:text-[#1f1f1f] dark:text-white transition-colors"
               >
                 Reset Settings
               </button>

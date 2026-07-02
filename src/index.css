@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 /* ========================================== */
 /* WEB ACCESSIBILITY (WAI) CUSTOM STYLING RULES */
 /* ========================================== */
