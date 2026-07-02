@@ -432,6 +432,7 @@ export default function App() {
             transition={{ delay: 0.1, duration: 0.5 }}
             className="text-5xl md:text-7xl lg:text-[5.25rem] font-display font-extrabold tracking-tight mb-7 leading-[1.05] text-[#1f1f1f]"
           >
+            <span className="block text-2xl md:text-3xl lg:text-4xl text-[#5f6368] font-semibold mb-4 tracking-tight">AI Automation Agency</span>
             Stop doing <span className="text-[#1a73e8]">repetitive work.</span><br />
             Let AI run it.
           </motion.h1>
@@ -470,8 +471,8 @@ export default function App() {
         <section aria-labelledby="solutions-heading" className="py-20 px-6 border-t border-[#dadce0]" id="solutions">
           <div className="max-w-7xl mx-auto">
             <SectionHeading
-              title="Your team shouldn't be doing manual work in 2026"
-              subtitle="The cost of outdated processes isn't just time — it's lost clients, team burnout, and capped scaling."
+              title="Business Process & Workflow Automation"
+              subtitle="The cost of outdated manual processes isn't just time — it's lost clients, team burnout, and capped scaling. We automate your repetitive workflows."
             />
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {PAIN_POINTS.map((point, i) => (
@@ -498,7 +499,7 @@ export default function App() {
         {/* SECTION 3: WHAT WE AUTOMATE & HEALTHCARE */}
         <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#f8f9fa]" id="services">
           <div className="max-w-7xl mx-auto">
-            <SectionHeading title="Comprehensive automation systems" subtitle="Tailor-made pipelines to put your standard operational workflows on autopilot." />
+            <SectionHeading title="WhatsApp, CRM & Chatbot Automation Systems" subtitle="Tailor-made AI automation pipelines to put your standard operational workflows on autopilot." />
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 mb-16">
               {AUTOMATION_SERVICES.map((service, i) => (
