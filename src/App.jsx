@@ -340,7 +340,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-0 group cursor-pointer">
             <img
-              src="/logo.png"
+              src="/logo.svg"
               alt="ScaleUpSky Logo"
               className="h-20 w-auto object-contain"
               loading="eager"
@@ -865,7 +865,7 @@ export default function App() {
           <div className="col-span-2 md:col-span-1">
             <a href="#" aria-label="ScaleUpSky – Go to top of page" className="flex items-center gap-0.2 mb-6 cursor-pointer">
               <img
-                src="/logo.png"
+                src="/logo.svg"
                 alt="ScaleUpSky Logo"
                 className="h-20 w-auto object-contain"
                 loading="lazy"
