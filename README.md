@@ -1,147 +1,102 @@
-# ScaleUpSky — Enterprise AI Agents & Business Automation
+# ScaleUpSky
 
 > **Stop doing repetitive work. Let AI run it.**
 
-A production-ready single-page marketing website for ScaleUpSky, built with React + Vite + Tailwind CSS v4.
+ScaleUpSky designs and deploys custom AI agents and business automation pipelines that eliminate manual work, increase conversions, and scale your operations — without adding headcount.
 
 ---
 
-## 🚀 Tech Stack
+## 🚀 What We Do
 
-| Technology | Version |
+We build end-to-end AI automation systems tailored to your business. From the first lead capture to the final follow-up, we put your entire workflow on autopilot.
+
+- **Save 40+ hours per week** by eliminating repetitive tasks
+- **Respond 5x faster** with AI agents that work 24/7
+- **Convert more leads** with instant, intelligent follow-ups
+- **Scale without hiring** by automating what slows you down
+
+---
+
+## 🤖 Our Services
+
+| Service | Description |
 |---|---|
-| React | 19.2.6 |
-| Vite | 8.0.12 |
-| Tailwind CSS | 4.3.0 |
-| Framer Motion | 12.40.0 |
-| Lucide React | 1.17.0 |
+| WhatsApp Automation | Automated lead capture, follow-ups & support via WhatsApp |
+| Instagram Automation | DM responses, lead routing & engagement flows |
+| LinkedIn Automation | Outreach sequences & connection nurturing |
+| AI Chatbots | Custom-trained bots for websites & support desks |
+| Voice AI Receptionists | 24/7 AI phone agents that qualify and book calls |
+| Lead Qualification | AI-powered filtering so your team talks to only hot leads |
+| CRM Automation | Auto-populate, update & route records in HubSpot, Salesforce & more |
+| Appointment Booking | Fully automated scheduling with reminders & rescheduling |
+| Slack & Teams Automation | Internal workflow bots and alert systems |
+| Email Automation | Drip campaigns, follow-up sequences & inbox triage |
+| Internal Operations | Automated reporting, task routing & approvals |
+| Custom AI Agents | Bespoke AI solutions built for your exact use case |
 
 ---
 
-## 📁 Project Structure
+## 🏥 Healthcare Specialization
 
-```
-scaleupsky/
-├── public/
-│   ├── favicon.png        # Browser tab icon
-│   ├── logo.png           # Brand logo
-│   ├── robots.txt         # SEO crawler rules
-│   └── sitemap.xml        # XML sitemap
-├── src/
-│   ├── App.jsx            # All components & page logic
-│   ├── index.css          # Tailwind + WAI accessibility styles
-│   └── main.jsx           # React entry point
-├── index.html             # SEO meta, OG tags, JSON-LD schema
-├── netlify.toml           # Deployment config + security headers
-├── .env.example           # Environment variable template
-├── vite.config.js         # Vite + Tailwind plugin config
-└── eslint.config.js       # ESLint flat config
-```
+We have deep expertise in healthcare automation:
+
+- **Doctor Appointment Automation** — zero no-shows with smart reminders
+- **AI Medical Receptionist** — handles inbound calls, qualifies patients & books slots
+- **Patient Follow-Up Automation** — post-visit check-ins via WhatsApp or SMS
+- **Clinic Workflow Automation** — from intake to discharge, fully streamlined
 
 ---
 
-## ⚙️ Getting Started
+## 🔗 Tools We Integrate With
 
-### 1. Install dependencies
-```bash
-npm install
-```
-
-### 2. Set up environment variables
-```bash
-cp .env.example .env
-```
-Edit `.env` and set your [Formspree](https://formspree.io) form ID:
-```env
-VITE_FORM_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID
-```
-
-### 3. Start development server
-```bash
-npm run dev
-```
-Open [http://localhost:5173](http://localhost:5173)
-
-### 4. Build for production
-```bash
-npm run build
-```
-Output goes to `dist/`
-
-### 5. Preview production build locally
-```bash
-npm run preview
-```
+OpenAI · Claude · WhatsApp · Instagram · Slack · MS Teams · HubSpot · Salesforce · Zapier · Make · Shopify · Notion · Google Sheets · and more
 
 ---
 
-## 🌐 Deployment (Netlify)
+## 📊 Real Results
 
-The `netlify.toml` is pre-configured. Just connect the GitHub repo to Netlify:
+| Metric | Impact |
+|---|---|
+| Manual work reduced | **70%** |
+| Response time improvement | **5x faster** |
+| Availability | **24/7** |
+| Hours saved per week | **40+** |
 
-1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import from Git**
-2. Select `sharmaARYAN-dev/scaleupsky`
-3. Netlify auto-detects the build settings from `netlify.toml`
-4. Add your environment variable: `VITE_FORM_ENDPOINT`
-5. Click **Deploy**
+### Case Studies
 
-Security headers applied automatically on deploy:
-- `X-Frame-Options: DENY`
-- `X-Content-Type-Options: nosniff`
-- `Content-Security-Policy`
-- `Strict-Transport-Security` (HSTS)
-- `Referrer-Policy`
-- `Permissions-Policy`
+**Real Estate Agency** — Replaced 12 hrs/week of manual data entry with automated CRM lead routing → **+45% lead conversion rate**
 
----
+**Healthcare Clinic** — 30% appointment no-show rate fixed with AI WhatsApp reminders → **No-shows reduced to 4%**
 
-## 🔧 Environment Variables
-
-| Variable | Description | Required |
-|---|---|---|
-| `VITE_FORM_ENDPOINT` | Formspree endpoint URL for the contact form | Yes |
-
-> ⚠️ Never commit `.env` — it is gitignored. Only `.env.example` is tracked.
+**Marketing Agency** — Eliminated manual client reporting with automated weekly dashboards → **20 hours saved per week**
 
 ---
 
-## ♿ Accessibility (WAI / WCAG 2.1 AA)
+## 🏢 Industries We Serve
 
-The site includes a floating **Accessibility Widget** (bottom-left button) with:
-- **High Contrast Mode** — dark background, yellow borders
-- **Enlarged Text** — increases base font size
-- **Text Spacing** — wider letter/word/line spacing (WCAG 1.4.12)
-- **Highlight Links** — outlines all interactive links
-
-Additional compliance:
-- Skip navigation link (Tab key to reveal)
-- ARIA roles, labels, `aria-expanded`, `aria-controls`, `aria-pressed`
-- Screen-reader-only content for animated elements
-- Keyboard-navigable FAQ accordion
+- Real Estate
+- Healthcare & Clinics
+- Marketing & Creative Agencies
+- Restaurants & Hospitality
+- E-commerce
+- Coaches & Consultants
 
 ---
 
-## 📄 Key Scripts
+## 📞 Work With Us
 
-```bash
-npm run dev      # Start dev server with HMR
-npm run build    # Production build → dist/
-npm run preview  # Serve the production build locally
-npm run lint     # Run ESLint
-```
+Ready to automate your business?
 
----
+👉 **[Book a free strategy call](https://scaleupsky.com/#contact)**
 
-## 📬 Contact Form
-
-The contact form uses [Formspree](https://formspree.io):
-1. Sign up at formspree.io and create a new form
-2. Copy the form ID (e.g. `mbdenkjk`)
-3. Set `VITE_FORM_ENDPOINT=https://formspree.io/f/YOUR_ID` in `.env`
-4. First submission sends a one-time email confirmation to activate the form
+We'll map out exactly what can be automated, design the architecture, and show you the ROI — with zero obligation.
 
 ---
 
-## 📝 License
+## 🌐 Website
+
+**[scaleupsky.com](https://scaleupsky.com)** — Built with React, Vite & Tailwind CSS. Deployed on Netlify.
+
+---
 
 © 2026 ScaleUpSky. All rights reserved.
