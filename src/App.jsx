@@ -104,24 +104,24 @@ const PAIN_POINTS = [
 
 const AUTOMATION_SERVICES = [
   { icon: 'messagecircle', title: 'WhatsApp Automation' },      // round speech bubble
-  { icon: 'instagram',     title: 'Instagram Automation' },
-  { icon: 'linkedin',      title: 'LinkedIn Automation' },
-  { icon: 'bot',           title: 'AI Chatbots' },
-  { icon: 'mic',           title: 'Voice AI Receptionists' },   // microphone
-  { icon: 'filter',        title: 'Lead Qualification' },       // funnel
-  { icon: 'database',      title: 'CRM Automation' },           // database stack
+  { icon: 'instagram', title: 'Instagram Automation' },
+  { icon: 'linkedin', title: 'LinkedIn Automation' },
+  { icon: 'bot', title: 'AI Chatbots' },
+  { icon: 'mic', title: 'Voice AI Receptionists' },   // microphone
+  { icon: 'filter', title: 'Lead Qualification' },       // funnel
+  { icon: 'database', title: 'CRM Automation' },           // database stack
   { icon: 'calendarcheck', title: 'Appointment Booking' },      // calendar + checkmark
-  { icon: 'hash',          title: 'Slack & Teams Automation' }, // # channel icon
-  { icon: 'mail',          title: 'Email Automation' },
-  { icon: 'settings',      title: 'Internal Operations' },
-  { icon: 'sparkles',      title: 'Custom AI Agents' }          // AI sparkles
+  { icon: 'hash', title: 'Slack & Teams Automation' }, // # channel icon
+  { icon: 'mail', title: 'Email Automation' },
+  { icon: 'settings', title: 'Internal Operations' },
+  { icon: 'sparkles', title: 'Custom AI Agents' }          // AI sparkles
 ];
 
 const HEALTHCARE_SERVICES = [
   { icon: 'calendarcheck', title: 'Doctor Appointment Automation' },
-  { icon: 'stethoscope',   title: 'AI Medical Receptionist' },
-  { icon: 'heart',         title: 'Patient Follow-Up Automation' },
-  { icon: 'activity',      title: 'Clinic Workflow Automation' }
+  { icon: 'stethoscope', title: 'AI Medical Receptionist' },
+  { icon: 'heart', title: 'Patient Follow-Up Automation' },
+  { icon: 'activity', title: 'Clinic Workflow Automation' }
 ];
 
 const TOOLS = ['OpenAI', 'Claude', 'WhatsApp', 'Instagram', 'Slack', 'MS Teams', 'HubSpot', 'Salesforce', 'Zapier', 'Make', 'Shopify', 'Notion', 'Google Sheets'];
@@ -347,7 +347,7 @@ export default function App() {
               decoding="async"
             />
             <span className="font-display font-bold text-xl tracking-tight text-[#1f1f1f]">
-              ScaleUpSky
+              ScaleupSky
             </span>
           </a>
 
@@ -949,7 +949,7 @@ export default function App() {
         >
           {/* A11y symbol: stylized human figure */}
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
+            <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
           </svg>
         </button>
 
@@ -983,9 +983,8 @@ export default function App() {
                   <span className="text-xs font-medium text-[#3c4043]" id="a11y-contrast-label">High Contrast Mode</span>
                   <button
                     onClick={() => setA11yContrast(!a11yContrast)}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${
-                      a11yContrast ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yContrast ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                      }`}
                     aria-pressed={a11yContrast}
                     aria-labelledby="a11y-contrast-label"
                   >
@@ -998,9 +997,8 @@ export default function App() {
                   <span className="text-xs font-medium text-[#3c4043]" id="a11y-textsize-label">Enlarged Text</span>
                   <button
                     onClick={() => setA11yTextSize(a11yTextSize === 'large' ? 'normal' : 'large')}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${
-                      a11yTextSize === 'large' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yTextSize === 'large' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                      }`}
                     aria-pressed={a11yTextSize === 'large'}
                     aria-labelledby="a11y-textsize-label"
                   >
@@ -1013,9 +1011,8 @@ export default function App() {
                   <span className="text-xs font-medium text-[#3c4043]" id="a11y-spacing-label">Text Spacing</span>
                   <button
                     onClick={() => setA11ySpacing(a11ySpacing === 'wide' ? 'normal' : 'wide')}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${
-                      a11ySpacing === 'wide' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11ySpacing === 'wide' ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                      }`}
                     aria-pressed={a11ySpacing === 'wide'}
                     aria-labelledby="a11y-spacing-label"
                   >
@@ -1028,9 +1025,8 @@ export default function App() {
                   <span className="text-xs font-medium text-[#3c4043]" id="a11y-links-label">Highlight Links</span>
                   <button
                     onClick={() => setA11yHighlightLinks(!a11yHighlightLinks)}
-                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${
-                      a11yHighlightLinks ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
-                    }`}
+                    className={`px-3 py-1 text-xs font-semibold rounded-full border transition-colors ${a11yHighlightLinks ? 'bg-[#1a73e8] text-white border-transparent' : 'bg-white text-[#3c4043] border-[#dadce0]'
+                      }`}
                     aria-pressed={a11yHighlightLinks}
                     aria-labelledby="a11y-links-label"
                   >
