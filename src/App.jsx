@@ -191,7 +191,7 @@ const SectionHeading = ({ title, subtitle }) => (
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="text-3xl md:text-[2.75rem] font-medium font-display tracking-tight text-[#1f1f1f] dark:text-white mb-5 leading-[1.1]"
+      className="text-3xl md:text-[2.75rem] font-medium font-display tracking-tight text-[#1f1f1f] dark:text-[#ececec] mb-5 leading-[1.1]"
     >
       {title}
     </motion.h2>
@@ -210,7 +210,7 @@ const SectionHeading = ({ title, subtitle }) => (
 );
 
 const Card = ({ children, className = '' }) => (
-  <div className={`bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-2xl p-6 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] hover:border-[#dadce0] dark:border-white/10 transition-shadow duration-300 ${className}`}>
+  <div className={`bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-2xl p-6 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] hover:border-[#dadce0] dark:border-white/10 transition-shadow duration-300 ${className}`}>
     {children}
   </div>
 );
@@ -333,7 +333,7 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const wrapperClasses = 'min-h-screen bg-[#f7f7f7] dark:bg-[#181C14] text-[#1f1f1f] dark:text-[#f7f7f7] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden';
+  const wrapperClasses = 'min-h-screen bg-[#f7f7f7] dark:bg-[#212121] text-[#1f1f1f] dark:text-[#ececec] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden';
 
   return (
     <div className={wrapperClasses} style={{ fontFamily: "'Inter', Arial, sans-serif" }}>
@@ -348,17 +348,17 @@ export default function App() {
       {/* NAVBAR */}
       <header
         role="banner"
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-[#181C14]/95 backdrop-blur-md border-b border-[#dadce0] dark:border-white/10 py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/0 dark:bg-transparent py-5'}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 dark:bg-[#212121]/95 backdrop-blur-md border-b border-[#dadce0] dark:border-white/10 py-3 shadow-[0_1px_2px_0_rgba(60,64,67,0.15)]' : 'bg-white/0 dark:bg-transparent py-5'}`}
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-3 group cursor-pointer">
-            <LogoSvg className="h-6 md:h-8 w-auto text-[#1f1f1f] dark:text-white" />
-            <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#1f1f1f] dark:text-white mt-1.5 md:mt-2">
+            <LogoSvg className="h-6 md:h-8 w-auto text-[#1f1f1f] dark:text-[#ececec]" />
+            <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#1f1f1f] dark:text-[#ececec] mt-1.5 md:mt-2">
               ScaleupSky
             </span>
           </a>
 
-          <nav aria-label="Main navigation" className="hidden md:flex gap-8 items-center text-sm font-medium text-[#3c4043] dark:text-gray-200 font-sans">
+          <nav aria-label="Main navigation" className="hidden md:flex gap-8 items-center text-sm font-medium text-[#3c4043] dark:text-[#b4b4b4] font-sans">
             {NAV_LINKS.map(link => {
               const id = link.toLowerCase();
               const isActive = activeSection === id || (id === 'solutions' && activeSection === '');
@@ -376,7 +376,7 @@ export default function App() {
             
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-1.5 mr-1 rounded-full text-[#3c4043] dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-[#22271d]/50 transition-colors"
+              className="p-1.5 mr-1 rounded-full text-[#3c4043] dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-[#2f2f2f] transition-colors"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Icon name="sun" className="w-4 h-4" /> : <Icon name="moon" className="w-4 h-4" />}
@@ -392,13 +392,13 @@ export default function App() {
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-1.5 rounded-full text-[#3c4043] dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-[#22271d]/50 transition-colors"
+              className="p-1.5 rounded-full text-[#3c4043] dark:text-[#a1a1aa] hover:bg-gray-100 dark:hover:bg-[#2f2f2f] transition-colors"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
             </button>
             <button
-              className="text-[#3c4043] dark:text-gray-200 hover:text-[#1f1f1f] dark:text-white transition-colors p-1"
+              className="text-[#3c4043] dark:text-[#b4b4b4] hover:text-[#1f1f1f] dark:text-[#ececec] transition-colors p-1"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
@@ -419,7 +419,7 @@ export default function App() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-white dark:bg-[#22271d] pt-24 px-6 md:hidden flex flex-col gap-6 text-xl font-display"
+            className="fixed inset-0 z-40 bg-white dark:bg-[#2f2f2f] pt-24 px-6 md:hidden flex flex-col gap-6 text-xl font-display"
             aria-label="Mobile navigation"
           >
             {NAV_LINKS.map(link => (
@@ -427,7 +427,7 @@ export default function App() {
                 key={link}
                 href={`#${link.toLowerCase()}`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="border-b border-[#dadce0] dark:border-white/10 pb-4 text-[#1f1f1f] dark:text-white hover:text-[#1a73e8] dark:text-[#60a5fa]"
+                className="border-b border-[#dadce0] dark:border-white/10 pb-4 text-[#1f1f1f] dark:text-[#ececec] hover:text-[#1a73e8] dark:text-[#60a5fa]"
               >
                 {link}
               </a>
@@ -438,7 +438,7 @@ export default function App() {
 
       <main id="main-content">
         {/* SECTION 1: HERO */}
-        <section aria-labelledby="hero-heading" className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#22271d]">
+        <section aria-labelledby="hero-heading" className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#2f2f2f]">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -454,7 +454,7 @@ export default function App() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-[5.25rem] font-display font-extrabold tracking-tight mb-7 leading-[1.05] text-[#1f1f1f] dark:text-white"
+            className="text-5xl md:text-7xl lg:text-[5.25rem] font-display font-extrabold tracking-tight mb-7 leading-[1.05] text-[#1f1f1f] dark:text-[#ececec]"
           >
             <span className="block text-2xl md:text-3xl lg:text-4xl text-[#5f6368] dark:text-gray-300 font-semibold mb-4 tracking-tight">AI Automation Agency</span>
             Stop doing <span className="text-[#1a73e8] dark:text-[#60a5fa]">repetitive work.</span><br />
@@ -485,7 +485,7 @@ export default function App() {
             </button>
             <button
               onClick={() => scrollToSection('services')}
-              className="px-8 py-3.5 bg-white dark:bg-[#22271d] text-[#3c4043] dark:text-gray-200 font-semibold font-display rounded-full hover:bg-[#f8f9fa] dark:bg-[#1d2118] transition-all duration-200 border border-[#dadce0] dark:border-white/10"
+              className="px-8 py-3.5 bg-white dark:bg-[#2f2f2f] text-[#3c4043] dark:text-[#b4b4b4] font-semibold font-display rounded-full hover:bg-[#f8f9fa] dark:bg-[#171717] transition-all duration-200 border border-[#dadce0] dark:border-white/10"
             >
               See what we automate
             </button>
@@ -512,7 +512,7 @@ export default function App() {
                     <div className="w-11 h-11 rounded-xl bg-[#e8f0fe] dark:bg-[#3b82f6]/20 flex items-center justify-center text-[#1a73e8] dark:text-[#60a5fa] mb-5" aria-hidden="true">
                       <Icon name={point.icon} className="w-5 h-5" />
                     </div>
-                    <h3 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white mb-2.5">{point.title}</h3>
+                    <h3 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-[#ececec] mb-2.5">{point.title}</h3>
                     <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm leading-relaxed">{point.desc}</p>
                   </Card>
                 </motion.div>
@@ -522,7 +522,7 @@ export default function App() {
         </section>
 
         {/* SECTION 3: WHAT WE AUTOMATE & HEALTHCARE */}
-        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#1d2118]" id="services">
+        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#171717]" id="services">
           <div className="max-w-7xl mx-auto">
             <SectionHeading title="WhatsApp, CRM & Chatbot Automation Systems" subtitle="Tailor-made AI automation pipelines to put your standard operational workflows on autopilot." />
 
@@ -534,29 +534,29 @@ export default function App() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35 }}
-                  className="bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] transition-shadow duration-300 cursor-default group"
+                  className="bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] transition-shadow duration-300 cursor-default group"
                 >
                   <div className="text-[#5f6368] dark:text-gray-300 group-hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-200" aria-hidden="true">
                     <Icon name={service.icon} className="w-6 h-6" />
                   </div>
-                  <span className="font-display font-medium text-sm tracking-tight text-[#3c4043] dark:text-gray-200 group-hover:text-[#1f1f1f] dark:text-white transition-colors">{service.title}</span>
+                  <span className="font-display font-medium text-sm tracking-tight text-[#3c4043] dark:text-[#b4b4b4] group-hover:text-[#1f1f1f] dark:text-[#ececec] transition-colors">{service.title}</span>
                 </motion.div>
               ))}
             </div>
 
             {/* Healthcare Highlight */}
-            <div className="bg-white dark:bg-[#22271d] rounded-3xl p-8 md:p-12 border border-[#dadce0] dark:border-white/10 relative overflow-hidden" id="healthcare">
+            <div className="bg-white dark:bg-[#2f2f2f] rounded-3xl p-8 md:p-12 border border-[#dadce0] dark:border-white/10 relative overflow-hidden" id="healthcare">
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 border border-[#ceead6] dark:border-[#137333]/30 text-[#137333] text-xs font-semibold font-sans mb-6">
                   <Icon name="activity" className="w-3.5 h-3.5" /> Specialized industry focus
                 </div>
-                <h3 className="text-3xl md:text-4xl font-display font-bold text-[#1f1f1f] dark:text-white mb-4">Healthcare & clinic automation</h3>
+                <h3 className="text-3xl md:text-4xl font-display font-bold text-[#1f1f1f] dark:text-[#ececec] mb-4">Healthcare & clinic automation</h3>
                 <p className="text-[#5f6368] dark:text-gray-300 font-sans max-w-xl mb-8 text-sm md:text-base leading-relaxed">Automating patient pathways, scaling down clinic phone lines, and optimizing doctor calendars with precision integration.</p>
                 <div className="grid sm:grid-cols-2 gap-3.5">
                   {HEALTHCARE_SERVICES.map((service, i) => (
-                    <div key={i} className="flex items-center gap-4 bg-[#f8f9fa] dark:bg-[#1d2118] p-4 rounded-xl border border-[#dadce0] dark:border-white/10">
+                    <div key={i} className="flex items-center gap-4 bg-[#f8f9fa] dark:bg-[#171717] p-4 rounded-xl border border-[#dadce0] dark:border-white/10">
                       <div className="text-[#1a73e8] dark:text-[#60a5fa]" aria-hidden="true"><Icon name={service.icon} className="w-5 h-5" /></div>
-                      <span className="font-display font-medium text-sm text-[#3c4043] dark:text-gray-200">{service.title}</span>
+                      <span className="font-display font-medium text-sm text-[#3c4043] dark:text-[#b4b4b4]">{service.title}</span>
                     </div>
                   ))}
                 </div>
@@ -566,7 +566,7 @@ export default function App() {
         </section>
 
         {/* SECTION 4: TOOLS WE INTEGRATE (CONTINUOUS AUTOMATED HORIZONTAL TICKER) */}
-        <section aria-label="Tools and integrations" className="py-16 border-y border-[#dadce0] dark:border-white/10 overflow-hidden relative bg-white dark:bg-[#22271d]">
+        <section aria-label="Tools and integrations" className="py-16 border-y border-[#dadce0] dark:border-white/10 overflow-hidden relative bg-white dark:bg-[#2f2f2f]">
           <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-white dark:from-[#22271d] to-transparent z-10 pointer-events-none" aria-hidden="true" />
           <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-white dark:from-[#22271d] to-transparent z-10 pointer-events-none" aria-hidden="true" />
 
@@ -615,7 +615,7 @@ export default function App() {
                   <Card className="w-full !p-5">
                     <div className="flex items-center gap-4 mb-2">
                       <span className="text-[#1a73e8] dark:text-[#60a5fa] font-mono text-xs font-bold bg-[#e8f0fe] dark:bg-[#3b82f6]/20 px-2 py-0.5 rounded" aria-hidden="true">{step.step}</span>
-                      <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white">{step.title}</h4>
+                      <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-[#ececec]">{step.title}</h4>
                     </div>
                     <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm leading-relaxed">{step.desc}</p>
                   </Card>
@@ -626,7 +626,7 @@ export default function App() {
         </section>
 
         {/* SECTION 6: AUTOMATION EXAMPLES */}
-        <section aria-labelledby="flows-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#1d2118]">
+        <section aria-labelledby="flows-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto">
             <SectionHeading title="How data flows" subtitle="Real architectural examples of automated pipelines built by ScaleupSky." />
             <div className="grid md:grid-cols-3 gap-6">
@@ -636,7 +636,7 @@ export default function App() {
                   <div className="flex flex-col gap-3">
                     {flow.steps.map((step, j) => (
                       <React.Fragment key={j}>
-                        <div className="bg-[#f8f9fa] dark:bg-[#1d2118] border border-[#dadce0] dark:border-white/10 p-4 rounded-xl text-center text-sm font-medium font-sans text-[#3c4043] dark:text-gray-200">
+                        <div className="bg-[#f8f9fa] dark:bg-[#171717] border border-[#dadce0] dark:border-white/10 p-4 rounded-xl text-center text-sm font-medium font-sans text-[#3c4043] dark:text-[#b4b4b4]">
                           {step}
                         </div>
                         {j < flow.steps.length - 1 && (
@@ -681,7 +681,7 @@ export default function App() {
             <div className="grid md:grid-cols-3 gap-6">
               {CASE_STUDIES.map((study, i) => (
                 <Card key={i} className="flex flex-col relative overflow-hidden">
-                  <h4 className="text-xl font-semibold font-display text-[#1f1f1f] dark:text-white mb-6">{study.industry}</h4>
+                  <h4 className="text-xl font-semibold font-display text-[#1f1f1f] dark:text-[#ececec] mb-6">{study.industry}</h4>
                   <div className="space-y-4 mb-6 flex-grow">
                     <div>
                       <span className="text-xs text-[#d93025] font-bold uppercase font-sans tracking-wide">Before ScaleupSky</span>
@@ -689,12 +689,12 @@ export default function App() {
                     </div>
                     <div>
                       <span className="text-xs text-[#137333] font-bold uppercase font-sans tracking-wide">After automation</span>
-                      <p className="text-sm text-[#3c4043] dark:text-gray-200 mt-1 font-sans">{study.after}</p>
+                      <p className="text-sm text-[#3c4043] dark:text-[#b4b4b4] mt-1 font-sans">{study.after}</p>
                     </div>
                   </div>
                   <div className="bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] p-4 rounded-xl">
                     <span className="text-xs text-[#1a73e8] dark:text-[#60a5fa] font-bold uppercase font-sans tracking-wide block mb-1">Business impact</span>
-                    <p className="font-semibold font-display text-[#1f1f1f] dark:text-white text-base">{study.impact}</p>
+                    <p className="font-semibold font-display text-[#1f1f1f] dark:text-[#ececec] text-base">{study.impact}</p>
                   </div>
                 </Card>
               ))}
@@ -703,12 +703,12 @@ export default function App() {
         </section>
 
         {/* SECTION 9: INDUSTRIES */}
-        <section aria-labelledby="industries-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#1d2118]">
+        <section aria-labelledby="industries-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#171717]">
           <div className="max-w-7xl mx-auto text-center">
-            <h2 id="industries-heading" className="text-2xl font-semibold font-display mb-10 text-[#1f1f1f] dark:text-white tracking-tight">Industries we specialize in</h2>
+            <h2 id="industries-heading" className="text-2xl font-semibold font-display mb-10 text-[#1f1f1f] dark:text-[#ececec] tracking-tight">Industries we specialize in</h2>
             <div className="flex flex-wrap justify-center gap-3">
               {INDUSTRIES.map((ind, i) => (
-                <div key={i} className="flex items-center gap-2.5 bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] text-[#3c4043] dark:text-gray-200 transition-shadow duration-300 cursor-default">
+                <div key={i} className="flex items-center gap-2.5 bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_2px_6px_2px_rgba(60,64,67,0.15)] text-[#3c4043] dark:text-[#b4b4b4] transition-shadow duration-300 cursor-default">
                   <span className="text-[#1a73e8] dark:text-[#60a5fa]" aria-hidden="true"><Icon name={ind.icon} className="w-4 h-4" /></span> {ind.title}
                 </div>
               ))}
@@ -726,10 +726,10 @@ export default function App() {
                 const panelId = `faq-panel-${i}`;
                 const buttonId = `faq-btn-${i}`;
                 return (
-                  <div key={i} className="border border-[#dadce0] dark:border-white/10 rounded-xl bg-white dark:bg-[#22271d] overflow-hidden" role="listitem">
+                  <div key={i} className="border border-[#dadce0] dark:border-white/10 rounded-xl bg-white dark:bg-[#2f2f2f] overflow-hidden" role="listitem">
                     <button
                       id={buttonId}
-                      className="w-full px-6 py-4 flex justify-between items-center text-left font-semibold font-display text-[#1f1f1f] dark:text-white hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors"
+                      className="w-full px-6 py-4 flex justify-between items-center text-left font-semibold font-display text-[#1f1f1f] dark:text-[#ececec] hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors"
                       onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                       aria-expanded={activeFaq === i}
                       aria-controls={panelId}
@@ -762,10 +762,10 @@ export default function App() {
         </section>
 
         {/* SECTION 12 & 13: FINAL CTA & CONTACT FORM */}
-        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#1d2118]" id="contact">
+        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#f8f9fa] dark:bg-[#171717]" id="contact">
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-center">
             <div>
-              <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-extrabold text-[#1f1f1f] dark:text-white mb-6 leading-tight tracking-tight">
+              <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-extrabold text-[#1f1f1f] dark:text-[#ececec] mb-6 leading-tight tracking-tight">
                 Your competitors are already automating.
               </h2>
               <p className="text-[#5f6368] dark:text-gray-300 font-sans text-base md:text-lg mb-8 leading-relaxed">
@@ -773,7 +773,7 @@ export default function App() {
               </p>
               <ul className="space-y-3.5 mb-8">
                 {['Custom automation blueprint', 'Clear ROI projection', 'No technical overhead', 'Zero obligation call'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#3c4043] dark:text-gray-200">
+                  <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#3c4043] dark:text-[#b4b4b4]">
                     <Icon name="checkcircle" className="w-5 h-5 text-[#1a73e8] dark:text-[#60a5fa] flex-shrink-0" /> {item}
                   </li>
                 ))}
@@ -786,7 +786,7 @@ export default function App() {
                   <div className="w-14 h-14 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 flex items-center justify-center mb-5" aria-hidden="true">
                     <Icon name="checkcircle" className="w-7 h-7 text-[#137333]" />
                   </div>
-                  <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-white mb-2">Request sent</h4>
+                  <h4 className="text-lg font-semibold font-display text-[#1f1f1f] dark:text-[#ececec] mb-2">Request sent</h4>
                   <p className="text-sm text-[#5f6368] dark:text-gray-300 font-sans mb-6">We'll be in touch within one business day.</p>
                   <button
                     onClick={() => setFormStatus('idle')}
@@ -814,7 +814,7 @@ export default function App() {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                        className="bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-[#ececec] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                       />
                     </div>
                     <div>
@@ -828,7 +828,7 @@ export default function App() {
                         required
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                        className="bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-[#ececec] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                       />
                     </div>
                   </div>
@@ -842,7 +842,7 @@ export default function App() {
                       autoComplete="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
+                      className="bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-[#ececec] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full"
                     />
                   </div>
                   <div>
@@ -855,7 +855,7 @@ export default function App() {
                       required
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="bg-white dark:bg-[#22271d] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-white focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full resize-none"
+                      className="bg-white dark:bg-[#2f2f2f] border border-[#dadce0] dark:border-white/10 rounded-xl px-4 py-3.5 text-sm font-sans text-[#1f1f1f] dark:text-[#ececec] focus:outline-none focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] transition-colors w-full resize-none"
                     />
                   </div>
                   {formStatus === 'error' && (
@@ -885,34 +885,34 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer role="contentinfo" className="border-t border-[#dadce0] dark:border-white/10 bg-white dark:bg-[#22271d] pt-14 pb-8 px-6">
+      <footer role="contentinfo" className="border-t border-[#dadce0] dark:border-white/10 bg-white dark:bg-[#2f2f2f] pt-14 pb-8 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-0.2 mb-6 cursor-pointer">
-              <LogoSvg className="h-10 w-auto text-[#1f1f1f] dark:text-white" />
-              <span className="font-display font-bold text-lg text-[#1f1f1f] dark:text-white">
+              <LogoSvg className="h-10 w-auto text-[#1f1f1f] dark:text-[#ececec]" />
+              <span className="font-display font-bold text-lg text-[#1f1f1f] dark:text-[#ececec]">
                 ScaleupSky
               </span>
             </a>
             <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm mb-6 leading-relaxed">Building enterprise production-ready AI automation ecosystems.</p>
             <div className="flex gap-4">
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Twitter">
-                <Icon name="twitter" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
+                <Icon name="twitter" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Connect with ScaleupSky on LinkedIn">
-                <Icon name="linkedin" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
+                <Icon name="linkedin" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Facebook">
-                <Icon name="facebook" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
+                <Icon name="facebook" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="View ScaleupSky on GitHub">
-                <Icon name="github" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-white cursor-pointer transition-colors" />
+                <Icon name="github" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Services</h4>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-[#ececec]">Services</h4>
             <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
               <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">AI chatbots</a></li>
               <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Voice AI receptionists</a></li>
@@ -922,7 +922,7 @@ export default function App() {
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Industries</h4>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-[#ececec]">Industries</h4>
             <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
               <li><a href="#healthcare" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Healthcare</a></li>
               <li><a href="#services" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Real estate</a></li>
@@ -932,7 +932,7 @@ export default function App() {
           </div>
 
           <div>
-            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-white">Company</h4>
+            <h4 className="font-semibold font-display text-sm mb-4 text-[#1f1f1f] dark:text-[#ececec]">Company</h4>
             <ul className="space-y-2 text-sm text-[#5f6368] dark:text-gray-300 font-sans">
               <li><a href="#results" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">About us</a></li>
               <li><a href="#results" className="hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors">Case studies</a></li>
@@ -948,7 +948,7 @@ export default function App() {
       </footer>
 
       {/* MOBILE STICKY CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/95 dark:bg-[#181C14]/95 backdrop-blur-md border-t border-[#dadce0] dark:border-white/10 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/95 dark:bg-[#212121]/95 backdrop-blur-md border-t border-[#dadce0] dark:border-white/10 z-50">
         <button
           onClick={() => scrollToSection('contact')}
           className="w-full py-3 bg-[#1a73e8] text-white font-semibold font-display rounded-xl"
