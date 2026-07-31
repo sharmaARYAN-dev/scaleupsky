@@ -896,17 +896,14 @@ export default function App() {
             </a>
             <p className="text-[#5f6368] dark:text-gray-300 font-sans text-sm mb-6 leading-relaxed">Building enterprise production-ready AI automation ecosystems.</p>
             <div className="flex gap-4">
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Twitter">
-                <Icon name="twitter" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
+              <a href="https://www.instagram.com/scaleupsky/" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Instagram">
+                <Icon name="instagram" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Connect with ScaleupSky on LinkedIn">
+              <a href="https://www.linkedin.com/company/scaleupsky/" target="_blank" rel="noopener noreferrer" aria-label="Connect with ScaleupSky on LinkedIn">
                 <Icon name="linkedin" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61560493302864" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Facebook">
                 <Icon name="facebook" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="View ScaleupSky on GitHub">
-                <Icon name="github" className="w-5 h-5 text-[#9aa0a6] hover:text-[#1f1f1f] dark:text-[#ececec] cursor-pointer transition-colors" />
               </a>
             </div>
           </div>
