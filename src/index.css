@@ -37,7 +37,7 @@
 .bg-grid-pattern {
   background-size: 32px 32px;
   background-image: 
-    radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    radial-gradient(circle, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
 }
 
 .dark .bg-grid-pattern {
@@ -45,8 +45,47 @@
     radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
 }
 
-/* Data Packet Pulse Animation */
+/* Premium Light Mode Card Shadows */
+.light-card-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+}
+
+.hover-card-elevation:hover {
+  box-shadow: 0 12px 24px -6px rgba(26, 115, 232, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+}
+
+.dark .hover-card-elevation:hover {
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* Autonomous System Packet Sweep Animation (8s interval: 2.5s travel + 5.5s calm) */
 @keyframes dataPacketPulse {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(22px);
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(22px);
+    opacity: 0;
+  }
+}
+
+.animate-data-packet {
+  animation: dataPacketPulse 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Single Run Packet Animation (Runs 1x on panel slide, then stops) */
+@keyframes dataPacketOnce {
   0% {
     transform: translateY(-4px);
     opacity: 0;
@@ -58,13 +97,22 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(20px);
+    transform: translateY(24px);
     opacity: 0;
   }
 }
 
-.animate-data-packet {
-  animation: dataPacketPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-data-packet-once {
+  animation: dataPacketOnce 1.8s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+/* Hide scrollbars for single line containers */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Reduced motion accessibility override */
