@@ -203,7 +203,7 @@ const SectionHeading = ({ title, subtitle }) => (
 );
 
 const Card = ({ children, className = '' }) => (
-  <div className={`bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-2xl p-6 hover:shadow-md dark:hover:shadow-none hover:border-[#eaeaea] dark:border-[#333333] transition-shadow duration-300 ${className}`}>
+  <div className={`bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-2xl p-6 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-none hover:border-[#d2e3fc] dark:hover:border-[#444444] transition-all duration-300 ${className}`}>
     {children}
   </div>
 );
@@ -478,7 +478,7 @@ export default function App() {
             </button>
             <button
               onClick={() => scrollToSection('services')}
-              className="px-8 py-3.5 bg-white dark:bg-[#0a0a0a] text-[#666666] dark:text-[#888888] font-semibold font-display rounded-full hover:bg-[#fafafa] dark:bg-[#111111] transition-all duration-200 border border-[#eaeaea] dark:border-[#333333]"
+              className="px-8 py-3.5 bg-white dark:bg-[#0a0a0a] text-[#444444] dark:text-[#cccccc] hover:text-[#171717] dark:hover:text-[#ffffff] font-semibold font-display rounded-full hover:bg-gray-50 dark:hover:bg-[#141414] transition-all duration-200 border border-[#d1d5db] dark:border-[#444444] shadow-xs"
             >
               See what we automate
             </button>
@@ -486,7 +486,7 @@ export default function App() {
         </section>
 
         {/* SECTION 2: PROBLEMS */}
-        <section aria-labelledby="solutions-heading" className="py-20 px-6 border-t border-[#eaeaea] dark:border-[#333333]" id="solutions">
+        <section aria-labelledby="solutions-heading" className="py-20 px-6 border-t border-[#eaeaea] dark:border-[#333333] scroll-mt-24" id="solutions">
           <div className="max-w-7xl mx-auto">
             <SectionHeading
               title="Business Process & Workflow Automation"
@@ -515,7 +515,7 @@ export default function App() {
         </section>
 
         {/* SECTION 3: WHAT WE AUTOMATE & HEALTHCARE */}
-        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#fafafa] dark:bg-[#111111]" id="services">
+        <section aria-labelledby="services-heading" className="py-20 px-6 bg-[#fafafa] dark:bg-[#111111] scroll-mt-24" id="services">
           <div className="max-w-7xl mx-auto">
             <SectionHeading title="WhatsApp, CRM & Chatbot Automation Systems" subtitle="Tailor-made AI automation pipelines to put your standard operational workflows on autopilot." />
 
@@ -527,7 +527,7 @@ export default function App() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35 }}
-                  className="bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-md dark:hover:shadow-none transition-shadow duration-300 cursor-default group"
+                  className="bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-xl p-6 flex flex-col items-center text-center gap-3.5 hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all duration-300 cursor-default group"
                 >
                   <div className="text-[#666666] dark:text-[#888888] group-hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-200" aria-hidden="true">
                     <Icon name={service.icon} className="w-6 h-6" />
@@ -538,7 +538,7 @@ export default function App() {
             </div>
 
             {/* Healthcare Highlight */}
-            <div className="bg-white dark:bg-[#0a0a0a] rounded-3xl p-8 md:p-12 border border-[#eaeaea] dark:border-[#333333] relative overflow-hidden" id="healthcare">
+            <div className="bg-white dark:bg-[#0a0a0a] rounded-3xl p-8 md:p-12 border border-[#eaeaea] dark:border-[#333333] relative overflow-hidden scroll-mt-28" id="healthcare">
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 border border-[#a7f3d0] dark:border-[#059669]/30 text-[#059669] text-xs font-semibold font-sans mb-6">
                   <Icon name="activity" className="w-3.5 h-3.5" /> Specialized industry focus
@@ -624,21 +624,31 @@ export default function App() {
             <SectionHeading title="How data flows" subtitle="Real architectural examples of automated pipelines built by ScaleupSky." />
             <div className="grid md:grid-cols-3 gap-6">
               {FLOWS.map((flow, i) => (
-                <Card key={i} className="flex flex-col">
-                  <h4 className="text-lg font-semibold font-display mb-6 text-[#1a73e8] dark:text-[#60a5fa]">{flow.title}</h4>
-                  <div className="flex flex-col gap-3">
-                    {flow.steps.map((step, j) => (
-                      <React.Fragment key={j}>
-                        <div className="bg-[#fafafa] dark:bg-[#111111] border border-[#eaeaea] dark:border-[#333333] p-4 rounded-xl text-center text-sm font-medium font-sans text-[#666666] dark:text-[#888888]">
-                          {step}
-                        </div>
-                        {j < flow.steps.length - 1 && (
-                          <div className="flex justify-center text-[#1a73e8] dark:text-[#60a5fa] text-lg font-bold" aria-hidden="true">
-                            ↓
+                <Card key={i} className="flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#eaeaea] dark:border-[#333333]">
+                      <h4 className="text-lg font-bold font-display text-[#171717] dark:text-[#ededed]">{flow.title}</h4>
+                      <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[#e8f0fe] dark:bg-[#3b82f6]/20 text-[#1a73e8] dark:text-[#60a5fa]">
+                        Pipeline {i + 1}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-2.5">
+                      {flow.steps.map((step, j) => (
+                        <React.Fragment key={j}>
+                          <div className="bg-[#fafafa] dark:bg-[#111111] border border-[#eaeaea] dark:border-[#333333] p-3.5 rounded-xl flex items-center gap-3 text-sm font-medium font-sans text-[#333333] dark:text-[#cccccc] shadow-xs">
+                            <span className="w-5 h-5 rounded-full bg-[#1a73e8]/10 text-[#1a73e8] dark:text-[#60a5fa] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                              {j + 1}
+                            </span>
+                            <span>{step}</span>
                           </div>
-                        )}
-                      </React.Fragment>
-                    ))}
+                          {j < flow.steps.length - 1 && (
+                            <div className="flex justify-center text-[#1a73e8] dark:text-[#60a5fa] text-xs font-bold my-0.5" aria-hidden="true">
+                              ↓
+                            </div>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
                   </div>
                 </Card>
               ))}
@@ -647,7 +657,7 @@ export default function App() {
         </section>
 
         {/* SECTION 7: RESULTS */}
-        <section aria-labelledby="results-heading" className="py-20 px-6" id="results">
+        <section aria-labelledby="results-heading" className="py-20 px-6 scroll-mt-24" id="results">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-[#eaeaea] dark:border-[#333333] py-14">
             {STATS.map((stat, i) => (
               <motion.div
@@ -701,7 +711,7 @@ export default function App() {
             <h2 id="industries-heading" className="text-2xl font-semibold font-display mb-10 text-[#171717] dark:text-[#ededed] tracking-tight">Industries we specialize in</h2>
             <div className="flex flex-wrap justify-center gap-3">
               {INDUSTRIES.map((ind, i) => (
-                <div key={i} className="flex items-center gap-2.5 bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-md dark:hover:shadow-none text-[#666666] dark:text-[#888888] transition-shadow duration-300 cursor-default">
+                <div key={i} className="flex items-center gap-2.5 bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] px-6 py-3.5 rounded-full text-sm font-medium font-sans hover:shadow-md dark:hover:shadow-none hover:-translate-y-0.5 transition-all duration-300 cursor-default">
                   <span className="text-[#1a73e8] dark:text-[#60a5fa]" aria-hidden="true"><Icon name={ind.icon} className="w-4 h-4" /></span> {ind.title}
                 </div>
               ))}
@@ -711,7 +721,7 @@ export default function App() {
 
 
         {/* SECTION 11: FAQ */}
-        <section aria-labelledby="faq-heading" className="py-20 px-6" id="faq">
+        <section aria-labelledby="faq-heading" className="py-20 px-6 scroll-mt-24" id="faq">
           <div className="max-w-3xl mx-auto">
             <SectionHeading title="Frequently asked questions" />
             <div className="space-y-3" role="list">
@@ -755,7 +765,7 @@ export default function App() {
         </section>
 
         {/* SECTION 12 & 13: FINAL CTA & CONTACT FORM */}
-        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#fafafa] dark:bg-[#111111]" id="contact">
+        <section aria-labelledby="contact-heading" className="py-20 px-6 bg-[#fafafa] dark:bg-[#111111] scroll-mt-24" id="contact">
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-14 items-center">
             <div>
               <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-extrabold text-[#171717] dark:text-[#ededed] mb-6 leading-tight tracking-tight">
