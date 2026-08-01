@@ -176,6 +176,64 @@ const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || 'https://formspree.i
 
 
 
+const TOOL_COLORS = {
+  OpenAI: 'hover:text-[#10a37f]',
+  Claude: 'hover:text-[#d97706]',
+  WhatsApp: 'hover:text-[#25d366]',
+  Instagram: 'hover:text-[#e1306c]',
+  Slack: 'hover:text-[#611f69]',
+  'MS Teams': 'hover:text-[#5059c9]',
+  HubSpot: 'hover:text-[#ff7a59]',
+  Salesforce: 'hover:text-[#00a1e0]',
+  Zapier: 'hover:text-[#ff4a00]',
+  Make: 'hover:text-[#6f42c1]',
+  Shopify: 'hover:text-[#96bf48]',
+  Notion: 'hover:text-[#000000] dark:hover:text-[#ffffff]',
+  'Google Sheets': 'hover:text-[#0f9d58]'
+};
+
+const AnimatedCounter = ({ value }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const numericPart = parseInt(value, 10);
+    if (isNaN(numericPart)) return;
+    
+    let startTimestamp = null;
+    const duration = 1800; // ms
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      // Ease out cubic
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easedProgress * numericPart));
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        window.requestAnimationFrame(step);
+        observer.disconnect();
+      }
+    }, { threshold: 0.5 });
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value]);
+
+  const suffix = value.replace(/[0-9]/g, '');
+
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
+};
+
 // --- REUSABLE SHELL COMPONENTS ---
 const SectionHeading = ({ title, subtitle }) => (
   <div className="text-center mb-14 md:mb-20">
@@ -215,8 +273,17 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeSection, setActiveSection] = useState('');
 
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | submitting | success | error
+
+  const handleHeroMouseMove = useCallback((e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  }, []);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -431,12 +498,25 @@ export default function App() {
 
       <main id="main-content">
         {/* SECTION 1: HERO */}
-        <section aria-labelledby="hero-heading" className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a]">
+        <section
+          aria-labelledby="hero-heading"
+          onMouseMove={handleHeroMouseMove}
+          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern"
+        >
+          {/* Ambient Cursor Spotlight Glow */}
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-300 z-0"
+            style={{
+              background: `radial-gradient(500px circle at ${mousePos.x}px ${mousePos.y}px, rgba(26, 115, 232, 0.09), transparent 80%)`
+            }}
+            aria-hidden="true"
+          />
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8 z-10"
           >
             <span className="w-2 h-2 rounded-full bg-[#1a73e8]" style={{ animation: 'dotpulse 2s ease-in-out infinite' }} aria-hidden="true" />
             Accepting enterprise clients for 2026
@@ -576,11 +656,17 @@ export default function App() {
                   repeat: Infinity,
                 }}
               >
-                {[...TOOLS, ...TOOLS].map((tool, i) => (
-                  <span key={i} className="text-2xl md:text-3xl font-display font-bold tracking-tight text-[#999999] hover:text-[#1a73e8] dark:text-[#60a5fa] transition-colors duration-300 cursor-default">
-                    {tool}
-                  </span>
-                ))}
+                {[...TOOLS, ...TOOLS].map((tool, i) => {
+                  const colorClass = TOOL_COLORS[tool] || 'hover:text-[#1a73e8] dark:hover:text-[#60a5fa]';
+                  return (
+                    <span
+                      key={i}
+                      className={`text-2xl md:text-3xl font-display font-bold tracking-tight text-[#999999] dark:text-[#555555] transition-colors duration-300 cursor-default ${colorClass}`}
+                    >
+                      {tool}
+                    </span>
+                  );
+                })}
               </motion.div>
             </div>
             {/* Screen-reader only list of tools */}
@@ -642,8 +728,10 @@ export default function App() {
                             <span>{step}</span>
                           </div>
                           {j < flow.steps.length - 1 && (
-                            <div className="flex justify-center text-[#1a73e8] dark:text-[#60a5fa] text-xs font-bold my-0.5" aria-hidden="true">
-                              ↓
+                            <div className="flex flex-col items-center justify-center py-1 relative" aria-hidden="true">
+                              <div className="w-0.5 h-4 bg-[#1a73e8]/20 dark:bg-[#60a5fa]/20 relative overflow-hidden rounded-full">
+                                <div className="w-full h-2 bg-[#1a73e8] dark:bg-[#60a5fa] animate-data-packet rounded-full" />
+                              </div>
                             </div>
                           )}
                         </React.Fragment>
@@ -669,7 +757,7 @@ export default function App() {
                 className="text-center"
               >
                 <div className="text-4xl md:text-6xl font-display font-extrabold text-[#1a73e8] dark:text-[#60a5fa] mb-2">
-                  {stat.value}
+                  <AnimatedCounter value={stat.value} />
                 </div>
                 <div className="text-xs md:text-sm text-[#666666] dark:text-[#888888] font-semibold font-sans uppercase tracking-wider">{stat.label}</div>
               </motion.div>
@@ -783,13 +871,26 @@ export default function App() {
               </ul>
             </div>
 
-            <Card className="!p-7">
+            <Card className="!p-7 relative overflow-hidden">
               {formStatus === 'success' ? (
-                <div className="flex flex-col items-center text-center py-10" role="alert" aria-live="polite">
-                  <div className="w-14 h-14 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 flex items-center justify-center mb-5" aria-hidden="true">
-                    <Icon name="checkcircle" className="w-7 h-7 text-[#059669]" />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center text-center py-10"
+                  role="alert"
+                  aria-live="polite"
+                >
+                  <div className="w-16 h-16 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 flex items-center justify-center mb-5 ring-8 ring-[#e6f4ea]/50 dark:ring-[#137333]/10" aria-hidden="true">
+                    <svg className="w-8 h-8 text-[#059669]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <motion.path
+                        d="M20 6L9 17l-5-5"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                      />
+                    </svg>
                   </div>
-                  <h4 className="text-lg font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Request sent</h4>
+                  <h4 className="text-xl font-bold font-display text-[#171717] dark:text-[#ededed] mb-2">Request sent successfully</h4>
                   <p className="text-sm text-[#666666] dark:text-[#888888] font-sans mb-6">We'll be in touch within one business day.</p>
                   <button
                     onClick={() => setFormStatus('idle')}
@@ -797,7 +898,7 @@ export default function App() {
                   >
                     Send another request
                   </button>
-                </div>
+                </motion.div>
               ) : (
                 <form
                   className="space-y-4"
