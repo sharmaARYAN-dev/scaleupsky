@@ -454,23 +454,6 @@ const AnimatedCounter = ({ value }) => {
 
 // --- REUSABLE SHELL COMPONENTS ---
 
-const PulsingDot = ({
-  size = 'w-1.5 h-1.5',
-  color = 'from-[#06b6d4] to-[#1a73e8]',
-  glow = 'rgba(6,182,212,0.5)',
-  className = ''
-}) => (
-  <span className={`relative inline-flex items-center justify-center shrink-0 ${className}`} aria-hidden="true">
-    <span
-      className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-60 bg-gradient-to-r ${color}`}
-    />
-    <span
-      className={`relative inline-flex ${size} rounded-full bg-gradient-to-r ${color}`}
-      style={{ boxShadow: `0 0 6px ${glow}` }}
-    />
-  </span>
-);
-
 const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   const ref = useRef(null);
   const activeRef = useRef(false);
@@ -862,8 +845,8 @@ const WhatsAppWidget = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed]">ScaleUpSky Team</h4>
-                  <div className="flex items-center gap-1.5 text-[10px] text-[#059669] dark:text-[#34d399] font-medium">
-                    <PulsingDot size="w-1.5 h-1.5" color="from-[#10b981] to-[#059669]" glow="rgba(16,185,129,0.6)" />
+                  <div className="flex items-center gap-1 text-[10px] text-[#059669] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
                     <span>Direct WhatsApp</span>
                   </div>
                 </div>
@@ -917,7 +900,8 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeSection, setActiveSection] = useState('');
 
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const mouseRafRef = useRef(null);
   const [activeServiceHover, setActiveServiceHover] = useState(null);
   const [activeFlowHover, setActiveFlowHover] = useState(null);
   const [activeIndustryTab, setActiveIndustryTab] = useState(0);
@@ -927,12 +911,21 @@ export default function App() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
-  const handleHeroMouseMove = useCallback((e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
+  // Global 60fps cursor spotlight tracking across entire website
+  useEffect(() => {
+    const handleGlobalPointerMove = (e) => {
+      if (mouseRafRef.current) return;
+      mouseRafRef.current = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+        mouseRafRef.current = null;
+      });
+    };
+
+    window.addEventListener('pointermove', handleGlobalPointerMove, { passive: true });
+    return () => {
+      window.removeEventListener('pointermove', handleGlobalPointerMove);
+      if (mouseRafRef.current) cancelAnimationFrame(mouseRafRef.current);
+    };
   }, []);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -1099,10 +1092,21 @@ export default function App() {
     }, 500);
   }, []);
 
-  const wrapperClasses = 'min-h-screen bg-[#fafafa] dark:bg-black text-[#171717] dark:text-[#ededed] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden';
+  const wrapperClasses = 'min-h-screen bg-[#fafafa] dark:bg-black bg-grid-pattern text-[#171717] dark:text-[#ededed] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden relative';
 
   return (
     <div className={wrapperClasses} style={{ fontFamily: "'Geist', sans-serif" }}>
+      {/* GLOBAL CURSOR AMBIENT SPOTLIGHT (REACTS TO POINTER ACROSS ENTIRE WEBSITE) */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, ${
+            isDarkMode ? 'rgba(96, 165, 250, 0.08)' : 'rgba(26, 115, 232, 0.07)'
+          }, transparent 75%)`
+        }}
+        aria-hidden="true"
+      />
+
       <style>{`
         .font-display { font-family: 'Geist', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
         @keyframes dotpulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
@@ -1221,26 +1225,17 @@ export default function App() {
       <main id="main-content">
         {/* SECTION 1: HERO */}
         <section
+          id="top"
           aria-labelledby="hero-heading"
-          onMouseMove={handleHeroMouseMove}
-          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern"
+          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center overflow-hidden scroll-mt-24"
         >
-          {/* Ambient Cursor Spotlight Glow */}
-          <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-300 z-0"
-            style={{
-              background: `radial-gradient(500px circle at ${mousePos.x}px ${mousePos.y}px, rgba(26, 115, 232, 0.09), transparent 80%)`
-            }}
-            aria-hidden="true"
-          />
-
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] dark:border-[#3b82f6]/40 text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8 z-10 shadow-xs"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8 z-10"
           >
-            <PulsingDot size="w-2 h-2" color="from-[#06b6d4] to-[#1a73e8]" glow="rgba(6,182,212,0.6)" />
+            <span className="w-2 h-2 rounded-full bg-[#1a73e8]" style={{ animation: 'dotpulse 2s ease-in-out infinite' }} aria-hidden="true" />
             Accepting new clients for 2026
           </motion.div>
 
@@ -1315,8 +1310,7 @@ export default function App() {
                         <div className="w-8 h-8 rounded-lg bg-[#e8f0fe] dark:bg-[#3b82f6]/20 flex items-center justify-center text-[#1a73e8] dark:text-[#60a5fa] shrink-0" aria-hidden="true">
                           <Icon name={point.icon} className="w-4 h-4" />
                         </div>
-                        <span className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-[#fef3c7] dark:bg-[#78350f]/30 text-[#d97706] dark:text-[#fbbf24] border border-[#fde68a] dark:border-[#92400e]/40">
-                          <PulsingDot size="w-1.5 h-1.5" color="from-[#f59e0b] to-[#f97316]" glow="rgba(245,158,11,0.6)" />
+                        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-[#fef3c7] dark:bg-[#78350f]/30 text-[#d97706] dark:text-[#fbbf24] border border-[#fde68a] dark:border-[#92400e]/40">
                           {point.metric}
                         </span>
                       </div>
@@ -1492,7 +1486,7 @@ export default function App() {
                         <div className="text-[11px] font-mono font-semibold text-[#888888] mb-4 uppercase tracking-wider flex items-center justify-between">
                           <span>Workflow Pipeline</span>
                           <span className="text-[#059669] dark:text-[#34d399] flex items-center gap-1.5 text-[10px]">
-                            <PulsingDot size="w-1.5 h-1.5" color="from-[#10b981] to-[#059669]" glow="rgba(16,185,129,0.6)" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#059669]" />
                             Live Flow
                           </span>
                         </div>
@@ -1657,7 +1651,7 @@ export default function App() {
                       <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#eaeaea] dark:border-[#333333]">
                         <h4 className="text-lg font-bold font-display text-[#171717] dark:text-[#ededed]">{flow.title}</h4>
                         <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 text-[#059669] dark:text-[#34d399] border border-[#a7f3d0] dark:border-[#059669]/30">
-                          <PulsingDot size="w-1.5 h-1.5" color="from-[#10b981] to-[#059669]" glow="rgba(16,185,129,0.6)" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#059669] dark:bg-[#34d399]" aria-hidden="true" />
                           Running
                         </span>
                       </div>
@@ -1842,11 +1836,9 @@ export default function App() {
               </ul>
 
               <div className="pt-6 border-t border-[#eaeaea] dark:border-[#262626] space-y-2 text-xs font-sans">
-                <div className="flex flex-wrap items-center gap-2 font-mono text-xs md:text-sm text-[#444444] dark:text-[#bbbbbb]">
-                  <span className="inline-flex items-center gap-1.5 text-[#059669] dark:text-[#34d399] font-bold">
-                    <PulsingDot size="w-2 h-2" color="from-[#10b981] to-[#059669]" glow="rgba(16,185,129,0.6)" />
-                    <a href="tel:+919371061901" className="hover:underline transition-colors">+91 93710 61901</a>
-                  </span>
+                <div className="flex flex-wrap items-center gap-2 font-medium text-[#171717] dark:text-[#ededed]">
+                  <span className="w-2 h-2 rounded-full bg-[#059669] animate-pulse" />
+                  <a href="tel:+919371061901" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-semibold">+91 93710 61901</a>
                   <span className="text-[#888888] dark:text-[#777777] font-normal">· Call / WhatsApp (responds &lt; 15m)</span>
                 </div>
                 <div className="text-[#888888] dark:text-[#777777]">
