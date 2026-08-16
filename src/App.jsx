@@ -989,12 +989,19 @@ export default function App() {
   });
 
   useEffect(() => {
+    const faviconSvg = document.querySelector('link[type="image/svg+xml"]');
+    const faviconPng = document.querySelector('link[type="image/png"][sizes="48x48"]');
+
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      if (faviconSvg) faviconSvg.href = '/favicon-dark.svg';
+      if (faviconPng) faviconPng.href = '/favicon-dark-48x48.png';
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      if (faviconSvg) faviconSvg.href = '/favicon.svg';
+      if (faviconPng) faviconPng.href = '/favicon-48x48.png';
     }
   }, [isDarkMode]);
 
