@@ -431,160 +431,6 @@ const AnimatedCounter = ({ value }) => {
 };
 
 // --- REUSABLE SHELL COMPONENTS ---
-// --- REUSABLE SHELL COMPONENTS ---
-const CentralPipelineSpine = () => {
-  const pathRef = useRef(null);
-  const rafRef = useRef(null);
-  const [geometry, setGeometry] = useState({ path: '', height: 0, packet: null });
-  const { scrollYProgress } = useScroll();
-
-  const buildRoute = useCallback(() => {
-    if (typeof window === 'undefined') return;
-
-    const nodes = Array.from(document.querySelectorAll('[data-pipeline-node]'));
-    const height = Math.max(
-      document.documentElement.scrollHeight,
-      document.body.scrollHeight
-    );
-
-    if (nodes.length < 2) {
-      setGeometry((current) => ({ ...current, height, path: '' }));
-      return;
-    }
-
-    const width = window.innerWidth;
-    const center = width / 2;
-    // Keep circuit wrapping tightly around the max-w-5xl / max-w-6xl component bounds (never shoot off-screen)
-    const containerOffset = Math.min(width * 0.44, 560);
-    const lanes = [
-      Math.max(center - containerOffset, 20),
-      Math.min(center + containerOffset, width - 20)
-    ];
-
-    const points = nodes.map((node) => {
-      const rect = node.getBoundingClientRect();
-      return {
-        x: rect.left + rect.width / 2 + window.scrollX,
-        y: rect.top + rect.height / 2 + window.scrollY
-      };
-    });
-
-    const route = points.slice(1).reduce((d, point, index) => {
-      const prev = points[index];
-      const laneX = lanes[index % 2];
-      const corner = 24;
-      const prevTurnX = prev.x < laneX ? laneX - corner : laneX + corner;
-      const nextTurnX = point.x < laneX ? laneX - corner : laneX + corner;
-      const verticalStartY = prev.y + corner;
-      const verticalEndY = point.y - corner;
-
-      return `${d} L ${prevTurnX} ${prev.y} Q ${laneX} ${prev.y} ${laneX} ${verticalStartY} L ${laneX} ${verticalEndY} Q ${laneX} ${point.y} ${nextTurnX} ${point.y} L ${point.x} ${point.y}`;
-    }, `M ${points[0].x} ${points[0].y}`);
-
-    setGeometry((current) => ({ ...current, path: route, height }));
-  }, []);
-
-  useEffect(() => {
-    const initialFrame = window.requestAnimationFrame(buildRoute);
-    window.addEventListener('resize', buildRoute);
-    window.addEventListener('load', buildRoute);
-
-    return () => {
-      window.cancelAnimationFrame(initialFrame);
-      window.removeEventListener('resize', buildRoute);
-      window.removeEventListener('load', buildRoute);
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
-    };
-  }, [buildRoute]);
-
-  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
-    if (rafRef.current) return;
-
-    rafRef.current = window.requestAnimationFrame(() => {
-      rafRef.current = null;
-      const path = pathRef.current;
-      if (!path) return;
-
-      const totalLength = path.getTotalLength();
-      if (!totalLength) return;
-
-      const point = path.getPointAtLength(totalLength * progress);
-      setGeometry((current) => ({
-        ...current,
-        packet: { x: point.x, y: point.y, progress }
-      }));
-    });
-  });
-
-  return (
-    <svg
-      className="hidden lg:block absolute inset-x-0 top-0 w-full pointer-events-none z-[6] overflow-visible"
-      width="100%"
-      height={geometry.height}
-      aria-hidden="true"
-    >
-      <defs>
-        {/* Synaptic Energy Spectrum: Electric Blue -> Cyan -> Violet -> Amber -> Vivid Orange */}
-        <linearGradient id="site-pipeline-route" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.85" />
-          <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.9" />
-          <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.9" />
-          <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#f97316" stopOpacity="0.95" />
-        </linearGradient>
-
-        <linearGradient id="site-pipeline-glow-gradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.35" />
-          <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.4" />
-          <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4" />
-          <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#f97316" stopOpacity="0.5" />
-        </linearGradient>
-
-        <filter id="site-pipeline-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      {geometry.path && (
-        <>
-          {/* Ambient Glow Underlay */}
-          <path
-            d={geometry.path}
-            fill="none"
-            stroke="url(#site-pipeline-glow-gradient)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            filter="url(#site-pipeline-glow)"
-          />
-          {/* Core Circuit Line */}
-          <motion.path
-            ref={pathRef}
-            d={geometry.path}
-            fill="none"
-            stroke="url(#site-pipeline-route)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            style={{ pathLength: scrollYProgress }}
-          />
-          {/* Synaptic Traveling Node (Shifts from Blue to Orange) */}
-          {geometry.packet && (
-            <g transform={`translate(${geometry.packet.x} ${geometry.packet.y})`}>
-              <circle r="9" fill="#f97316" opacity="0.3" filter="url(#site-pipeline-glow)" />
-              <circle r="5" fill="#06b6d4" opacity="0.5" />
-              <circle r="2.8" fill="#ffffff" />
-            </g>
-          )}
-        </>
-      )}
-    </svg>
-  );
-};
 
 const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   const ref = useRef(null);
@@ -762,11 +608,8 @@ const SectionHeading = ({ title, subtitle }) => (
 const Card = ({ children, className = '', ...props }) => (
   <div
     {...props}
-    className={`group/card relative bg-white dark:bg-[#0a0a0a] border border-[#e5e7eb] dark:border-[#333333] rounded-xl p-6 light-card-shadow hover-card-elevation hover:-translate-y-1 hover:border-[#06b6d4]/50 dark:hover:border-[#f97316]/50 transition-all duration-300 ${className}`}
+    className={`bg-white dark:bg-[#0a0a0a] border border-[#e5e7eb] dark:border-[#333333] rounded-xl p-6 light-card-shadow hover-card-elevation hover:-translate-y-1 hover:border-[#1a73e8]/30 dark:hover:border-[#444444] transition-all duration-300 ${className}`}
   >
-    {/* Micro Synaptic Node Terminals on Corners (Activate on Hover) */}
-    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#1a73e8] to-[#f97316] opacity-0 group-hover/card:opacity-100 group-hover/card:scale-125 transition-all duration-300 shadow-xs pointer-events-none" />
-    <span className="absolute -bottom-1 -left-1 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#06b6d4] to-[#f97316] opacity-0 group-hover/card:opacity-100 group-hover/card:scale-125 transition-all duration-300 shadow-xs pointer-events-none" />
     {children}
   </div>
 );
@@ -1195,9 +1038,6 @@ export default function App() {
 
   return (
     <div className={wrapperClasses} style={{ fontFamily: "'Geist', sans-serif" }}>
-      {/* WHOLE-SITE CONTINUOUS PIPELINE SPINE */}
-      <CentralPipelineSpine />
-
       <style>{`
         .font-display { font-family: 'Geist', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
         @keyframes dotpulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
