@@ -988,22 +988,47 @@ export default function App() {
     return false;
   });
 
+  // On-page dark mode class toggle
   useEffect(() => {
-    const faviconSvg = document.querySelector('link[type="image/svg+xml"]');
-    const faviconPng = document.querySelector('link[type="image/png"][sizes="48x48"]');
-
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      if (faviconSvg) faviconSvg.href = '/favicon-dark.svg';
-      if (faviconPng) faviconPng.href = '/favicon-dark-48x48.png';
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      if (faviconSvg) faviconSvg.href = '/favicon.svg';
-      if (faviconPng) faviconPng.href = '/favicon-48x48.png';
     }
   }, [isDarkMode]);
+
+  // Browser Tab Bar Favicon Matcher (Strictly matches Browser/OS Tab Color)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const updateFaviconForBrowserTheme = (e) => {
+      const isBrowserDark = e.matches;
+      const faviconSvg = document.querySelector('link[type="image/svg+xml"]');
+      const faviconPng = document.querySelector('link[type="image/png"][sizes="48x48"]');
+
+      if (isBrowserDark) {
+        if (faviconSvg) faviconSvg.href = '/favicon-dark.svg';
+        if (faviconPng) faviconPng.href = '/favicon-dark-48x48.png';
+      } else {
+        if (faviconSvg) faviconSvg.href = '/favicon.svg';
+        if (faviconPng) faviconPng.href = '/favicon-48x48.png';
+      }
+    };
+
+    updateFaviconForBrowserTheme(mediaQuery);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateFaviconForBrowserTheme);
+      return () => mediaQuery.removeEventListener('change', updateFaviconForBrowserTheme);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(updateFaviconForBrowserTheme);
+      return () => mediaQuery.removeListener(updateFaviconForBrowserTheme);
+    }
+  }, []);
+
 
 
   // Scroll event — throttled via requestAnimationFrame for performance
