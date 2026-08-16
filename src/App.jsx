@@ -723,6 +723,237 @@ const Card = ({ children, className = '', ...props }) => (
   </div>
 );
 
+// --- INTERACTIVE ROI CALCULATOR COMPONENT ---
+const RoiCalculator = ({ onApplyEstimate }) => {
+  const [teamSize, setTeamSize] = useState(4);
+  const [weeklyHours, setWeeklyHours] = useState(15);
+  const [hourlyRate, setHourlyRate] = useState(30);
+  const [currency, setCurrency] = useState('$');
+
+  const annualHoursWasted = teamSize * weeklyHours * 52;
+  const annualCostWasted = annualHoursWasted * hourlyRate;
+  const estimatedSavings = Math.round(annualCostWasted * 0.70); // 70% automation efficiency
+  const weeklyHoursReclaimed = Math.round(teamSize * weeklyHours * 0.70);
+
+  return (
+    <div className="bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-2xl p-6 md:p-10 light-card-shadow">
+      <div className="grid lg:grid-cols-12 gap-8 items-center">
+        {/* Left: Sliders */}
+        <div className="lg:col-span-7 space-y-6">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#1a73e8] dark:text-[#60a5fa] px-3 py-1 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] dark:border-[#3b82f6]/30">
+              Interactive ROI Engine
+            </span>
+            <div className="flex items-center gap-1 bg-[#f3f4f6] dark:bg-[#1f1f1f] p-1 rounded-lg text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => { setCurrency('$'); if (hourlyRate === 1500) setHourlyRate(30); }}
+                className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${currency === '$' ? 'bg-white dark:bg-[#0a0a0a] text-[#1a73e8] shadow-xs' : 'text-[#666666] dark:text-[#888888]'}`}
+              >
+                USD ($)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setCurrency('₹'); if (hourlyRate === 30) setHourlyRate(1500); }}
+                className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${currency === '₹' ? 'bg-white dark:bg-[#0a0a0a] text-[#1a73e8] shadow-xs' : 'text-[#666666] dark:text-[#888888]'}`}
+              >
+                INR (₹)
+              </button>
+            </div>
+          </div>
+
+          {/* Slider 1: Team Size */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <label htmlFor="team-slider" className="font-semibold font-display text-[#171717] dark:text-[#ededed]">
+                Team members doing manual tasks
+              </label>
+              <span className="font-mono font-bold text-base text-[#1a73e8] dark:text-[#60a5fa]">
+                {teamSize} {teamSize === 1 ? 'person' : 'people'}
+              </span>
+            </div>
+            <input
+              id="team-slider"
+              type="range"
+              min="1"
+              max="25"
+              step="1"
+              value={teamSize}
+              onChange={(e) => setTeamSize(Number(e.target.value))}
+              className="w-full accent-[#1a73e8] cursor-pointer h-2 bg-[#eaeaea] dark:bg-[#262626] rounded-lg"
+            />
+            <div className="flex justify-between text-[11px] text-[#888888] font-sans">
+              <span>1 person</span>
+              <span>25 people</span>
+            </div>
+          </div>
+
+          {/* Slider 2: Hours per Week */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <label htmlFor="hours-slider" className="font-semibold font-display text-[#171717] dark:text-[#ededed]">
+                Hours spent on repetitive work / week / person
+              </label>
+              <span className="font-mono font-bold text-base text-[#1a73e8] dark:text-[#60a5fa]">
+                {weeklyHours} hrs/wk
+              </span>
+            </div>
+            <input
+              id="hours-slider"
+              type="range"
+              min="3"
+              max="35"
+              step="1"
+              value={weeklyHours}
+              onChange={(e) => setWeeklyHours(Number(e.target.value))}
+              className="w-full accent-[#1a73e8] cursor-pointer h-2 bg-[#eaeaea] dark:bg-[#262626] rounded-lg"
+            />
+            <div className="flex justify-between text-[11px] text-[#888888] font-sans">
+              <span>3 hrs (Light data entry)</span>
+              <span>35 hrs (Heavy operations)</span>
+            </div>
+          </div>
+
+          {/* Slider 3: Hourly Cost */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <label htmlFor="rate-slider" className="font-semibold font-display text-[#171717] dark:text-[#ededed]">
+                Average team hourly cost
+              </label>
+              <span className="font-mono font-bold text-base text-[#1a73e8] dark:text-[#60a5fa]">
+                {currency}{hourlyRate}/hr
+              </span>
+            </div>
+            <input
+              id="rate-slider"
+              type="range"
+              min={currency === '$' ? 15 : 500}
+              max={currency === '$' ? 120 : 5000}
+              step={currency === '$' ? 5 : 100}
+              value={hourlyRate}
+              onChange={(e) => setHourlyRate(Number(e.target.value))}
+              className="w-full accent-[#1a73e8] cursor-pointer h-2 bg-[#eaeaea] dark:bg-[#262626] rounded-lg"
+            />
+            <div className="flex justify-between text-[11px] text-[#888888] font-sans">
+              <span>{currency === '$' ? '$15/hr' : '₹500/hr'}</span>
+              <span>{currency === '$' ? '$120/hr' : '₹5,000/hr'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Output Summary Card */}
+        <div className="lg:col-span-5 bg-[#fafafa] dark:bg-[#141414] border border-[#eaeaea] dark:border-[#262626] rounded-xl p-6 flex flex-col justify-between space-y-6">
+          <div>
+            <span className="text-xs font-semibold text-[#888888] dark:text-[#777777] uppercase tracking-wider font-sans block mb-1">
+              Estimated Net Annual Savings
+            </span>
+            <div className="text-4xl md:text-5xl font-display font-extrabold text-[#059669] dark:text-[#34d399] tracking-tight">
+              {currency}{estimatedSavings.toLocaleString()}
+              <span className="text-xs md:text-sm font-sans font-normal text-[#666666] dark:text-[#888888] ml-2">/ year</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 py-4 border-y border-[#eaeaea] dark:border-[#262626]">
+            <div>
+              <span className="text-[11px] text-[#888888] font-sans block mb-0.5">Time Reclaimed</span>
+              <span className="text-lg font-bold font-display text-[#171717] dark:text-[#ededed]">
+                {weeklyHoursReclaimed} hrs/wk
+              </span>
+            </div>
+            <div>
+              <span className="text-[11px] text-[#888888] font-sans block mb-0.5">Annual Hours Lost</span>
+              <span className="text-lg font-bold font-display text-[#ef4444] dark:text-[#f87171]">
+                {annualHoursWasted.toLocaleString()} hrs/yr
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => onApplyEstimate({ teamSize, weeklyHours, estimatedSavings, currency })}
+            className="w-full py-3.5 bg-[#1a73e8] hover:bg-[#1765cc] text-white font-semibold font-display rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 group cursor-pointer"
+          >
+            <span>Eliminate this bottleneck</span>
+            <Icon name="arrowright" className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- LIVE FLOATING WHATSAPP DEMO WIDGET ---
+const WhatsAppWidget = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const whatsappNumber = '918010892556';
+  const messageText = encodeURIComponent("Hi ScaleUpSky! I'd like to test your AI automation demo.");
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${messageText}`;
+
+  return (
+    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="mb-3 w-72 bg-white dark:bg-[#141414] border border-[#eaeaea] dark:border-[#333333] rounded-2xl shadow-xl p-4 text-left"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-[#eaeaea] dark:border-[#262626]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366]">
+                  <Icon name="messagecircle" className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed]">ScaleUpSky AI Assistant</h4>
+                  <div className="flex items-center gap-1 text-[10px] text-[#059669] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
+                    <span>Online 24/7</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-[#999999] hover:text-[#171717] dark:hover:text-white cursor-pointer"
+                aria-label="Close WhatsApp demo popover"
+              >
+                <Icon name="x" className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <p className="text-xs text-[#666666] dark:text-[#888888] font-sans my-3 leading-relaxed">
+              Test our live WhatsApp AI receptionist or chat directly with our engineering team.
+            </p>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2.5 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold font-display text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
+            >
+              <Icon name="messagecircle" className="w-3.5 h-3.5" />
+              <span>Start WhatsApp Demo</span>
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 group cursor-pointer"
+        aria-label="Chat with us on WhatsApp"
+      >
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
+        </span>
+        <Icon name="messagecircle" className="w-5 h-5 text-white" />
+        <span className="text-xs font-bold font-display tracking-tight hidden sm:inline">Try WhatsApp AI</span>
+      </button>
+    </div>
+  );
+};
+
 // --- MAIN APP PRODUCTION CODE ---
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -858,6 +1089,17 @@ export default function App() {
   const navigateToIndustry = useCallback((index) => {
     setActiveIndustryTab(index);
     document.getElementById('healthcare')?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  const handleApplyRoiEstimate = useCallback(({ teamSize, weeklyHours, estimatedSavings, currency }) => {
+    setFormData(prev => ({
+      ...prev,
+      message: `Hi ScaleUpSky, I ran your ROI simulator: our team of ${teamSize} people spends ~${weeklyHours} hrs/week on repetitive manual tasks (est. ${currency}${estimatedSavings.toLocaleString()}/yr lost). I'd like to see how ScaleUpSky can automate our pipeline.`
+    }));
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      document.getElementById('contact-message')?.focus();
+    }, 500);
   }, []);
 
   const wrapperClasses = 'min-h-screen bg-[#fafafa] dark:bg-black text-[#171717] dark:text-[#ededed] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden';
@@ -1506,7 +1748,20 @@ export default function App() {
           </div>
         </section>
 
-        <PipelineDivider nodeLabel="Node 07: Technical FAQ" />
+        <PipelineDivider nodeLabel="Node 07: Efficiency Simulation" />
+
+        {/* SECTION 9: INTERACTIVE ROI SIMULATOR */}
+        <section aria-labelledby="roi-heading" className="py-20 px-6 scroll-mt-24" id="calculator">
+          <div className="max-w-5xl mx-auto">
+            <SectionHeading
+              title="Calculate your automation ROI"
+              subtitle="See how much payroll and engineering hours your business reclaims by automating manual pipelines."
+            />
+            <RoiCalculator onApplyEstimate={handleApplyRoiEstimate} />
+          </div>
+        </section>
+
+        <PipelineDivider nodeLabel="Node 08: Technical FAQ" />
 
         {/* SECTION 11: FAQ */}
         <section aria-labelledby="faq-heading" className="py-20 px-6 scroll-mt-24" id="faq">
@@ -1565,6 +1820,21 @@ export default function App() {
               <p className="text-[#666666] dark:text-[#888888] font-sans text-base md:text-lg mb-8 leading-relaxed">
                 Book a free architecture discovery call to see exactly how ScaleupSky designs, tests, and deploys high-yield AI pipelines.
               </p>
+
+              {/* Instant Calendar Discovery Option */}
+              <div className="mb-8 p-4 bg-[#e8f0fe] dark:bg-[#1a73e8]/10 border border-[#d2e3fc] dark:border-[#1a73e8]/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 text-xs text-[#1a73e8] dark:text-[#60a5fa] font-semibold font-sans">
+                  <Icon name="calendarcheck" className="w-4 h-4 shrink-0" />
+                  <span>Want to skip the form? Pick a 15-min discovery call directly.</span>
+                </div>
+                <a
+                  href="mailto:scaleupsky@gmail.com?subject=ScaleUpSky%20Strategy%20Discovery%20Call%20Booking"
+                  className="px-3.5 py-1.5 bg-[#1a73e8] hover:bg-[#1765cc] text-white text-xs font-semibold font-display rounded-lg transition-colors shrink-0 flex items-center gap-1.5 shadow-xs"
+                >
+                  <span>Book Call</span>
+                  <Icon name="arrowright" className="w-3 h-3" />
+                </a>
+              </div>
               <ul className="space-y-3.5 mb-8">
                 {['Custom automation blueprint', 'Clear ROI projection', 'No technical overhead', 'Zero obligation call'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#666666] dark:text-[#888888]">
@@ -1964,6 +2234,9 @@ export default function App() {
           Book strategy call
         </button>
       </div>
+
+      {/* LIVE FLOATING WHATSAPP DEMO WIDGET */}
+      <WhatsAppWidget />
 
     </div>
   );
