@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValueEvent, useScroll } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
 import {
   Brain, Mail, Clock, Calendar, TrendingUp, MessageSquare,
   Bot, Phone, Target, Users, Settings, Moon, Sun,
@@ -432,116 +432,200 @@ const AnimatedCounter = ({ value }) => {
 
 // --- REUSABLE SHELL COMPONENTS ---
 
+// --- MINIMALIST SIDE DATA RAIL (OPTION 1) ---
+const SideDataRail = () => {
+  const { scrollYProgress } = useScroll();
+  const travelTop = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const activeStage = useTransform(scrollYProgress, [0, 0.28, 0.58, 0.88, 1], [0, 1, 2, 3, 3]);
+  const [stage, setStage] = useState(0);
+
+  useMotionValueEvent(activeStage, 'change', (latest) => {
+    setStage(Math.round(latest));
+  });
+
+  const stages = [
+    { label: 'Capture', num: '01' },
+    { label: 'Triage', num: '02' },
+    { label: 'Action', num: '03' },
+    { label: 'Yield', num: '04' }
+  ];
+
+  return (
+    <aside
+      aria-label="Workflow progress track"
+      className="hidden xl:flex fixed left-8 top-1/2 -translate-y-1/2 z-30 flex-col items-center pointer-events-none select-none"
+    >
+      <div className="relative h-64 w-8 flex flex-col items-center justify-between">
+        {/* Track Line */}
+        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-[#e5e7eb] dark:bg-[#222222] rounded-full overflow-hidden">
+          <motion.div
+            style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
+            className="w-full h-full bg-gradient-to-b from-[#1a73e8] via-[#06b6d4] via-45% via-[#f59e0b] to-[#f97316]"
+          />
+        </div>
+
+        {/* Traveling Particle Head */}
+        <motion.div
+          style={{ top: travelTop }}
+          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
+        >
+          <div className="relative flex items-center justify-center">
+            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-[#06b6d4] opacity-50" />
+            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#06b6d4] to-[#f97316] shadow-[0_0_10px_#f97316] border border-white dark:border-black" />
+          </div>
+        </motion.div>
+
+        {/* Milestone Stage Nodes */}
+        {stages.map((st, i) => {
+          const isPassed = stage >= i;
+          const isCurrent = stage === i;
+          return (
+            <div key={st.num} className="relative flex items-center justify-center group pointer-events-auto">
+              <div
+                className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isCurrent
+                    ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_8px_rgba(6,182,212,0.5)] scale-110'
+                    : isPassed
+                    ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-95'
+                    : 'bg-[#e5e7eb] dark:bg-[#262626]'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    isCurrent
+                      ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
+                      : isPassed
+                      ? 'bg-white'
+                      : 'bg-transparent'
+                  }`}
+                />
+              </div>
+
+              {/* Stage tooltip badge */}
+              <div className="absolute left-6 px-2 py-0.5 rounded-md bg-white/90 dark:bg-[#141414]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1 shadow-xs">
+                <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{st.num}</span>
+                <span className="text-[#666666] dark:text-[#888888]">{st.label}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </aside>
+  );
+};
+
 const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   const ref = useRef(null);
   const activeRef = useRef(false);
   const [isActive, setIsActive] = useState(false);
   const [packetKey, setPacketKey] = useState(0);
+  const { scrollYProgress } = useScroll();
   const cableId = `pipeline-cable-${nodeLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   const glowId = `pipeline-glow-${nodeLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current || typeof window === 'undefined') return;
-      const rect = ref.current.getBoundingClientRect();
-      const viewportCenter = window.innerHeight * 0.55;
-      const inTriggerZone = Math.abs(rect.top + rect.height / 2 - viewportCenter) < 140;
+  const evaluateJunction = useCallback((progress) => {
+    if (!ref.current || typeof window === 'undefined') return;
 
-      if (inTriggerZone !== activeRef.current) {
-        activeRef.current = inTriggerZone;
-        setIsActive(inTriggerZone);
-        if (inTriggerZone) {
-          setPacketKey((k) => k + 1);
-        }
-      }
-    };
+    const rect = ref.current.getBoundingClientRect();
+    const spineNodeY = progress * window.innerHeight;
+    const junctionY = rect.top + rect.height / 2;
+    const nextIsActive = Math.abs(junctionY - spineNodeY) < 55;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    if (nextIsActive !== activeRef.current) {
+      activeRef.current = nextIsActive;
+      setIsActive(nextIsActive);
+      if (nextIsActive) setPacketKey((key) => key + 1);
+    }
   }, []);
 
-  return (
-    <div ref={ref} className="w-full flex justify-center py-6 md:py-8 relative pointer-events-none z-10 select-none" aria-hidden="true">
-      <div className="w-full max-w-5xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
-        {/* Left Circuit Rail */}
-        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/50 to-[#1a73e8] transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-35 scale-x-95'}`} />
+  useMotionValueEvent(scrollYProgress, 'change', evaluateJunction);
 
-        {/* Center Vertical Node Relay (Height 72px) */}
-        <div className="relative h-[72px] w-64 flex items-center justify-center">
-          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 256 72" role="presentation">
+  useEffect(() => {
+    const update = () => evaluateJunction(scrollYProgress.get());
+    const frame = window.requestAnimationFrame(update);
+    window.addEventListener('resize', update);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('resize', update);
+    };
+  }, [evaluateJunction, scrollYProgress]);
+
+  return (
+    <div ref={ref} className="w-full flex justify-center py-4 md:py-6 relative pointer-events-none z-10" aria-hidden="true">
+      <div className="w-full max-w-6xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
+        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+
+        <div className="relative h-12 w-60 flex items-center justify-center">
+          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 240 48" role="presentation">
             <defs>
-              <linearGradient id={cableId} x1="128" y1="0" x2="128" y2="72" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0" />
-                <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.85" />
+              <linearGradient id={cableId} x1="120" y1="0" x2="120" y2="48" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.1" />
+                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.8" />
                 <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+                <stop offset="100%" stopColor="#f97316" stopOpacity="0.1" />
               </linearGradient>
               <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
-
-            {/* Vertical Data Track */}
             <motion.path
-              d="M128 0 L128 72"
+              d="M120 0 C120 10 120 14 120 24 C120 34 120 38 120 48"
               fill="none"
               stroke={`url(#${cableId})`}
               strokeWidth="2"
-              animate={{ opacity: isActive ? 1 : 0.35 }}
-              transition={{ duration: 0.25 }}
+              animate={{ opacity: isActive ? 1 : 0.4 }}
+              transition={{ duration: 0.2 }}
             />
-
-            {/* Traveling Energy Packet with Trail */}
+            {/* Traveling Node Packet with Multi-Chromatic Glow */}
             <motion.circle
               key={packetKey}
-              cx="128"
-              r="3.5"
+              cx="120"
+              r="3.2"
               fill="#f97316"
               filter={`url(#${glowId})`}
               initial={{ cy: 0, opacity: 0, scale: 0.6 }}
               animate={
                 isActive
                   ? {
-                      cy: [0, 36, 72],
+                      cy: [0, 24, 48],
                       opacity: [0, 1, 0],
-                      scale: [0.6, 2.4, 0.6]
+                      scale: [0.6, 2.2, 0.6]
                     }
                   : { opacity: 0 }
               }
-              transition={{ duration: 0.85, ease: 'easeInOut' }}
+              transition={{ duration: 0.7, ease: 'easeInOut' }}
             />
           </svg>
 
-          {/* Synaptic Fusion Shockwave Ring */}
+          {/* Synaptic Fusion Shockwave */}
           {isActive && (
             <motion.div
               key={`fusion-shockwave-${packetKey}`}
-              initial={{ opacity: 0.9, scale: 0.88 }}
-              animate={{ opacity: [0.9, 0], scale: [0.88, 1.35] }}
-              transition={{ duration: 0.75, ease: 'easeOut' }}
-              className="absolute inset-0 rounded-full border border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
+              initial={{ opacity: 0.9, scale: 0.9 }}
+              animate={{ opacity: [0.9, 0], scale: [0.9, 1.3] }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border border-gradient-to-r border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
             />
           )}
 
-          {/* Node Badge */}
           <motion.div
             data-pipeline-node
             initial={{ opacity: 0, scale: 0.94 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              scale: isActive ? [1, 1.05, 1] : 1,
+              scale: isActive ? [1, 1.04, 1] : 1,
               boxShadow: isActive
-                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 4px 12px rgba(15,23,42,0.1)'
+                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 2px 10px rgba(15,23,42,0.08)'
                 : '0 1px 3px rgba(15,23,42,0.05)'
             }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
-            className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-white/95 dark:bg-[#0a0a0a]/95 text-[11px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
+            className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
               isActive
                 ? 'border-[#06b6d4] dark:border-[#f97316] text-[#0284c7] dark:text-[#fb923c]'
                 : 'border-[#c7d7f5] dark:border-[#26384a] text-[#3f5f99] dark:text-[#93c5fd]/80'
@@ -552,7 +636,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               animate={
                 isActive
                   ? {
-                      scale: [1, 2.2, 1.3],
+                      scale: [1, 2.2, 1.4],
                       boxShadow: ['0 0 0px #06b6d4', '0 0 10px #f97316', '0 0 4px #06b6d4']
                     }
                   : { scale: 1, boxShadow: '0 0 0px transparent' }
@@ -572,8 +656,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
           </motion.div>
         </div>
 
-        {/* Right Circuit Rail */}
-        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/50 to-[#f97316] transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-35 scale-x-95'}`} />
+        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
       </div>
     </div>
   );
@@ -1037,6 +1120,9 @@ export default function App() {
 
   return (
     <div className={wrapperClasses} style={{ fontFamily: "'Geist', sans-serif" }}>
+      {/* MINIMALIST SIDE DATA RAIL (OPTION 1) */}
+      <SideDataRail />
+
       <style>{`
         .font-display { font-family: 'Geist', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
         @keyframes dotpulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
