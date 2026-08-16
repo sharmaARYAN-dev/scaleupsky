@@ -437,113 +437,111 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   const activeRef = useRef(false);
   const [isActive, setIsActive] = useState(false);
   const [packetKey, setPacketKey] = useState(0);
-  const { scrollYProgress } = useScroll();
   const cableId = `pipeline-cable-${nodeLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   const glowId = `pipeline-glow-${nodeLabel.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
-  const evaluateJunction = useCallback((progress) => {
-    if (!ref.current || typeof window === 'undefined') return;
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!ref.current || typeof window === 'undefined') return;
+      const rect = ref.current.getBoundingClientRect();
+      const viewportCenter = window.innerHeight * 0.55;
+      const inTriggerZone = Math.abs(rect.top + rect.height / 2 - viewportCenter) < 140;
 
-    const rect = ref.current.getBoundingClientRect();
-    const spineNodeY = progress * window.innerHeight;
-    const junctionY = rect.top + rect.height / 2;
-    const nextIsActive = Math.abs(junctionY - spineNodeY) < 55;
+      if (inTriggerZone !== activeRef.current) {
+        activeRef.current = inTriggerZone;
+        setIsActive(inTriggerZone);
+        if (inTriggerZone) {
+          setPacketKey((k) => k + 1);
+        }
+      }
+    };
 
-    if (nextIsActive !== activeRef.current) {
-      activeRef.current = nextIsActive;
-      setIsActive(nextIsActive);
-      if (nextIsActive) setPacketKey((key) => key + 1);
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useMotionValueEvent(scrollYProgress, 'change', evaluateJunction);
-
-  useEffect(() => {
-    const update = () => evaluateJunction(scrollYProgress.get());
-    const frame = window.requestAnimationFrame(update);
-    window.addEventListener('resize', update);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('resize', update);
-    };
-  }, [evaluateJunction, scrollYProgress]);
-
   return (
-    <div ref={ref} className="w-full flex justify-center py-4 md:py-6 relative pointer-events-none z-10" aria-hidden="true">
-      <div className="w-full max-w-6xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
-        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+    <div ref={ref} className="w-full flex justify-center py-6 md:py-8 relative pointer-events-none z-10 select-none" aria-hidden="true">
+      <div className="w-full max-w-5xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
+        {/* Left Circuit Rail */}
+        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/50 to-[#1a73e8] transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-35 scale-x-95'}`} />
 
-        <div className="relative h-12 w-60 flex items-center justify-center">
-          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 240 48" role="presentation">
+        {/* Center Vertical Node Relay (Height 72px) */}
+        <div className="relative h-[72px] w-64 flex items-center justify-center">
+          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 256 72" role="presentation">
             <defs>
-              <linearGradient id={cableId} x1="120" y1="0" x2="120" y2="48" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.1" />
-                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.8" />
+              <linearGradient id={cableId} x1="128" y1="0" x2="128" y2="72" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0" />
+                <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.85" />
                 <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#f97316" stopOpacity="0.1" />
+                <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
               </linearGradient>
               <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
+
+            {/* Vertical Data Track */}
             <motion.path
-              d="M120 0 C120 10 120 14 120 24 C120 34 120 38 120 48"
+              d="M128 0 L128 72"
               fill="none"
               stroke={`url(#${cableId})`}
               strokeWidth="2"
-              animate={{ opacity: isActive ? 1 : 0.4 }}
-              transition={{ duration: 0.2 }}
+              animate={{ opacity: isActive ? 1 : 0.35 }}
+              transition={{ duration: 0.25 }}
             />
-            {/* Traveling Node Packet with Multi-Chromatic Glow */}
+
+            {/* Traveling Energy Packet with Trail */}
             <motion.circle
               key={packetKey}
-              cx="120"
-              r="3.2"
+              cx="128"
+              r="3.5"
               fill="#f97316"
               filter={`url(#${glowId})`}
               initial={{ cy: 0, opacity: 0, scale: 0.6 }}
               animate={
                 isActive
                   ? {
-                      cy: [0, 24, 48],
+                      cy: [0, 36, 72],
                       opacity: [0, 1, 0],
-                      scale: [0.6, 2.2, 0.6]
+                      scale: [0.6, 2.4, 0.6]
                     }
                   : { opacity: 0 }
               }
-              transition={{ duration: 0.7, ease: 'easeInOut' }}
+              transition={{ duration: 0.85, ease: 'easeInOut' }}
             />
           </svg>
 
-          {/* Synaptic Fusion Shockwave */}
+          {/* Synaptic Fusion Shockwave Ring */}
           {isActive && (
             <motion.div
               key={`fusion-shockwave-${packetKey}`}
-              initial={{ opacity: 0.9, scale: 0.9 }}
-              animate={{ opacity: [0.9, 0], scale: [0.9, 1.3] }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
-              className="absolute inset-0 rounded-full border border-gradient-to-r border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
+              initial={{ opacity: 0.9, scale: 0.88 }}
+              animate={{ opacity: [0.9, 0], scale: [0.88, 1.35] }}
+              transition={{ duration: 0.75, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
             />
           )}
 
+          {/* Node Badge */}
           <motion.div
             data-pipeline-node
             initial={{ opacity: 0, scale: 0.94 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              scale: isActive ? [1, 1.04, 1] : 1,
+              scale: isActive ? [1, 1.05, 1] : 1,
               boxShadow: isActive
-                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 2px 10px rgba(15,23,42,0.08)'
+                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 4px 12px rgba(15,23,42,0.1)'
                 : '0 1px 3px rgba(15,23,42,0.05)'
             }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
-            className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
+            className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-white/95 dark:bg-[#0a0a0a]/95 text-[11px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
               isActive
                 ? 'border-[#06b6d4] dark:border-[#f97316] text-[#0284c7] dark:text-[#fb923c]'
                 : 'border-[#c7d7f5] dark:border-[#26384a] text-[#3f5f99] dark:text-[#93c5fd]/80'
@@ -554,7 +552,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               animate={
                 isActive
                   ? {
-                      scale: [1, 2.2, 1.4],
+                      scale: [1, 2.2, 1.3],
                       boxShadow: ['0 0 0px #06b6d4', '0 0 10px #f97316', '0 0 4px #06b6d4']
                     }
                   : { scale: 1, boxShadow: '0 0 0px transparent' }
@@ -574,7 +572,8 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
           </motion.div>
         </div>
 
-        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+        {/* Right Circuit Rail */}
+        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/50 to-[#f97316] transition-all duration-300 ${isActive ? 'opacity-100 scale-x-100' : 'opacity-35 scale-x-95'}`} />
       </div>
     </div>
   );
