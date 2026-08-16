@@ -494,7 +494,20 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   return (
     <div ref={ref} className="w-full flex justify-center py-4 md:py-6 relative pointer-events-none z-10" aria-hidden="true">
       <div className="w-full max-w-6xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
-        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-90' : 'opacity-35'}`} />
+        {/* Left Horizontal Track with Subtle Left-to-Right Pip */}
+        <div className={`relative h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/35 to-[#1a73e8] transition-opacity duration-300 overflow-hidden rounded-full ${isActive ? 'opacity-90' : 'opacity-30'}`}>
+          <motion.div
+            key={`left-pulse-${packetKey}`}
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={
+              isActive
+                ? { x: ['-20%', '100%'], opacity: [0, 0.75, 0.3] }
+                : { opacity: 0 }
+            }
+            transition={{ duration: 0.75, ease: 'easeInOut' }}
+            className="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-[#06b6d4] to-[#1a73e8] shadow-[0_0_6px_#06b6d4]"
+          />
+        </div>
 
         <div className="relative h-12 w-60 flex items-center justify-center">
           <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 240 48" role="presentation">
@@ -542,7 +555,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             />
           </svg>
 
-          {/* Synaptic Fusion Shockwave (10% reduced opacity) */}
+          {/* Synaptic Fusion Shockwave */}
           {isActive && (
             <motion.div
               key={`fusion-shockwave-${packetKey}`}
@@ -596,7 +609,20 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
           </motion.div>
         </div>
 
-        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-90' : 'opacity-35'}`} />
+        {/* Right Horizontal Track with Continuing Left-to-Right Pip */}
+        <div className={`relative h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/35 to-[#f97316] transition-opacity duration-300 overflow-hidden rounded-full ${isActive ? 'opacity-90' : 'opacity-30'}`}>
+          <motion.div
+            key={`right-pulse-${packetKey}`}
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={
+              isActive
+                ? { x: ['-20%', '100%'], opacity: [0.3, 0.75, 0] }
+                : { opacity: 0 }
+            }
+            transition={{ duration: 0.75, delay: 0.25, ease: 'easeInOut' }}
+            className="absolute inset-y-0 w-16 bg-gradient-to-r from-[#f59e0b] via-[#f97316] to-transparent shadow-[0_0_6px_#f97316]"
+          />
+        </div>
       </div>
     </div>
   );
