@@ -1996,8 +1996,8 @@ export default function App() {
       </main>
 
       {/* FOOTER */}
-      <footer role="contentinfo" className="border-t border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] pt-14 pb-28 md:pb-8 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <footer role="contentinfo" className="border-t border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] py-12 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           <div className="col-span-2 md:col-span-1">
             <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-0.2 mb-6 cursor-pointer">
               <img src="/web-app-manifest-512x512.png" alt="ScaleUpSky AI Automation Agency footer logo" className="h-10 w-auto dark:invert" />
