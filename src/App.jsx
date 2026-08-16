@@ -1031,38 +1031,47 @@ export default function App() {
 
 
 
-  // Scroll event — throttled via requestAnimationFrame for performance
+  // Scroll event & active section tracking — throttled via requestAnimationFrame for 60fps smoothness
   const rafRef = useRef(null);
   useEffect(() => {
     const handleScroll = () => {
       if (rafRef.current) return;
       rafRef.current = requestAnimationFrame(() => {
-        setIsScrolled(window.scrollY > 24);
+        const scrollPos = window.scrollY;
+        setIsScrolled(scrollPos > 20);
+
+        // At top of page (hero), no navigation link is highlighted
+        if (scrollPos < 250) {
+          setActiveSection('');
+        } else {
+          const sectionIds = ['services', 'solutions', 'healthcare', 'results', 'faq', 'contact'];
+          let current = '';
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              // When section top is in upper half of viewport and bottom is still visible
+              if (rect.top <= 220 && rect.bottom >= 120) {
+                current = id;
+                break;
+              }
+            }
+          }
+          if (current) {
+            setActiveSection(current);
+          }
+        }
         rafRef.current = null;
       });
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
-
-  // Active section tracking via IntersectionObserver
-  useEffect(() => {
-    const sectionIds = ['solutions', 'services', 'healthcare', 'results', 'faq', 'contact'];
-    const observers = [];
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
-        { threshold: 0.3 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach(obs => obs.disconnect());
   }, []);
 
   const handleInputChange = useCallback((e) => {
@@ -1153,8 +1162,8 @@ export default function App() {
         role="banner"
         className={`fixed top-0 inset-x-0 w-full z-50 transition-all duration-200 ${
           isScrolled
-            ? 'bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#eaeaea] dark:border-[#262626] py-3 shadow-xs'
-            : 'bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-xs border-b border-transparent py-4'
+            ? 'bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#eaeaea] dark:border-[#262626] py-3 shadow-xs'
+            : 'bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-transparent py-3.5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
@@ -1171,7 +1180,7 @@ export default function App() {
             <div className="flex items-center gap-1 mr-2">
               {NAV_LINKS.map(link => {
                 const id = link.toLowerCase();
-                const isActive = activeSection === id || (id === 'solutions' && activeSection === '');
+                const isActive = activeSection === id;
                 return (
                   <a
                     key={link}
