@@ -882,11 +882,11 @@ const RoiCalculator = ({ onApplyEstimate }) => {
   );
 };
 
-// --- LIVE FLOATING WHATSAPP DEMO WIDGET ---
+// --- LIVE FLOATING WHATSAPP WIDGET ---
 const WhatsAppWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const whatsappNumber = '918010892556';
-  const messageText = encodeURIComponent("Hi ScaleUpSky! I'd like to test your AI automation demo.");
+  const whatsappNumber = '919371061901';
+  const messageText = encodeURIComponent("Hi ScaleUpSky! I'd like to discuss automating our business workflows.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${messageText}`;
 
   return (
@@ -905,24 +905,24 @@ const WhatsAppWidget = () => {
                   <Icon name="messagecircle" className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed]">ScaleUpSky AI Assistant</h4>
+                  <h4 className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed]">ScaleUpSky Team</h4>
                   <div className="flex items-center gap-1 text-[10px] text-[#059669] font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#059669] animate-pulse" />
-                    <span>Online 24/7</span>
+                    <span>Direct WhatsApp</span>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-[#999999] hover:text-[#171717] dark:hover:text-white cursor-pointer"
-                aria-label="Close WhatsApp demo popover"
+                aria-label="Close WhatsApp popover"
               >
                 <Icon name="x" className="w-3.5 h-3.5" />
               </button>
             </div>
 
             <p className="text-xs text-[#666666] dark:text-[#888888] font-sans my-3 leading-relaxed">
-              Test our live WhatsApp AI receptionist or chat directly with our engineering team.
+              Chat directly with our automation engineers on WhatsApp to discuss your systems.
             </p>
 
             <a
@@ -932,7 +932,7 @@ const WhatsAppWidget = () => {
               className="w-full py-2.5 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold font-display text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
               <Icon name="messagecircle" className="w-3.5 h-3.5" />
-              <span>Start WhatsApp Demo</span>
+              <span>Chat on WhatsApp</span>
             </a>
           </motion.div>
         )}
@@ -948,7 +948,7 @@ const WhatsAppWidget = () => {
           <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
         </span>
         <Icon name="messagecircle" className="w-5 h-5 text-white" />
-        <span className="text-xs font-bold font-display tracking-tight hidden sm:inline">Try WhatsApp AI</span>
+        <span className="text-xs font-bold font-display tracking-tight hidden sm:inline">Chat on WhatsApp</span>
       </button>
     </div>
   );
