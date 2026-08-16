@@ -487,143 +487,120 @@ const SideDataRail = () => {
     return (
       <motion.button
         type="button"
-        initial={{ scale: 0.6, opacity: 0, x: 20 }}
-        animate={{ scale: 1, opacity: 1, x: 0 }}
-        exit={{ scale: 0.6, opacity: 0, x: 20 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.92 }}
-        transition={{ type: 'spring', stiffness: 450, damping: 22 }}
+        initial={{ opacity: 0, x: 10 }}
+        animate={{ opacity: 0.7, x: 0 }}
+        exit={{ opacity: 0, x: 10 }}
+        whileHover={{ opacity: 1, scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.2 }}
         onClick={() => setIsHidden(false)}
         aria-label="Show node navigator"
-        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#111111]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#333333] text-[10px] font-mono font-bold text-[#1a73e8] dark:text-[#60a5fa] shadow-sm cursor-pointer"
+        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1 px-2 py-1 rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[9px] font-mono text-[#666666] dark:text-[#888888] shadow-xs cursor-pointer"
       >
-        <span className="text-xs">⚡</span>
-        <span>Nodes</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]" />
+        <span>Nav</span>
       </motion.button>
     );
   }
 
   return (
     <motion.aside
-      initial={{ opacity: 0, x: 30, scale: 0.7 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 30, scale: 0.7 }}
-      transition={{ type: 'spring', stiffness: 380, damping: 24 }}
+      initial={{ opacity: 0, x: 15 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 15 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       aria-label="Interactive workflow node navigator"
-      className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none"
+      className="hidden xl:flex fixed right-5 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none pointer-events-auto"
     >
-      <div className="flex flex-col items-center bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] rounded-3xl p-3 shadow-md">
+      <div className="flex flex-col items-center bg-white/70 dark:bg-[#0a0a0a]/70 backdrop-blur-md border border-[#eaeaea]/80 dark:border-[#222222] rounded-2xl p-2 shadow-xs">
         {/* Header with Hide Toggle */}
-        <div className="w-full flex items-center justify-between gap-3 mb-2 px-1 text-[9px] font-mono text-[#888888] dark:text-[#666666]">
-          <span className="font-bold tracking-wider text-[#1a73e8] dark:text-[#60a5fa]">NAV</span>
+        <div className="w-full flex items-center justify-between gap-2 mb-1 px-0.5 text-[8px] font-mono text-[#999999] dark:text-[#555555]">
+          <span className="tracking-widest uppercase font-semibold">Nodes</span>
           <button
             type="button"
             onClick={() => setIsHidden(true)}
             aria-label="Hide node navigator"
-            className="hover:text-[#171717] dark:hover:text-white cursor-pointer px-1 transition-colors text-xs font-bold"
+            className="hover:text-[#171717] dark:hover:text-[#ededed] cursor-pointer px-0.5 transition-colors"
             title="Minimize"
           >
             ✕
           </button>
         </div>
 
-        {/* Curved Arc Canvas Container */}
-        <div className="relative w-12 h-[280px]">
-          <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 48 280">
+        {/* Subtle Curved Arc Track */}
+        <div className="relative w-8 h-[240px]">
+          <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 32 240">
             <defs>
-              <linearGradient id="arc-gradient-track" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1a73e8" />
-                <stop offset="35%" stopColor="#06b6d4" />
-                <stop offset="70%" stopColor="#f59e0b" />
-                <stop offset="100%" stopColor="#f97316" />
+              <linearGradient id="arc-subtle-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.8" />
+                <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.85" />
               </linearGradient>
-              <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
             </defs>
 
             {/* Background Arc Track */}
             <path
-              d="M 28 8 Q 8 140 28 272"
+              d="M 20 6 Q 6 120 20 234"
               fill="none"
               stroke="currentColor"
-              className="text-[#e5e7eb] dark:text-[#262626]"
-              strokeWidth="2"
+              className="text-[#e5e7eb] dark:text-[#222222]"
+              strokeWidth="1.5"
               strokeLinecap="round"
             />
 
-            {/* Active Glow Arc */}
+            {/* Active Subtle Progress Arc */}
             <motion.path
-              d="M 28 8 Q 8 140 28 272"
+              d="M 20 6 Q 6 120 20 234"
               fill="none"
-              stroke="url(#arc-gradient-track)"
-              strokeWidth="2.5"
+              stroke="url(#arc-subtle-gradient)"
+              strokeWidth="1.5"
               strokeLinecap="round"
-              filter="url(#arc-glow)"
               style={{ pathLength: scrollYProgress }}
             />
 
-            {/* Traveling Particle with Spring Glow */}
-            <g transform={`translate(${packetPos.x} ${packetPos.y})`}>
-              <circle r="6" fill="#f97316" opacity="0.3" filter="url(#arc-glow)" />
-              <circle r="3.5" fill="#06b6d4" />
-              <circle r="1.8" fill="#ffffff" />
+            {/* Subtle Traveling Pip */}
+            <g transform={`translate(${packetPos.x * 0.71} ${packetPos.y * 0.86})`}>
+              <circle r="3.5" fill="#1a73e8" opacity="0.25" />
+              <circle r="2" fill="#1a73e8" className="dark:fill-[#60a5fa]" />
             </g>
           </svg>
 
-          {/* 8 Clickable Milestone Nodes Positioned Along Arc */}
+          {/* 8 Milestone Node Dots */}
           {nodes.map((node, i) => {
-            const pos = getArcPoint(node.t);
+            const rawPos = getArcPoint(node.t);
+            const posX = rawPos.x * 0.71;
+            const posY = rawPos.y * 0.86;
             const isPassed = stage >= i;
             const isCurrent = stage === i;
 
             return (
               <div
                 key={node.num}
-                style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+                style={{ left: `${posX}px`, top: `${posY}px` }}
                 className="absolute -translate-x-1/2 -translate-y-1/2"
               >
-                <motion.button
+                <button
                   type="button"
-                  whileHover={{ scale: 1.4 }}
-                  whileTap={{ scale: 0.85 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
                   onClick={() => scrollTo(node.targetId)}
                   aria-label={`Jump to Node ${node.num}: ${node.label}`}
-                  className="relative flex items-center justify-center group cursor-pointer p-1 rounded-full outline-none focus-visible:ring-1 focus-visible:ring-[#1a73e8]"
+                  className="relative flex items-center justify-center group cursor-pointer p-1 rounded-full outline-none"
                 >
                   <div
-                    className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-200 ${
+                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
                       isCurrent
-                        ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_8px_rgba(6,182,212,0.7)] scale-125'
+                        ? 'bg-[#1a73e8] dark:bg-[#60a5fa] ring-2 ring-[#1a73e8]/30 scale-125'
                         : isPassed
-                        ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-95'
-                        : 'bg-[#d1d5db] dark:bg-[#333333] hover:bg-[#9ca3af]'
+                        ? 'bg-[#94a3b8] dark:bg-[#64748b]'
+                        : 'bg-[#e2e8f0] dark:bg-[#262626] group-hover:bg-[#94a3b8]'
                     }`}
-                  >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                        isCurrent
-                          ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
-                          : isPassed
-                          ? 'bg-white'
-                          : 'bg-transparent'
-                      }`}
-                    />
-                  </div>
+                  />
 
-                  {/* Micro Tooltip with Pop Spring */}
-                  <motion.div
-                    className="absolute right-7 px-2.5 py-1 rounded-lg bg-white/95 dark:bg-[#141414]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-150 flex items-center gap-1.5 shadow-md pointer-events-none group-hover:translate-x-0 translate-x-1"
-                  >
-                    <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{node.num}</span>
-                    <span className="text-[#333333] dark:text-[#cccccc] font-medium">{node.label}</span>
-                  </motion.div>
-                </motion.button>
+                  {/* Clean Minimalist Tooltip on Hover */}
+                  <div className="absolute right-5 px-2 py-0.5 rounded-md bg-white/95 dark:bg-[#111111]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[9px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-1 shadow-xs pointer-events-none">
+                    <span className="text-[#1a73e8] dark:text-[#60a5fa] font-semibold">{node.num}</span>
+                    <span className="text-[#666666] dark:text-[#aaaaaa]">{node.label}</span>
+                  </div>
+                </button>
               </div>
             );
           })}
