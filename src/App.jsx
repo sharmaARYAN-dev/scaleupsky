@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValueEvent, useScroll } from 'framer-motion';
 import {
   Brain, Mail, Clock, Calendar, TrendingUp, MessageSquare,
   Bot, Phone, Target, Users, Settings, Moon, Sun,
@@ -431,184 +431,6 @@ const AnimatedCounter = ({ value }) => {
 };
 
 // --- REUSABLE SHELL COMPONENTS ---
-
-// --- MINIMALIST RIGHT-SIDE 8-NODE NAVIGATOR (ARC & POP PHYSICS) ---
-const SideDataRail = () => {
-  const { scrollYProgress } = useScroll();
-  const activeStage = useTransform(scrollYProgress, [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1], [0, 1, 2, 3, 4, 5, 6, 7]);
-  const [stage, setStage] = useState(0);
-  const [isHidden, setIsHidden] = useState(false);
-  const [isAwake, setIsAwake] = useState(false);
-  const [packetPos, setPacketPos] = useState({ x: 28, y: 8 });
-
-  // Quadratic Bezier Arc calculations: P0=(28,8), P1=(8,140), P2=(28,272)
-  const getArcPoint = useCallback((t) => {
-    const clampedT = Math.max(0, Math.min(1, t));
-    const inv = 1 - clampedT;
-    const x = inv * inv * 28 + 2 * inv * clampedT * 8 + clampedT * clampedT * 28;
-    const y = inv * inv * 8 + 2 * inv * clampedT * 140 + clampedT * clampedT * 272;
-    return { x, y };
-  }, []);
-
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    setIsAwake(latest > 0.025);
-    setPacketPos(getArcPoint(latest));
-  });
-
-  useMotionValueEvent(activeStage, 'change', (latest) => {
-    setStage(Math.round(latest));
-  });
-
-  const nodes = [
-    { num: '01', label: 'Inbound Capture', targetId: 'top', t: 0 },
-    { num: '02', label: 'Bottleneck Audit', targetId: 'solutions', t: 1 / 7 },
-    { num: '03', label: 'Automation Engine', targetId: 'services', t: 2 / 7 },
-    { num: '04', label: 'Stack Integration', targetId: 'tools', t: 3 / 7 },
-    { num: '05', label: 'Execution Framework', targetId: 'process', t: 4 / 7 },
-    { num: '06', label: 'Quantified Impact', targetId: 'results', t: 5 / 7 },
-    { num: '07', label: 'Efficiency Simulation', targetId: 'calculator', t: 6 / 7 },
-    { num: '08', label: 'Deploy Autopilot', targetId: 'contact', t: 1 }
-  ];
-
-  const scrollTo = (id) => {
-    if (id === 'top') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  // Keep completely hidden/sleeping until user starts scrolling
-  if (!isAwake) {
-    return null;
-  }
-
-  if (isHidden) {
-    return (
-      <motion.button
-        type="button"
-        initial={{ opacity: 0, x: 10 }}
-        animate={{ opacity: 0.7, x: 0 }}
-        exit={{ opacity: 0, x: 10 }}
-        whileHover={{ opacity: 1, scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ duration: 0.2 }}
-        onClick={() => setIsHidden(false)}
-        aria-label="Show node navigator"
-        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1 px-2 py-1 rounded-full bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[9px] font-mono text-[#666666] dark:text-[#888888] shadow-xs cursor-pointer"
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa]" />
-        <span>Nav</span>
-      </motion.button>
-    );
-  }
-
-  return (
-    <motion.aside
-      initial={{ opacity: 0, x: 15 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 15 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      aria-label="Interactive workflow node navigator"
-      className="hidden xl:flex fixed right-5 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none pointer-events-auto"
-    >
-      <div className="flex flex-col items-center bg-white/70 dark:bg-[#0a0a0a]/70 backdrop-blur-md border border-[#eaeaea]/80 dark:border-[#222222] rounded-2xl p-2 shadow-xs">
-        {/* Header with Hide Toggle */}
-        <div className="w-full flex items-center justify-between gap-2 mb-1 px-0.5 text-[8px] font-mono text-[#999999] dark:text-[#555555]">
-          <span className="tracking-widest uppercase font-semibold">Nodes</span>
-          <button
-            type="button"
-            onClick={() => setIsHidden(true)}
-            aria-label="Hide node navigator"
-            className="hover:text-[#171717] dark:hover:text-[#ededed] cursor-pointer px-0.5 transition-colors"
-            title="Minimize"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Subtle Curved Arc Track */}
-        <div className="relative w-8 h-[240px]">
-          <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 32 240">
-            <defs>
-              <linearGradient id="arc-subtle-gradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.85" />
-              </linearGradient>
-            </defs>
-
-            {/* Background Arc Track */}
-            <path
-              d="M 20 6 Q 6 120 20 234"
-              fill="none"
-              stroke="currentColor"
-              className="text-[#e5e7eb] dark:text-[#222222]"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-
-            {/* Active Subtle Progress Arc */}
-            <motion.path
-              d="M 20 6 Q 6 120 20 234"
-              fill="none"
-              stroke="url(#arc-subtle-gradient)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              style={{ pathLength: scrollYProgress }}
-            />
-
-            {/* Subtle Traveling Pip */}
-            <g transform={`translate(${packetPos.x * 0.71} ${packetPos.y * 0.86})`}>
-              <circle r="3.5" fill="#1a73e8" opacity="0.25" />
-              <circle r="2" fill="#1a73e8" className="dark:fill-[#60a5fa]" />
-            </g>
-          </svg>
-
-          {/* 8 Milestone Node Dots */}
-          {nodes.map((node, i) => {
-            const rawPos = getArcPoint(node.t);
-            const posX = rawPos.x * 0.71;
-            const posY = rawPos.y * 0.86;
-            const isPassed = stage >= i;
-            const isCurrent = stage === i;
-
-            return (
-              <div
-                key={node.num}
-                style={{ left: `${posX}px`, top: `${posY}px` }}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-              >
-                <button
-                  type="button"
-                  onClick={() => scrollTo(node.targetId)}
-                  aria-label={`Jump to Node ${node.num}: ${node.label}`}
-                  className="relative flex items-center justify-center group cursor-pointer p-1 rounded-full outline-none"
-                >
-                  <div
-                    className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                      isCurrent
-                        ? 'bg-[#1a73e8] dark:bg-[#60a5fa] ring-2 ring-[#1a73e8]/30 scale-125'
-                        : isPassed
-                        ? 'bg-[#94a3b8] dark:bg-[#64748b]'
-                        : 'bg-[#e2e8f0] dark:bg-[#262626] group-hover:bg-[#94a3b8]'
-                    }`}
-                  />
-
-                  {/* Clean Minimalist Tooltip on Hover */}
-                  <div className="absolute right-5 px-2 py-0.5 rounded-md bg-white/95 dark:bg-[#111111]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[9px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-1 shadow-xs pointer-events-none">
-                    <span className="text-[#1a73e8] dark:text-[#60a5fa] font-semibold">{node.num}</span>
-                    <span className="text-[#666666] dark:text-[#aaaaaa]">{node.label}</span>
-                  </div>
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </motion.aside>
-  );
-};
 
 const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   const ref = useRef(null);
@@ -1216,9 +1038,6 @@ export default function App() {
 
   return (
     <div className={wrapperClasses} style={{ fontFamily: "'Geist', sans-serif" }}>
-      {/* MINIMALIST SIDE DATA RAIL (OPTION 1) */}
-      <SideDataRail />
-
       <style>{`
         .font-display { font-family: 'Geist', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
         @keyframes dotpulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
@@ -1337,10 +1156,9 @@ export default function App() {
       <main id="main-content">
         {/* SECTION 1: HERO */}
         <section
-          id="top"
           aria-labelledby="hero-heading"
           onMouseMove={handleHeroMouseMove}
-          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern scroll-mt-24"
+          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern"
         >
           {/* Ambient Cursor Spotlight Glow */}
           <div
@@ -1660,7 +1478,7 @@ export default function App() {
         <PipelineDivider nodeLabel="Node 03: Automation Engine" />
 
         {/* SECTION 4: TOOLS WE INTEGRATE (APPLE-STYLE FULL-WIDTH SINGLE LINE) */}
-        <section id="tools" aria-label="Tools and integrations" className="py-14 border-y border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] overflow-hidden w-full scroll-mt-24">
+        <section aria-label="Tools and integrations" className="py-14 border-y border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] overflow-hidden w-full">
           <div className="w-full text-center">
             <p className="text-xs font-bold text-[#666666] dark:text-[#888888] font-sans tracking-widest uppercase mb-8 px-6">
               Seamless integration with your stack
@@ -1718,7 +1536,7 @@ export default function App() {
         <PipelineDivider nodeLabel="Node 04: Stack Integration" />
 
         {/* SECTION 5: HOW IT WORKS */}
-        <section id="process" aria-labelledby="process-heading" className="py-20 px-6 scroll-mt-24">
+        <section aria-labelledby="process-heading" className="py-20 px-6">
           <div className="max-w-4xl mx-auto">
             <SectionHeading title="The automation journey" subtitle="Our proven 6-step framework to transition your business from manual to automated." />
             <div className="relative border-l border-[#eaeaea] dark:border-[#333333] ml-4 md:ml-0 md:space-y-10">
