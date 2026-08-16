@@ -608,16 +608,16 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
       <div className="w-full max-w-7xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
         <div className={`h-[1px] bg-gradient-to-r from-transparent to-[#b9cdf5] dark:to-[#1e3a5f] transition-opacity duration-300 ${isActive ? 'opacity-80' : 'opacity-45'}`} />
 
-        <div className="relative h-12 w-52 flex items-center justify-center">
-          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 208 48" role="presentation">
+        <div className="relative h-12 w-56 flex items-center justify-center">
+          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 224 48" role="presentation">
             <defs>
-              <linearGradient id={cableId} x1="104" y1="0" x2="104" y2="48" gradientUnits="userSpaceOnUse">
+              <linearGradient id={cableId} x1="112" y1="0" x2="112" y2="48" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stopColor="#1a73e8" stopOpacity="0" />
-                <stop offset="45%" stopColor="#2563eb" stopOpacity="0.28" />
+                <stop offset="45%" stopColor="#2563eb" stopOpacity="0.35" />
                 <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
               </linearGradient>
-              <filter id={glowId} x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3" result="blur" />
+              <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -625,24 +625,44 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               </filter>
             </defs>
             <motion.path
-              d="M104 0 C104 10 104 14 104 24 C104 34 104 38 104 48"
+              d="M112 0 C112 10 112 14 112 24 C112 34 112 38 112 48"
               fill="none"
               stroke={`url(#${cableId})`}
-              strokeWidth="1"
-              animate={{ opacity: isActive ? 0.75 : 0.38 }}
+              strokeWidth="1.5"
+              animate={{ opacity: isActive ? 0.9 : 0.35 }}
               transition={{ duration: 0.2 }}
             />
+            {/* Traveling Node Packet — Fuses at center y=24 */}
             <motion.circle
               key={packetKey}
-              cx="104"
-              r="2.4"
-              fill="#2563eb"
+              cx="112"
+              r="2.8"
+              fill="#60a5fa"
               filter={`url(#${glowId})`}
-              initial={{ cy: 7, opacity: 0 }}
-              animate={isActive ? { cy: [7, 41], opacity: [0, 0.8, 0.8, 0] } : { opacity: 0 }}
+              initial={{ cy: 0, opacity: 0, scale: 0.7 }}
+              animate={
+                isActive
+                  ? {
+                      cy: [0, 24, 48],
+                      opacity: [0, 1, 0],
+                      scale: [0.7, 1.8, 0.7]
+                    }
+                  : { opacity: 0 }
+              }
               transition={{ duration: 0.7, ease: 'easeInOut' }}
             />
           </svg>
+
+          {/* Fusion Shockwave Ripple */}
+          {isActive && (
+            <motion.div
+              key={`fusion-shockwave-${packetKey}`}
+              initial={{ opacity: 0.8, scale: 0.92 }}
+              animate={{ opacity: [0.8, 0], scale: [0.92, 1.25] }}
+              transition={{ duration: 0.65, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border border-[#2563eb] dark:border-[#60a5fa] pointer-events-none"
+            />
+          )}
 
           <motion.div
             data-pipeline-node
@@ -650,23 +670,38 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              boxShadow: isActive ? '0 0 0 3px rgba(26,115,232,0.08), 0 2px 8px rgba(15,23,42,0.06)' : '0 1px 3px rgba(15,23,42,0.05)'
+              scale: isActive ? [1, 1.03, 1] : 1,
+              boxShadow: isActive
+                ? '0 0 0 3px rgba(37,99,235,0.18), 0 0 16px rgba(96,165,250,0.35), 0 2px 8px rgba(15,23,42,0.08)'
+                : '0 1px 3px rgba(15,23,42,0.05)'
             }}
-            transition={{ duration: 0.25 }}
-            className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-colors duration-300 ${isActive ? 'border-[#1a73e8]/45 dark:border-[#60a5fa]/55' : 'border-[#c7d7f5] dark:border-[#26384a]'}`}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+            className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
+              isActive
+                ? 'border-[#1a73e8] dark:border-[#60a5fa] text-[#174ea6] dark:text-[#60a5fa]'
+                : 'border-[#c7d7f5] dark:border-[#26384a] text-[#3f5f99] dark:text-[#93c5fd]/80'
+            }`}
           >
+            {/* Pulsing indicator dot */}
             <motion.span
-              animate={{ scale: isActive ? 1.18 : 1, opacity: isActive ? 1 : 0.72 }}
-              transition={{ duration: 0.2 }}
-              className="w-1.5 h-1.5 rounded-full bg-[#2563eb] dark:bg-[#60a5fa]"
+              animate={
+                isActive
+                  ? {
+                      scale: [1, 1.9, 1.3],
+                      boxShadow: ['0 0 0px #2563eb', '0 0 8px #60a5fa', '0 0 3px #2563eb']
+                    }
+                  : { scale: 1, boxShadow: '0 0 0px transparent' }
+              }
+              transition={{ duration: 0.45 }}
+              className="w-1.5 h-1.5 rounded-full bg-[#2563eb] dark:bg-[#60a5fa] shrink-0"
             />
-            <span className={`font-bold transition-colors duration-300 ${isActive ? 'text-[#174ea6] dark:text-[#60a5fa]' : 'text-[#3f5f99] dark:text-[#93c5fd]/80'}`}>
+            <span className="font-bold transition-colors duration-300">
               {nodeLabel}
             </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#60a5fa]/12 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#60a5fa]/25 to-transparent"
               initial={false}
-              animate={{ x: isActive ? ['-120%', '120%'] : '-120%', opacity: isActive ? [0, 0.75, 0] : 0 }}
+              animate={{ x: isActive ? ['-120%', '120%'] : '-120%', opacity: isActive ? [0, 1, 0] : 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
             />
           </motion.div>
