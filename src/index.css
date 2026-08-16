@@ -123,6 +123,35 @@
   scrollbar-width: none;
 }
 
+/* Synaptic Circuit Energy & Multi-Chromatic Gradients */
+@keyframes synapticPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes energyTravel {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.synaptic-glow-blue-orange {
+  background: linear-gradient(135deg, rgba(26,115,232,0.15) 0%, rgba(6,182,212,0.12) 35%, rgba(245,158,11,0.12) 70%, rgba(249,115,22,0.15) 100%);
+}
+
+.synaptic-border-active {
+  border-image: linear-gradient(135deg, #1a73e8, #06b6d4, #f59e0b, #f97316) 1;
+}
+
 /* Reduced motion accessibility override */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -132,6 +161,7 @@
     scroll-behavior: auto !important;
   }
 }
+
 
 
 

@@ -431,6 +431,7 @@ const AnimatedCounter = ({ value }) => {
 };
 
 // --- REUSABLE SHELL COMPONENTS ---
+// --- REUSABLE SHELL COMPONENTS ---
 const CentralPipelineSpine = () => {
   const pathRef = useRef(null);
   const rafRef = useRef(null);
@@ -452,8 +453,14 @@ const CentralPipelineSpine = () => {
     }
 
     const width = window.innerWidth;
-    const edgeLane = Math.min(Math.max(width * 0.012, 10), 18);
-    const lanes = [edgeLane, width - edgeLane];
+    const center = width / 2;
+    // Keep circuit wrapping tightly around the max-w-5xl / max-w-6xl component bounds (never shoot off-screen)
+    const containerOffset = Math.min(width * 0.44, 560);
+    const lanes = [
+      Math.max(center - containerOffset, 20),
+      Math.min(center + containerOffset, width - 20)
+    ];
+
     const points = nodes.map((node) => {
       const rect = node.getBoundingClientRect();
       return {
@@ -465,7 +472,7 @@ const CentralPipelineSpine = () => {
     const route = points.slice(1).reduce((d, point, index) => {
       const prev = points[index];
       const laneX = lanes[index % 2];
-      const corner = 18;
+      const corner = 24;
       const prevTurnX = prev.x < laneX ? laneX - corner : laneX + corner;
       const nextTurnX = point.x < laneX ? laneX - corner : laneX + corner;
       const verticalStartY = prev.y + corner;
@@ -504,7 +511,7 @@ const CentralPipelineSpine = () => {
       const point = path.getPointAtLength(totalLength * progress);
       setGeometry((current) => ({
         ...current,
-        packet: { x: point.x, y: point.y }
+        packet: { x: point.x, y: point.y, progress }
       }));
     });
   });
@@ -517,15 +524,25 @@ const CentralPipelineSpine = () => {
       aria-hidden="true"
     >
       <defs>
+        {/* Synaptic Energy Spectrum: Electric Blue -> Cyan -> Violet -> Amber -> Vivid Orange */}
         <linearGradient id="site-pipeline-route" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1a73e8" stopOpacity="0" />
-          <stop offset="12%" stopColor="#1a73e8" stopOpacity="0.16" />
-          <stop offset="52%" stopColor="#2563eb" stopOpacity="0.24" />
-          <stop offset="88%" stopColor="#1a73e8" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.85" />
+          <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.9" />
+          <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.9" />
+          <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#f97316" stopOpacity="0.95" />
         </linearGradient>
-        <filter id="site-pipeline-glow" x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="5" result="blur" />
+
+        <linearGradient id="site-pipeline-glow-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.35" />
+          <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.4" />
+          <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.4" />
+          <stop offset="75%" stopColor="#f59e0b" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#f97316" stopOpacity="0.5" />
+        </linearGradient>
+
+        <filter id="site-pipeline-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -535,29 +552,32 @@ const CentralPipelineSpine = () => {
 
       {geometry.path && (
         <>
+          {/* Ambient Glow Underlay */}
           <path
             d={geometry.path}
             fill="none"
-            stroke="#1a73e8"
-            strokeOpacity="0.04"
-            strokeWidth="5"
+            stroke="url(#site-pipeline-glow-gradient)"
+            strokeWidth="6"
             strokeLinecap="round"
             filter="url(#site-pipeline-glow)"
           />
+          {/* Core Circuit Line */}
           <motion.path
             ref={pathRef}
             d={geometry.path}
             fill="none"
             stroke="url(#site-pipeline-route)"
-            strokeWidth="1"
+            strokeWidth="1.5"
             strokeLinecap="round"
             initial={{ pathLength: 0 }}
             style={{ pathLength: scrollYProgress }}
           />
+          {/* Synaptic Traveling Node (Shifts from Blue to Orange) */}
           {geometry.packet && (
             <g transform={`translate(${geometry.packet.x} ${geometry.packet.y})`}>
-              <circle r="5.5" fill="#1a73e8" opacity="0.08" />
-              <circle r="2.5" fill="#2563eb" filter="url(#site-pipeline-glow)" />
+              <circle r="9" fill="#f97316" opacity="0.3" filter="url(#site-pipeline-glow)" />
+              <circle r="5" fill="#06b6d4" opacity="0.5" />
+              <circle r="2.8" fill="#ffffff" />
             </g>
           )}
         </>
@@ -581,7 +601,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
     const rect = ref.current.getBoundingClientRect();
     const spineNodeY = progress * window.innerHeight;
     const junctionY = rect.top + rect.height / 2;
-    const nextIsActive = Math.abs(junctionY - spineNodeY) < 46;
+    const nextIsActive = Math.abs(junctionY - spineNodeY) < 55;
 
     if (nextIsActive !== activeRef.current) {
       activeRef.current = nextIsActive;
@@ -604,17 +624,18 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   }, [evaluateJunction, scrollYProgress]);
 
   return (
-    <div ref={ref} className="w-full flex justify-center py-4 relative pointer-events-none z-10" aria-hidden="true">
-      <div className="w-full max-w-lg px-6 flex items-center justify-center gap-3">
-        <div className={`h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#b9cdf5] dark:to-[#1e3a5f] transition-opacity duration-300 ${isActive ? 'opacity-80' : 'opacity-35'}`} />
+    <div ref={ref} className="w-full flex justify-center py-4 md:py-6 relative pointer-events-none z-10" aria-hidden="true">
+      <div className="w-full max-w-6xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
+        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
 
-        <div className="relative h-12 w-56 flex items-center justify-center shrink-0">
-          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 224 48" role="presentation">
+        <div className="relative h-12 w-60 flex items-center justify-center">
+          <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 240 48" role="presentation">
             <defs>
-              <linearGradient id={cableId} x1="112" y1="0" x2="112" y2="48" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0" />
-                <stop offset="45%" stopColor="#2563eb" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+              <linearGradient id={cableId} x1="120" y1="0" x2="120" y2="48" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.1" />
+                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.8" />
+                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#f97316" stopOpacity="0.1" />
               </linearGradient>
               <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="3.5" result="blur" />
@@ -625,27 +646,27 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               </filter>
             </defs>
             <motion.path
-              d="M112 0 C112 10 112 14 112 24 C112 34 112 38 112 48"
+              d="M120 0 C120 10 120 14 120 24 C120 34 120 38 120 48"
               fill="none"
               stroke={`url(#${cableId})`}
-              strokeWidth="1.5"
-              animate={{ opacity: isActive ? 0.9 : 0.35 }}
+              strokeWidth="2"
+              animate={{ opacity: isActive ? 1 : 0.4 }}
               transition={{ duration: 0.2 }}
             />
-            {/* Traveling Node Packet — Fuses at center y=24 */}
+            {/* Traveling Node Packet with Multi-Chromatic Glow */}
             <motion.circle
               key={packetKey}
-              cx="112"
-              r="2.8"
-              fill="#60a5fa"
+              cx="120"
+              r="3.2"
+              fill="#f97316"
               filter={`url(#${glowId})`}
-              initial={{ cy: 0, opacity: 0, scale: 0.7 }}
+              initial={{ cy: 0, opacity: 0, scale: 0.6 }}
               animate={
                 isActive
                   ? {
                       cy: [0, 24, 48],
                       opacity: [0, 1, 0],
-                      scale: [0.7, 1.8, 0.7]
+                      scale: [0.6, 2.2, 0.6]
                     }
                   : { opacity: 0 }
               }
@@ -653,14 +674,14 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             />
           </svg>
 
-          {/* Fusion Shockwave Ripple */}
+          {/* Synaptic Fusion Shockwave */}
           {isActive && (
             <motion.div
               key={`fusion-shockwave-${packetKey}`}
-              initial={{ opacity: 0.8, scale: 0.92 }}
-              animate={{ opacity: [0.8, 0], scale: [0.92, 1.25] }}
-              transition={{ duration: 0.65, ease: 'easeOut' }}
-              className="absolute inset-0 rounded-full border border-[#2563eb] dark:border-[#60a5fa] pointer-events-none"
+              initial={{ opacity: 0.9, scale: 0.9 }}
+              animate={{ opacity: [0.9, 0], scale: [0.9, 1.3] }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border border-gradient-to-r border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
             />
           )}
 
@@ -670,15 +691,15 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              scale: isActive ? [1, 1.03, 1] : 1,
+              scale: isActive ? [1, 1.04, 1] : 1,
               boxShadow: isActive
-                ? '0 0 0 3px rgba(37,99,235,0.18), 0 0 16px rgba(96,165,250,0.35), 0 2px 8px rgba(15,23,42,0.08)'
+                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 2px 10px rgba(15,23,42,0.08)'
                 : '0 1px 3px rgba(15,23,42,0.05)'
             }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
-            className={`relative flex items-center gap-2 px-3.5 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
+            className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
               isActive
-                ? 'border-[#1a73e8] dark:border-[#60a5fa] text-[#174ea6] dark:text-[#60a5fa]'
+                ? 'border-[#06b6d4] dark:border-[#f97316] text-[#0284c7] dark:text-[#fb923c]'
                 : 'border-[#c7d7f5] dark:border-[#26384a] text-[#3f5f99] dark:text-[#93c5fd]/80'
             }`}
           >
@@ -687,19 +708,19 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               animate={
                 isActive
                   ? {
-                      scale: [1, 1.9, 1.3],
-                      boxShadow: ['0 0 0px #2563eb', '0 0 8px #60a5fa', '0 0 3px #2563eb']
+                      scale: [1, 2.2, 1.4],
+                      boxShadow: ['0 0 0px #06b6d4', '0 0 10px #f97316', '0 0 4px #06b6d4']
                     }
                   : { scale: 1, boxShadow: '0 0 0px transparent' }
               }
               transition={{ duration: 0.45 }}
-              className="w-1.5 h-1.5 rounded-full bg-[#2563eb] dark:bg-[#60a5fa] shrink-0"
+              className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#06b6d4] to-[#f97316] shrink-0"
             />
-            <span className="font-bold transition-colors duration-300">
+            <span className="font-bold tracking-tight transition-colors duration-300">
               {nodeLabel}
             </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#60a5fa]/25 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f97316]/25 to-transparent"
               initial={false}
               animate={{ x: isActive ? ['-120%', '120%'] : '-120%', opacity: isActive ? [0, 1, 0] : 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
@@ -707,7 +728,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
           </motion.div>
         </div>
 
-        <div className={`h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#b9cdf5] dark:to-[#1e3a5f] transition-opacity duration-300 ${isActive ? 'opacity-80' : 'opacity-35'}`} />
+        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
       </div>
     </div>
   );
@@ -739,7 +760,13 @@ const SectionHeading = ({ title, subtitle }) => (
 );
 
 const Card = ({ children, className = '', ...props }) => (
-  <div {...props} className={`bg-white dark:bg-[#0a0a0a] border border-[#e5e7eb] dark:border-[#333333] rounded-lg p-6 light-card-shadow hover-card-elevation hover:-translate-y-1 hover:border-[#1a73e8]/30 dark:hover:border-[#444444] transition-all duration-300 ${className}`}>
+  <div
+    {...props}
+    className={`group/card relative bg-white dark:bg-[#0a0a0a] border border-[#e5e7eb] dark:border-[#333333] rounded-xl p-6 light-card-shadow hover-card-elevation hover:-translate-y-1 hover:border-[#06b6d4]/50 dark:hover:border-[#f97316]/50 transition-all duration-300 ${className}`}
+  >
+    {/* Micro Synaptic Node Terminals on Corners (Activate on Hover) */}
+    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#1a73e8] to-[#f97316] opacity-0 group-hover/card:opacity-100 group-hover/card:scale-125 transition-all duration-300 shadow-xs pointer-events-none" />
+    <span className="absolute -bottom-1 -left-1 w-2.5 h-2.5 rounded-full bg-gradient-to-br from-[#06b6d4] to-[#f97316] opacity-0 group-hover/card:opacity-100 group-hover/card:scale-125 transition-all duration-300 shadow-xs pointer-events-none" />
     {children}
   </div>
 );
@@ -1698,172 +1725,76 @@ export default function App() {
 
         <PipelineDivider nodeLabel="Node 05: Execution Framework" />
 
-        {/* SECTION 6: AUTOMATION EXAMPLES — INTERACTIVE CONNECTED NODE BUS */}
+        {/* SECTION 6: AUTOMATION EXAMPLES */}
         <section aria-labelledby="flows-heading" className="py-20 px-6 bg-[#fafafa] dark:bg-[#111111] bg-grid-pattern relative">
           <div className="max-w-7xl mx-auto relative">
-            <SectionHeading title="How data flows" subtitle="Watch how data connects and streams across your pipeline in real time. Hover any card to trigger the node connection." />
-
-            {/* Dynamic Node-to-Node Interconnect Bridges (Desktop) */}
-            <div className="hidden md:block absolute top-[52%] left-0 right-0 pointer-events-none z-20" aria-hidden="true">
-              {/* Connector Bridge 1 -> 2 */}
-              <div className="absolute left-[30.5%] w-[6%] h-6 -translate-y-1/2 flex items-center justify-center">
-                <svg className="w-full h-full overflow-visible" viewBox="0 0 60 24">
-                  <path
-                    d="M 0 12 L 60 12"
-                    fill="none"
-                    stroke={activeFlowHover === 0 || activeFlowHover === 1 ? '#2563eb' : '#94a3b8'}
-                    strokeWidth={activeFlowHover === 0 || activeFlowHover === 1 ? '2' : '1'}
-                    strokeDasharray={activeFlowHover === 0 || activeFlowHover === 1 ? 'none' : '4 3'}
-                    className="transition-colors duration-300 opacity-60 dark:opacity-40"
-                  />
-                  {(activeFlowHover === 0 || activeFlowHover === 1) && (
-                    <motion.circle
-                      cx="0"
-                      cy="12"
-                      r="3.5"
-                      fill="#60a5fa"
-                      animate={{ cx: [0, 60], opacity: [0, 1, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
-                    />
-                  )}
-                  <circle cx="30" cy="12" r={activeFlowHover === 0 || activeFlowHover === 1 ? 4 : 2.5} fill={activeFlowHover === 0 || activeFlowHover === 1 ? '#2563eb' : '#cbd5e1'} className="transition-all duration-300" />
-                </svg>
-              </div>
-
-              {/* Connector Bridge 2 -> 3 */}
-              <div className="absolute left-[64%] w-[6%] h-6 -translate-y-1/2 flex items-center justify-center">
-                <svg className="w-full h-full overflow-visible" viewBox="0 0 60 24">
-                  <path
-                    d="M 0 12 L 60 12"
-                    fill="none"
-                    stroke={activeFlowHover === 1 || activeFlowHover === 2 ? '#2563eb' : '#94a3b8'}
-                    strokeWidth={activeFlowHover === 1 || activeFlowHover === 2 ? '2' : '1'}
-                    strokeDasharray={activeFlowHover === 1 || activeFlowHover === 2 ? 'none' : '4 3'}
-                    className="transition-colors duration-300 opacity-60 dark:opacity-40"
-                  />
-                  {(activeFlowHover === 1 || activeFlowHover === 2) && (
-                    <motion.circle
-                      cx="0"
-                      cy="12"
-                      r="3.5"
-                      fill="#60a5fa"
-                      animate={{ cx: [0, 60], opacity: [0, 1, 0] }}
-                      transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
-                    />
-                  )}
-                  <circle cx="30" cy="12" r={activeFlowHover === 1 || activeFlowHover === 2 ? 4 : 2.5} fill={activeFlowHover === 1 || activeFlowHover === 2 ? '#2563eb' : '#cbd5e1'} className="transition-all duration-300" />
-                </svg>
-              </div>
-            </div>
+            <SectionHeading title="How data flows" subtitle="Watch how a customer inquiry moves through an automated workflow in real time." />
+            
+            {/* Desktop Engine Connection Line */}
+            <div className="hidden md:block absolute top-[55%] left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-[#1a73e8]/20 dark:via-[#60a5fa]/20 to-transparent pointer-events-none z-0" aria-hidden="true" />
 
             <div className="grid md:grid-cols-3 gap-6 relative z-10">
               {FLOWS.map((flow, i) => {
                 const isHovered = activeFlowHover === i;
-                const isConnected = activeFlowHover !== null && Math.abs(activeFlowHover - i) <= 1;
+                const isOtherHovered = activeFlowHover !== null && activeFlowHover !== i;
 
                 return (
-                  <div key={i} className="relative group">
-                    {/* Node Connection Port Pins */}
-                    {i > 0 && (
-                      <span
-                        className={`hidden md:block absolute -left-2 top-[52%] -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 bg-white dark:bg-[#0a0a0a] transition-all duration-300 z-30 ${
-                          isConnected
-                            ? 'border-[#2563eb] shadow-[0_0_10px_#60a5fa] scale-110'
-                            : 'border-[#cbd5e1] dark:border-[#334155]'
-                        }`}
-                        aria-hidden="true"
-                      />
-                    )}
-                    {i < FLOWS.length - 1 && (
-                      <span
-                        className={`hidden md:block absolute -right-2 top-[52%] -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 bg-white dark:bg-[#0a0a0a] transition-all duration-300 z-30 ${
-                          isHovered || isConnected
-                            ? 'border-[#2563eb] shadow-[0_0_10px_#60a5fa] scale-110'
-                            : 'border-[#cbd5e1] dark:border-[#334155]'
-                        }`}
-                        aria-hidden="true"
-                      />
-                    )}
-
-                    <Card
-                      onMouseEnter={() => setActiveFlowHover(i)}
-                      onMouseLeave={() => setActiveFlowHover(null)}
-                      className={`h-full flex flex-col justify-between transition-all duration-300 relative cursor-default ${
-                        isHovered
-                          ? 'border-[#1a73e8] dark:border-[#60a5fa] ring-2 ring-[#1a73e8]/20 dark:ring-[#60a5fa]/20 -translate-y-1.5 shadow-lg'
-                          : isConnected
-                          ? 'border-[#93c5fd] dark:border-[#1e40af] ring-1 ring-[#93c5fd]/30'
-                          : 'opacity-90'
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#eaeaea] dark:border-[#333333]">
-                          <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-[#1a73e8] dark:bg-[#60a5fa] animate-pulse" />
-                            <h4 className="text-lg font-bold font-display text-[#171717] dark:text-[#ededed]">{flow.title}</h4>
-                          </div>
-                          <span className={`inline-flex items-center gap-1.5 text-xs font-mono font-semibold px-2.5 py-1 rounded-full border transition-colors ${
-                            isHovered
-                              ? 'bg-[#2563eb]/10 text-[#2563eb] dark:text-[#60a5fa] border-[#2563eb]/30 shadow-xs'
-                              : 'bg-[#e6f4ea] dark:bg-[#137333]/30 text-[#059669] dark:text-[#34d399] border-[#a7f3d0] dark:border-[#059669]/30'
-                          }`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${isHovered ? 'bg-[#2563eb] dark:bg-[#60a5fa] animate-ping' : 'bg-[#059669] dark:bg-[#34d399]'}`} aria-hidden="true" />
-                            {isHovered ? 'Streaming' : 'Running'}
-                          </span>
-                        </div>
-                        <div className="flex flex-col gap-2.5">
-                          {flow.steps.map((step, j) => (
-                            <React.Fragment key={j}>
-                              <div className={`bg-[#fafafa] dark:bg-[#111111] border rounded-xl p-3.5 flex items-center justify-between text-sm font-medium font-sans text-[#333333] dark:text-[#cccccc] shadow-xs transition-all duration-200 ${
-                                isHovered
-                                  ? 'border-[#1a73e8]/35 bg-white dark:bg-[#141414]'
-                                  : 'border-[#eaeaea] dark:border-[#333333]'
-                              }`}>
-                                <div className="flex items-center gap-3">
-                                  <span className={`w-6 h-6 rounded-lg font-mono text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
-                                    isHovered
-                                      ? 'bg-[#1a73e8] text-white'
-                                      : 'bg-[#e8f0fe] dark:bg-[#3b82f6]/20 text-[#1a73e8] dark:text-[#60a5fa]'
-                                  }`}>
-                                    {j + 1}
-                                  </span>
-                                  <div>
-                                    <div className="font-semibold text-[#171717] dark:text-[#ededed] flex items-center gap-1.5">
-                                      <span className="text-[#1a73e8] dark:text-[#60a5fa]"><Icon name={step.icon} className="w-3.5 h-3.5" /></span>
-                                      <span>{step.name}</span>
-                                    </div>
-                                    <span className="text-[11px] text-[#666666] dark:text-[#888888] font-sans block">{step.desc}</span>
-                                  </div>
-                                </div>
-                              </div>
-                              {j < flow.steps.length - 1 && (
-                                <div className="flex flex-col items-center justify-center py-0.5 relative" aria-hidden="true">
-                                  <div className="w-0.5 h-5 bg-[#1a73e8]/20 dark:bg-[#60a5fa]/20 relative overflow-hidden rounded-full">
-                                    <div className={`w-full h-2 bg-[#1a73e8] dark:bg-[#60a5fa] rounded-full ${isHovered ? 'animate-pulse scale-y-125' : 'animate-data-packet'}`} />
-                                  </div>
-                                </div>
-                              )}
-                            </React.Fragment>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Business Result Connection Node */}
-                      <div className="mt-6 pt-4 border-t border-[#eaeaea] dark:border-[#333333] flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-xs text-[#059669] dark:text-[#34d399] font-mono font-semibold">
-                          <Icon name="arrowright" className="w-3.5 h-3.5" />
-                          <span>Outcome</span>
-                        </div>
-                        <span className={`text-xs font-bold font-display px-3 py-1 rounded-full border transition-all ${
-                          isHovered
-                            ? 'bg-[#1a73e8] text-white border-[#1a73e8] shadow-xs'
-                            : 'text-[#171717] dark:text-[#ededed] bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border-[#d2e3fc] dark:border-[#3b82f6]/40'
-                        }`}>
-                          {flow.result}
+                  <Card
+                    key={i}
+                    onMouseEnter={() => setActiveFlowHover(i)}
+                    onMouseLeave={() => setActiveFlowHover(null)}
+                    className={`flex flex-col justify-between transition-all duration-300 ${
+                      isOtherHovered ? 'opacity-30 scale-98' : 'opacity-100'
+                    } ${isHovered ? 'border-[#1a73e8] dark:border-[#60a5fa] ring-2 ring-[#1a73e8]/20 dark:ring-[#60a5fa]/20' : ''}`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#eaeaea] dark:border-[#333333]">
+                        <h4 className="text-lg font-bold font-display text-[#171717] dark:text-[#ededed]">{flow.title}</h4>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-[#e6f4ea] dark:bg-[#137333]/30 text-[#059669] dark:text-[#34d399] border border-[#a7f3d0] dark:border-[#059669]/30">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#059669] dark:bg-[#34d399]" aria-hidden="true" />
+                          Running
                         </span>
                       </div>
-                    </Card>
-                  </div>
+                      <div className="flex flex-col gap-2.5">
+                        {flow.steps.map((step, j) => (
+                          <React.Fragment key={j}>
+                            <div className="bg-[#fafafa] dark:bg-[#111111] border border-[#eaeaea] dark:border-[#333333] p-3.5 rounded-xl flex items-center justify-between text-sm font-medium font-sans text-[#333333] dark:text-[#cccccc] shadow-xs group/step hover:border-[#1a73e8]/30 transition-colors">
+                              <div className="flex items-center gap-3">
+                                <span className="w-6 h-6 rounded-lg bg-[#e8f0fe] dark:bg-[#3b82f6]/20 text-[#1a73e8] dark:text-[#60a5fa] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                                  {j + 1}
+                                </span>
+                                <div>
+                                  <div className="font-semibold text-[#171717] dark:text-[#ededed] flex items-center gap-1.5">
+                                    <span className="text-[#1a73e8] dark:text-[#60a5fa]"><Icon name={step.icon} className="w-3.5 h-3.5" /></span>
+                                    <span>{step.name}</span>
+                                  </div>
+                                  <span className="text-[11px] text-[#666666] dark:text-[#888888] font-sans block">{step.desc}</span>
+                                </div>
+                              </div>
+                            </div>
+                            {j < flow.steps.length - 1 && (
+                              <div className="flex flex-col items-center justify-center py-0.5 relative" aria-hidden="true">
+                                <div className="w-0.5 h-5 bg-[#1a73e8]/20 dark:bg-[#60a5fa]/20 relative overflow-hidden rounded-full">
+                                  <div className="w-full h-2 bg-[#1a73e8] dark:bg-[#60a5fa] animate-data-packet rounded-full" />
+                                </div>
+                              </div>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Business Result Connection Node */}
+                    <div className="mt-6 pt-4 border-t border-[#eaeaea] dark:border-[#333333] flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs text-[#059669] dark:text-[#34d399] font-mono font-semibold">
+                        <Icon name="arrowright" className="w-3.5 h-3.5" />
+                        <span>Outcome</span>
+                      </div>
+                      <span className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed] bg-[#e8f0fe] dark:bg-[#3b82f6]/20 px-3 py-1 rounded-full border border-[#d2e3fc] dark:border-[#3b82f6]/40">
+                        {flow.result}
+                      </span>
+                    </div>
+                  </Card>
                 );
               })}
             </div>
