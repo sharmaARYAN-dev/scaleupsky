@@ -107,6 +107,14 @@
 }
 
 /* Hide scrollbars for single line containers */
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }

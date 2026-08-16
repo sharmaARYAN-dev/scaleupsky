@@ -1289,7 +1289,7 @@ export default function App() {
               Seamless integration with your stack
             </p>
 
-            <div className="w-full flex flex-nowrap items-center justify-between gap-6 md:gap-8 overflow-x-auto whitespace-nowrap px-6 md:px-12 py-2">
+            <div className="w-full flex flex-nowrap items-center justify-between gap-6 md:gap-8 overflow-x-auto scrollbar-none whitespace-nowrap px-6 md:px-12 py-2">
               {TOOLS.map((tool) => {
                 const isHovered = hoveredTool === tool;
                 const isDimmed = hoveredTool !== null && !isHovered;
