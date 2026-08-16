@@ -1155,7 +1155,7 @@ export default function App() {
       >
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-3 group cursor-pointer">
-            <img src="/favicon.svg" alt="ScaleUpSky AI Automation Agency logo" className="h-8 md:h-9 w-auto dark:invert" />
+            <img src="/web-app-manifest-512x512.png" alt="ScaleUpSky AI Automation Agency logo" className="h-8 md:h-9 w-auto dark:invert" />
             <span className="font-display font-bold text-xl md:text-2xl tracking-tight text-[#171717] dark:text-[#ededed] mt-1.5 md:mt-2">
               ScaleupSky
             </span>
@@ -2015,7 +2015,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
             <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-0.2 mb-6 cursor-pointer">
-              <img src="/favicon.svg" alt="ScaleUpSky AI Automation Agency footer logo" className="h-10 w-auto dark:invert" />
+              <img src="/web-app-manifest-512x512.png" alt="ScaleUpSky AI Automation Agency footer logo" className="h-10 w-auto dark:invert" />
               <span className="font-display font-bold text-lg text-[#171717] dark:text-[#ededed]">
                 ScaleupSky
               </span>
