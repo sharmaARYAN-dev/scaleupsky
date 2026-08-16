@@ -1151,48 +1151,49 @@ export default function App() {
       {/* NAVBAR */}
       <header
         role="banner"
-        className={`fixed top-0 w-full z-50 transition-all duration-200 ${isScrolled ? 'bg-white/92 dark:bg-[#0a0a0a]/92 backdrop-blur-md border-b border-[#eaeaea] dark:border-[#222222] py-2.5 shadow-xs dark:shadow-none' : 'bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-xs border-b border-transparent py-3.5'}`}
+        className={`fixed top-0 inset-x-0 w-full z-50 transition-all duration-200 ${
+          isScrolled
+            ? 'bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-md border-b border-[#eaeaea] dark:border-[#262626] py-3 shadow-xs'
+            : 'bg-white/60 dark:bg-[#0a0a0a]/60 backdrop-blur-xs border-b border-transparent py-4'
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          {/* Left Zone: Logo & Live Availability Indicator */}
-          <div className="flex items-center gap-3">
-            <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-2 group cursor-pointer">
-              <img src="/web-app-manifest-512x512.png" alt="ScaleUpSky AI Automation Agency logo" className="h-7 w-auto dark:invert transition-transform group-hover:scale-105" />
-              <span className="font-display font-bold text-lg md:text-xl tracking-tight text-[#171717] dark:text-[#ededed]">
-                ScaleupSky
-              </span>
-            </a>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
+          {/* LEFT ZONE: BRAND LOGO */}
+          <a href="#" aria-label="ScaleupSky – Go to top of page" className="flex items-center gap-2.5 group cursor-pointer">
+            <img src="/web-app-manifest-512x512.png" alt="ScaleUpSky AI Automation Agency logo" className="h-7 w-auto dark:invert transition-transform group-hover:scale-105" />
+            <span className="font-display font-bold text-lg tracking-tight text-[#171717] dark:text-[#ededed]">
+              ScaleupSky
+            </span>
+          </a>
 
-            <div className="hidden lg:block h-3.5 w-px bg-[#e5e7eb] dark:bg-[#262626] mx-1" />
-
-            <div className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#f0fdf4] dark:bg-[#052e16]/60 border border-[#bbf7d0] dark:border-[#14532d] text-[11px] font-medium text-[#15803d] dark:text-[#4ade80]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a] animate-pulse" />
-              <span>Available for 2026</span>
+          {/* RIGHT ZONE: NAV LINKS + THEME TOGGLE + CTA */}
+          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1 lg:gap-2">
+            <div className="flex items-center gap-1 mr-2">
+              {NAV_LINKS.map(link => {
+                const id = link.toLowerCase();
+                const isActive = activeSection === id || (id === 'solutions' && activeSection === '');
+                return (
+                  <a
+                    key={link}
+                    href={`#${id}`}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium font-sans transition-all duration-150 ${
+                      isActive
+                        ? 'text-[#1a73e8] dark:text-[#60a5fa] font-semibold bg-[#e8f0fe]/70 dark:bg-[#1a73e8]/10'
+                        : 'text-[#555555] dark:text-[#999999] hover:text-[#171717] dark:hover:text-[#ededed] hover:bg-[#f4f4f5] dark:hover:bg-[#1a1a1a]'
+                    }`}
+                    aria-current={isActive ? 'page' : undefined}
+                  >
+                    {link}
+                  </a>
+                );
+              })}
             </div>
-          </div>
 
-          {/* Right Zone: Navigation Links, Dark Toggle, & Action CTA */}
-          <nav aria-label="Main navigation" className="hidden md:flex gap-1 lg:gap-1.5 items-center text-xs lg:text-sm font-medium font-sans text-[#4b5563] dark:text-[#888888]">
-            {NAV_LINKS.map(link => {
-              const id = link.toLowerCase();
-              const isActive = activeSection === id || (id === 'solutions' && activeSection === '');
-              return (
-                <a
-                  key={link}
-                  href={`#${id}`}
-                  className={`px-3 py-1.5 rounded-lg transition-colors duration-150 hover:text-[#171717] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 ${isActive ? 'text-[#1a73e8] dark:text-[#60a5fa] font-semibold bg-[#e8f0fe]/60 dark:bg-[#1a73e8]/10' : ''}`}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {link}
-                </a>
-              );
-            })}
-            
-            <div className="h-4 w-px bg-[#e5e7eb] dark:bg-[#262626] mx-1.5" />
+            <div className="h-4 w-px bg-[#eaeaea] dark:bg-[#262626] mx-1" aria-hidden="true" />
 
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-lg text-[#666666] dark:text-[#888888] hover:text-[#171717] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+              className="p-2 rounded-lg text-[#666666] dark:text-[#888888] hover:text-[#171717] dark:hover:text-white hover:bg-[#f4f4f5] dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Icon name="sun" className="w-4 h-4" /> : <Icon name="moon" className="w-4 h-4" />}
@@ -1200,29 +1201,30 @@ export default function App() {
 
             <button
               onClick={() => scrollToSection('contact')}
-              className="ml-1.5 px-4 py-2 bg-[#1a73e8] hover:bg-[#1765cc] text-white text-xs lg:text-sm font-semibold font-display rounded-lg transition-all shadow-xs hover:shadow-md flex items-center gap-1.5 group cursor-pointer"
+              className="ml-2 px-4 py-2 bg-[#1a73e8] hover:bg-[#1765cc] text-white text-xs font-semibold font-display rounded-lg shadow-xs hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <span>Book call</span>
-              <Icon name="arrowright" className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              <span>Book strategy call</span>
+              <Icon name="arrowright" className="w-3.5 h-3.5" />
             </button>
           </nav>
 
+          {/* MOBILE CONTROLS */}
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-lg text-[#666666] dark:text-[#888888] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              className="p-2 rounded-lg text-[#666666] dark:text-[#888888] hover:bg-[#f4f4f5] dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer"
               aria-label="Toggle dark mode"
             >
-              {isDarkMode ? <Icon name="sun" className="w-5 h-5" /> : <Icon name="moon" className="w-5 h-5" />}
+              {isDarkMode ? <Icon name="sun" className="w-4 h-4" /> : <Icon name="moon" className="w-4 h-4" />}
             </button>
             <button
-              className="text-[#666666] dark:text-[#888888] hover:text-[#171717] dark:hover:text-[#ededed] transition-colors p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+              className="text-[#666666] dark:text-[#888888] hover:text-[#171717] dark:hover:text-[#ededed] transition-colors p-2 rounded-lg hover:bg-[#f4f4f5] dark:hover:bg-[#1a1a1a]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
             >
-              {mobileMenuOpen ? <Icon name="x" /> : <Icon name="menu" />}
+              {mobileMenuOpen ? <Icon name="x" className="w-5 h-5" /> : <Icon name="menu" className="w-5 h-5" />}
             </button>
           </div>
         </div>
