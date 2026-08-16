@@ -432,83 +432,133 @@ const AnimatedCounter = ({ value }) => {
 
 // --- REUSABLE SHELL COMPONENTS ---
 
-// --- MINIMALIST SIDE DATA RAIL (OPTION 1) ---
+// --- MINIMALIST RIGHT-SIDE 8-NODE NAVIGATOR (OPTION 1) ---
 const SideDataRail = () => {
   const { scrollYProgress } = useScroll();
   const travelTop = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  const activeStage = useTransform(scrollYProgress, [0, 0.28, 0.58, 0.88, 1], [0, 1, 2, 3, 3]);
+  const activeStage = useTransform(scrollYProgress, [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1], [0, 1, 2, 3, 4, 5, 6, 7]);
   const [stage, setStage] = useState(0);
+  const [isHidden, setIsHidden] = useState(false);
 
   useMotionValueEvent(activeStage, 'change', (latest) => {
     setStage(Math.round(latest));
   });
 
-  const stages = [
-    { label: 'Capture', num: '01' },
-    { label: 'Triage', num: '02' },
-    { label: 'Action', num: '03' },
-    { label: 'Yield', num: '04' }
+  const nodes = [
+    { num: '01', label: 'Inbound Capture', targetId: 'top' },
+    { num: '02', label: 'Bottleneck Audit', targetId: 'solutions' },
+    { num: '03', label: 'Automation Engine', targetId: 'services' },
+    { num: '04', label: 'Stack Integration', targetId: 'tools' },
+    { num: '05', label: 'Execution Framework', targetId: 'process' },
+    { num: '06', label: 'Quantified Impact', targetId: 'results' },
+    { num: '07', label: 'Efficiency Simulation', targetId: 'calculator' },
+    { num: '08', label: 'Deploy Autopilot', targetId: 'contact' }
   ];
+
+  const scrollTo = (id) => {
+    if (id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  if (isHidden) {
+    return (
+      <button
+        type="button"
+        onClick={() => setIsHidden(false)}
+        aria-label="Show node navigator"
+        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 dark:bg-[#111111]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#333333] text-[10px] font-mono font-bold text-[#1a73e8] dark:text-[#60a5fa] shadow-xs hover:border-[#1a73e8]/50 cursor-pointer transition-all hover:scale-105"
+      >
+        <span>⚡</span>
+        <span>Nodes</span>
+      </button>
+    );
+  }
 
   return (
     <aside
-      aria-label="Workflow progress track"
-      className="hidden xl:flex fixed left-8 top-1/2 -translate-y-1/2 z-30 flex-col items-center pointer-events-none select-none"
+      aria-label="Interactive workflow node navigator"
+      className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none"
     >
-      <div className="relative h-64 w-8 flex flex-col items-center justify-between">
-        {/* Track Line */}
-        <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-[#e5e7eb] dark:bg-[#222222] rounded-full overflow-hidden">
-          <motion.div
-            style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
-            className="w-full h-full bg-gradient-to-b from-[#1a73e8] via-[#06b6d4] via-45% via-[#f59e0b] to-[#f97316]"
-          />
+      <div className="flex flex-col items-center bg-white/85 dark:bg-[#0c0c0c]/85 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] rounded-2xl p-2.5 shadow-sm">
+        {/* Header with Hide Toggle */}
+        <div className="w-full flex items-center justify-between gap-3 mb-2 px-1 text-[9px] font-mono text-[#888888] dark:text-[#666666]">
+          <span className="font-bold tracking-wider text-[#1a73e8] dark:text-[#60a5fa]">NODES</span>
+          <button
+            type="button"
+            onClick={() => setIsHidden(true)}
+            aria-label="Hide node navigator"
+            className="hover:text-[#171717] dark:hover:text-white cursor-pointer px-1 transition-colors"
+            title="Minimize"
+          >
+            ✕
+          </button>
         </div>
 
-        {/* Traveling Particle Head */}
-        <motion.div
-          style={{ top: travelTop }}
-          className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-        >
-          <div className="relative flex items-center justify-center">
-            <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-[#06b6d4] opacity-50" />
-            <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-[#06b6d4] to-[#f97316] shadow-[0_0_10px_#f97316] border border-white dark:border-black" />
+        {/* Vertical Track and Nodes */}
+        <div className="relative h-72 w-5 flex flex-col items-center justify-between py-1">
+          {/* Background Track */}
+          <div className="absolute top-1 bottom-1 left-1/2 -translate-x-1/2 w-[2px] bg-[#e5e7eb] dark:bg-[#222222] rounded-full overflow-hidden">
+            <motion.div
+              style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
+              className="w-full h-full bg-gradient-to-b from-[#1a73e8] via-[#06b6d4] via-50% via-[#f59e0b] to-[#f97316]"
+            />
           </div>
-        </motion.div>
 
-        {/* Milestone Stage Nodes */}
-        {stages.map((st, i) => {
-          const isPassed = stage >= i;
-          const isCurrent = stage === i;
-          return (
-            <div key={st.num} className="relative flex items-center justify-center group pointer-events-auto">
-              <div
-                className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-all duration-300 ${
-                  isCurrent
-                    ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_8px_rgba(6,182,212,0.5)] scale-110'
-                    : isPassed
-                    ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-95'
-                    : 'bg-[#e5e7eb] dark:bg-[#262626]'
-                }`}
-              >
-                <span
-                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                    isCurrent
-                      ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
-                      : isPassed
-                      ? 'bg-white'
-                      : 'bg-transparent'
-                  }`}
-                />
-              </div>
-
-              {/* Stage tooltip badge */}
-              <div className="absolute left-6 px-2 py-0.5 rounded-md bg-white/90 dark:bg-[#141414]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-60 group-hover:opacity-100 transition-opacity flex items-center gap-1 shadow-xs">
-                <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{st.num}</span>
-                <span className="text-[#666666] dark:text-[#888888]">{st.label}</span>
-              </div>
+          {/* Traveling Particle Head */}
+          <motion.div
+            style={{ top: travelTop }}
+            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
+          >
+            <div className="relative flex items-center justify-center">
+              <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-[#06b6d4] opacity-50" />
+              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#06b6d4] to-[#f97316] shadow-[0_0_8px_#f97316] border border-white dark:border-black" />
             </div>
-          );
-        })}
+          </motion.div>
+
+          {/* 8 Clickable Milestone Nodes */}
+          {nodes.map((node, i) => {
+            const isPassed = stage >= i;
+            const isCurrent = stage === i;
+            return (
+              <button
+                key={node.num}
+                type="button"
+                onClick={() => scrollTo(node.targetId)}
+                aria-label={`Jump to Node ${node.num}: ${node.label}`}
+                className="relative flex items-center justify-center group cursor-pointer p-0.5 rounded-full outline-none focus-visible:ring-1 focus-visible:ring-[#1a73e8]"
+              >
+                <div
+                  className={`w-2.5 h-2.5 rounded-full flex items-center justify-center transition-all duration-200 ${
+                    isCurrent
+                      ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_6px_rgba(6,182,212,0.6)] scale-125'
+                      : isPassed
+                      ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-90'
+                      : 'bg-[#d1d5db] dark:bg-[#333333] hover:bg-[#9ca3af]'
+                  }`}
+                >
+                  <span
+                    className={`w-1 h-1 rounded-full transition-colors ${
+                      isCurrent
+                        ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
+                        : isPassed
+                        ? 'bg-white'
+                        : 'bg-transparent'
+                    }`}
+                  />
+                </div>
+
+                {/* Micro Tooltip on Hover / Current */}
+                <div className="absolute right-6 px-2 py-0.5 rounded-md bg-white/95 dark:bg-[#141414]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-150 flex items-center gap-1.5 shadow-sm pointer-events-none group-hover:translate-x-0 translate-x-1">
+                  <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{node.num}</span>
+                  <span className="text-[#333333] dark:text-[#cccccc] font-medium">{node.label}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
     </aside>
   );
@@ -1241,9 +1291,10 @@ export default function App() {
       <main id="main-content">
         {/* SECTION 1: HERO */}
         <section
+          id="top"
           aria-labelledby="hero-heading"
           onMouseMove={handleHeroMouseMove}
-          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern"
+          className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center text-center bg-white dark:bg-[#0a0a0a] overflow-hidden bg-grid-pattern scroll-mt-24"
         >
           {/* Ambient Cursor Spotlight Glow */}
           <div
@@ -1563,7 +1614,7 @@ export default function App() {
         <PipelineDivider nodeLabel="Node 03: Automation Engine" />
 
         {/* SECTION 4: TOOLS WE INTEGRATE (APPLE-STYLE FULL-WIDTH SINGLE LINE) */}
-        <section aria-label="Tools and integrations" className="py-14 border-y border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] overflow-hidden w-full">
+        <section id="tools" aria-label="Tools and integrations" className="py-14 border-y border-[#eaeaea] dark:border-[#333333] bg-white dark:bg-[#0a0a0a] overflow-hidden w-full scroll-mt-24">
           <div className="w-full text-center">
             <p className="text-xs font-bold text-[#666666] dark:text-[#888888] font-sans tracking-widest uppercase mb-8 px-6">
               Seamless integration with your stack
@@ -1621,7 +1672,7 @@ export default function App() {
         <PipelineDivider nodeLabel="Node 04: Stack Integration" />
 
         {/* SECTION 5: HOW IT WORKS */}
-        <section aria-labelledby="process-heading" className="py-20 px-6">
+        <section id="process" aria-labelledby="process-heading" className="py-20 px-6 scroll-mt-24">
           <div className="max-w-4xl mx-auto">
             <SectionHeading title="The automation journey" subtitle="Our proven 6-step framework to transition your business from manual to automated." />
             <div className="relative border-l border-[#eaeaea] dark:border-[#333333] ml-4 md:ml-0 md:space-y-10">
