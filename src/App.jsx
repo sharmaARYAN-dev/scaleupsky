@@ -981,7 +981,7 @@ export default function App() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#e8f0fe] dark:bg-[#3b82f6]/20 border border-[#d2e3fc] text-xs font-semibold font-sans tracking-wide text-[#1a73e8] dark:text-[#60a5fa] mb-8 z-10"
           >
             <span className="w-2 h-2 rounded-full bg-[#1a73e8]" style={{ animation: 'dotpulse 2s ease-in-out infinite' }} aria-hidden="true" />
-            Accepting enterprise clients for 2026
+            Accepting new clients for 2026
           </motion.div>
 
           <motion.h1
@@ -1694,7 +1694,7 @@ export default function App() {
                 ScaleupSky
               </span>
             </a>
-            <p className="text-[#666666] dark:text-[#888888] font-sans text-sm mb-6 leading-relaxed">Building enterprise production-ready AI automation ecosystems.</p>
+            <p className="text-[#666666] dark:text-[#888888] font-sans text-sm mb-6 leading-relaxed">Custom AI agents & automation systems that run your business on autopilot.</p>
             <div className="flex gap-4">
               <a href="https://www.instagram.com/scaleupsky/" target="_blank" rel="noopener noreferrer" aria-label="Follow ScaleupSky on Instagram">
                 <Icon name="instagram" className="w-5 h-5 text-[#999999] dark:text-[#888888] hover:text-[#171717] dark:hover:text-[#ededed] cursor-pointer transition-colors" />
