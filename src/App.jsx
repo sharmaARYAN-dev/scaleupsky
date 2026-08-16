@@ -738,6 +738,7 @@ export default function App() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | submitting | success | error
   const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const handleHeroMouseMove = useCallback((e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -852,6 +853,11 @@ export default function App() {
   }, [formData]);
   const scrollToSection = useCallback((id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  const navigateToIndustry = useCallback((index) => {
+    setActiveIndustryTab(index);
+    document.getElementById('healthcare')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   const wrapperClasses = 'min-h-screen bg-[#fafafa] dark:bg-black text-[#171717] dark:text-[#ededed] selection:bg-[#1a73e8]/20 font-sans overflow-x-hidden';
@@ -1566,6 +1572,18 @@ export default function App() {
                   </li>
                 ))}
               </ul>
+
+              {/* Minimal Trust Signals & Direct Reachout */}
+              <div className="mt-8 pt-6 border-t border-[#eaeaea] dark:border-[#262626] space-y-3">
+                <div className="flex flex-wrap items-center gap-4 text-xs text-[#666666] dark:text-[#888888] font-sans">
+                  <span className="flex items-center gap-1.5"><Icon name="shield" className="w-3.5 h-3.5 text-[#059669]" /> NDA on request</span>
+                  <span className="flex items-center gap-1.5"><Icon name="sparkles" className="w-3.5 h-3.5 text-[#1a73e8]" /> 100% IP ownership</span>
+                  <span className="flex items-center gap-1.5"><Icon name="checkcircle" className="w-3.5 h-3.5 text-[#6366f1]" /> 256-bit TLS</span>
+                </div>
+                <p className="text-xs text-[#888888] dark:text-[#777777] font-sans">
+                  Direct email: <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a>
+                </p>
+              </div>
             </div>
 
             <Card className="!p-7 relative overflow-hidden">
@@ -1677,6 +1695,11 @@ export default function App() {
                       'Book my free strategy call'
                     )}
                   </button>
+
+                  <div className="mt-3 pt-3 border-t border-[#eaeaea] dark:border-[#262626] flex items-center justify-between text-xs text-[#888888] dark:text-[#777777] font-sans">
+                    <span>⚡ Typical response: &lt; 24 hrs</span>
+                    <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline">scaleupsky@gmail.com</a>
+                  </div>
                 </form>
               )}
             </Card>
@@ -1722,10 +1745,10 @@ export default function App() {
           <div>
             <h4 className="font-semibold font-display text-sm mb-4 text-[#171717] dark:text-[#ededed]">Industries</h4>
             <ul className="space-y-2 text-sm text-[#666666] dark:text-[#888888] font-sans">
-              <li><a href="#healthcare" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Healthcare</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Real estate</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Agencies</a></li>
-              <li><a href="#services" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">E-commerce</a></li>
+              <li><button onClick={() => navigateToIndustry(0)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Healthcare</button></li>
+              <li><button onClick={() => navigateToIndustry(1)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Real estate</button></li>
+              <li><button onClick={() => navigateToIndustry(3)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Agencies</button></li>
+              <li><button onClick={() => navigateToIndustry(5)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">E-commerce</button></li>
             </ul>
           </div>
 
@@ -1736,6 +1759,7 @@ export default function App() {
               <li><a href="#results" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Case studies</a></li>
               <li><a href="#contact" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Contact</a></li>
               <li><button onClick={() => setShowPrivacy(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Privacy & security</button></li>
+              <li><button onClick={() => setShowTerms(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Terms of service</button></li>
             </ul>
           </div>
         </div>
@@ -1744,6 +1768,8 @@ export default function App() {
           <span>© {new Date().getFullYear()} ScaleupSky. All rights reserved.</span>
           <span className="hidden sm:inline">·</span>
           <button onClick={() => setShowPrivacy(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Privacy Policy</button>
+          <span className="hidden sm:inline">·</span>
+          <button onClick={() => setShowTerms(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Terms of Service</button>
         </div>
       </footer>
 
@@ -1772,7 +1798,7 @@ export default function App() {
               <div className="sticky top-0 bg-white dark:bg-[#0a0a0a] border-b border-[#eaeaea] dark:border-[#333333] px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
                 <div className="flex items-center gap-2">
                   <Icon name="shield" className="w-5 h-5 text-[#1a73e8]" />
-                  <h2 className="text-lg font-display font-bold text-[#171717] dark:text-[#ededed]">Privacy & Security</h2>
+                  <h2 className="text-lg font-display font-bold text-[#171717] dark:text-[#ededed]">Privacy & Security Policy</h2>
                 </div>
                 <button
                   onClick={() => setShowPrivacy(false)}
@@ -1838,16 +1864,89 @@ export default function App() {
                     <li>Request deletion of your data at any time</li>
                     <li>Withdraw consent for future communications</li>
                   </ul>
-                  <p className="mt-2">To exercise any of these rights, please contact us through our website contact form or reach out via our social media channels.</p>
-                </div>
-
-                <div>
-                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Changes to This Policy</h3>
-                  <p>We may update this privacy policy from time to time. Any changes will be reflected on this page with an updated revision date.</p>
+                  <p className="mt-2">To exercise any of these rights, please email us directly at <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a>.</p>
                 </div>
 
                 <div className="pt-4 border-t border-[#eaeaea] dark:border-[#333333]">
-                  <p className="text-xs text-[#999999] dark:text-[#666666]">If you have any questions about this privacy policy, please <button onClick={() => { setShowPrivacy(false); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 300); }} className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline">contact us</button>.</p>
+                  <p className="text-xs text-[#999999] dark:text-[#666666]">Questions? Email us at <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a>.</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* TERMS OF SERVICE MODAL */}
+      <AnimatePresence>
+        {showTerms && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowTerms(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Terms of Service"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-white dark:bg-[#0a0a0a] border-b border-[#eaeaea] dark:border-[#333333] px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
+                <div className="flex items-center gap-2">
+                  <Icon name="briefcase" className="w-5 h-5 text-[#1a73e8]" />
+                  <h2 className="text-lg font-display font-bold text-[#171717] dark:text-[#ededed]">Terms of Service</h2>
+                </div>
+                <button
+                  onClick={() => setShowTerms(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1a1a1a] transition-colors"
+                  aria-label="Close terms of service"
+                >
+                  <Icon name="x" className="w-4 h-4 text-[#666666] dark:text-[#888888]" />
+                </button>
+              </div>
+
+              <div className="px-6 py-6 space-y-6 text-sm text-[#444444] dark:text-[#bbbbbb] font-sans leading-relaxed">
+                <p className="text-xs text-[#999999] dark:text-[#666666]">Last updated: August 16, 2026</p>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">1. Services & Scope</h3>
+                  <p>ScaleUpSky provides custom AI agent development, workflow automations, CRM integrations, and AI system design. Specific deliverables, timelines, and milestones are outlined in individual project proposals and service agreements.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">2. 100% Client Intellectual Property Ownership</h3>
+                  <p>Upon final project payment, you retain <strong>100% ownership</strong> of all custom workflows, automation scripts, prompt templates, and pipeline configurations created specifically for your business. We do not lock you into proprietary vendor ecosystems.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">3. Confidentiality & Non-Disclosure (NDA)</h3>
+                  <p>We treat all client business data, customer lists, CRM records, credentials, and internal workflows with strict confidentiality. Mutual Non-Disclosure Agreements (NDAs) are available upon request prior to project kick-off.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">4. Third-Party Platforms & APIs</h3>
+                  <p>Our automation solutions connect to third-party tools and APIs (such as OpenAI, Meta/WhatsApp Business API, Twilio, Make, Zapier, HubSpot, Salesforce). Clients maintain their own direct accounts and subscription costs with these providers.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">5. Testing, Deployment & Support</h3>
+                  <p>Every automation pipeline undergoes rigorous quality assurance and testing prior to deployment. Post-launch support and optimization windows are included with every project to ensure smooth day-to-day operations.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">6. Limitation of Liability</h3>
+                  <p>While we build robust, production-ready systems, ScaleUpSky is not liable for third-party API outages, upstream platform policy changes (e.g., Meta WhatsApp template rules), or unexpected third-party downtime.</p>
+                </div>
+
+                <div className="pt-4 border-t border-[#eaeaea] dark:border-[#333333]">
+                  <p className="text-xs text-[#999999] dark:text-[#666666]">Questions about our terms? Reach out at <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a>.</p>
                 </div>
               </div>
             </motion.div>
