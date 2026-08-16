@@ -439,6 +439,11 @@ const SideDataRail = () => {
   const activeStage = useTransform(scrollYProgress, [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1], [0, 1, 2, 3, 4, 5, 6, 7]);
   const [stage, setStage] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
+  const [isAwake, setIsAwake] = useState(false);
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    setIsAwake(latest > 0.025);
+  });
 
   useMotionValueEvent(activeStage, 'change', (latest) => {
     setStage(Math.round(latest));
@@ -463,6 +468,11 @@ const SideDataRail = () => {
     }
   };
 
+  // Keep completely hidden/sleeping until user starts scrolling
+  if (!isAwake) {
+    return null;
+  }
+
   if (isHidden) {
     return (
       <button
@@ -478,7 +488,11 @@ const SideDataRail = () => {
   }
 
   return (
-    <aside
+    <motion.aside
+      initial={{ opacity: 0, x: 20, scale: 0.95 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 20, scale: 0.95 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
       aria-label="Interactive workflow node navigator"
       className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none"
     >
@@ -560,7 +574,7 @@ const SideDataRail = () => {
           })}
         </div>
       </div>
-    </aside>
+    </motion.aside>
   );
 };
 
