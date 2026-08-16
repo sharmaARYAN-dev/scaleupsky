@@ -1853,33 +1853,6 @@ export default function App() {
                 Book a free architecture discovery call to see exactly how ScaleupSky designs, tests, and deploys high-yield AI pipelines.
               </p>
 
-              {/* Instant Direct Call / WhatsApp Discovery Option */}
-              <div className="mb-8 p-4 bg-[#e8f0fe] dark:bg-[#1a73e8]/10 border border-[#d2e3fc] dark:border-[#1a73e8]/20 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 text-xs text-[#1a73e8] dark:text-[#60a5fa] font-semibold font-sans">
-                  <Icon name="phone" className="w-4 h-4 shrink-0" />
-                  <span>Want to skip the form? Call or WhatsApp us directly at +91 93710 61901.</span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href="tel:+919371061901"
-                    className="px-3.5 py-1.5 bg-[#1a73e8] hover:bg-[#1765cc] text-white text-xs font-semibold font-display rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
-                    aria-label="Call +91 93710 61901"
-                  >
-                    <Icon name="phone" className="w-3 h-3" />
-                    <span>Call</span>
-                  </a>
-                  <a
-                    href="https://wa.me/919371061901?text=Hi%20ScaleUpSky!%20I'd%20like%20to%20schedule%20a%20strategy%20discovery%20call."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3.5 py-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold font-display rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
-                    aria-label="WhatsApp +91 93710 61901"
-                  >
-                    <Icon name="messagecircle" className="w-3 h-3" />
-                    <span>WhatsApp</span>
-                  </a>
-                </div>
-              </div>
               <ul className="space-y-3.5 mb-8">
                 {['Custom automation blueprint', 'Clear ROI projection', 'No technical overhead', 'Zero obligation call'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium font-sans text-[#666666] dark:text-[#888888]">
@@ -1888,18 +1861,14 @@ export default function App() {
                 ))}
               </ul>
 
-              {/* Minimal Trust Signals & Direct Reachout */}
-              <div className="mt-8 pt-6 border-t border-[#eaeaea] dark:border-[#262626] space-y-3">
-                <div className="flex flex-wrap items-center gap-4 text-xs text-[#666666] dark:text-[#888888] font-sans">
-                  <span className="flex items-center gap-1.5"><Icon name="shield" className="w-3.5 h-3.5 text-[#059669]" /> NDA on request</span>
-                  <span className="flex items-center gap-1.5"><Icon name="sparkles" className="w-3.5 h-3.5 text-[#1a73e8]" /> 100% IP ownership</span>
-                  <span className="flex items-center gap-1.5"><Icon name="checkcircle" className="w-3.5 h-3.5 text-[#6366f1]" /> 256-bit TLS</span>
-                </div>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-[#888888] dark:text-[#777777] font-sans">
-                  <span>Phone: <a href="tel:+919371061901" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">+91 93710 61901</a></span>
-                  <span>·</span>
-                  <span>Email: <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a></span>
-                </div>
+              <div className="pt-4 border-t border-[#eaeaea] dark:border-[#262626] flex items-center gap-4 text-xs text-[#888888] dark:text-[#777777] font-sans">
+                <a href="tel:+919371061901" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors flex items-center gap-1.5 font-medium">
+                  <Icon name="phone" className="w-3.5 h-3.5" /> +91 93710 61901
+                </a>
+                <span>·</span>
+                <a href="mailto:scaleupsky@gmail.com" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors flex items-center gap-1.5 font-medium">
+                  <Icon name="mail" className="w-3.5 h-3.5" /> scaleupsky@gmail.com
+                </a>
               </div>
             </div>
 
@@ -2015,7 +1984,7 @@ export default function App() {
 
                   <div className="mt-3 pt-3 border-t border-[#eaeaea] dark:border-[#262626] flex items-center justify-between text-xs text-[#888888] dark:text-[#777777] font-sans">
                     <span>⚡ Typical response: &lt; 24 hrs</span>
-                    <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline">scaleupsky@gmail.com</a>
+                    <span className="flex items-center gap-1"><Icon name="shield" className="w-3.5 h-3.5 text-[#059669]" /> NDA on request</span>
                   </div>
                 </form>
               )}
