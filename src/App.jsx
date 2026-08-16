@@ -3,14 +3,20 @@ import { motion, AnimatePresence, useMotionValueEvent, useScroll } from 'framer-
 import {
   Brain, Mail, Clock, Calendar, TrendingUp, MessageSquare,
   Bot, Phone, Target, Users, Settings, Moon, Sun,
-  Stethoscope, Heart, Activity, ChevronDown, CheckCircle,
+  Stethoscope, Heart, Activity, ChevronDown, CheckCircle, Check,
   ArrowRight, Building2, Utensils, Briefcase, ShoppingCart,
   Menu, X, Loader, Shield,
   MessageCircle, Mic, Filter, Database,
-  Sparkles
+  Sparkles, CalendarCheck, Hash, Zap, Cpu
 } from 'lucide-react';
 
-// Inline SVG fallbacks for brand icons
+// Inline authentic brand SVGs
+const _WhatsApp = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.14 0-.36.05-.54.25-.19.2-.71.69-.71 1.69 0 1 .73 1.96.83 2.1.1.13 1.41 2.21 3.47 3.05.49.2.87.33 1.17.42.5.15.95.13 1.31.08.4-.06 1.22-.5 1.39-.98.17-.49.17-.91.12-.99-.05-.09-.19-.14-.4-.25-.21-.1-.71-.35-1.41-.69-.19-.09-.33-.14-.47.07-.14.2-.54.69-.66.83-.12.14-.24.16-.45.05-.21-.1-.89-.33-1.69-1.05-.62-.56-1.04-1.25-1.16-1.46-.12-.21-.01-.33.09-.43.09-.09.21-.24.31-.36.1-.12.14-.21.21-.35.07-.14.03-.26-.02-.36-.05-.1-.47-1.14-.64-1.56-.17-.41-.35-.35-.48-.36-.12-.01-.26-.01-.4-.01" />
+  </svg>
+);
+
 const _Instagram = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -18,6 +24,7 @@ const _Instagram = ({ className }) => (
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
   </svg>
 );
+
 const _Linkedin = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -25,6 +32,13 @@ const _Linkedin = ({ className }) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 );
+
+const _Slack = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z" />
+  </svg>
+);
+
 const _Facebook = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -37,11 +51,15 @@ const ICON_MAP = {
   mail: Mail,
   clock: Clock,
   calendar: Calendar,
+  calendarcheck: CalendarCheck,
   trendingup: TrendingUp,
   messagesquare: MessageSquare,
   messagecircle: MessageCircle,
+  whatsapp: _WhatsApp,
   instagram: _Instagram,
   linkedin: _Linkedin,
+  slack: _Slack,
+  hash: Hash,
   bot: Bot,
   phone: Phone,
   mic: Mic,
@@ -51,10 +69,12 @@ const ICON_MAP = {
   database: Database,
   settings: Settings,
   stethoscope: Stethoscope,
+  steth: Stethoscope,
   heart: Heart,
   activity: Activity,
   chevrondown: ChevronDown,
   checkcircle: CheckCircle,
+  check: Check,
   arrowright: ArrowRight,
   building: Building2,
   utensils: Utensils,
@@ -66,6 +86,8 @@ const ICON_MAP = {
   loader: Loader,
   shield: Shield,
   sparkles: Sparkles,
+  zap: Zap,
+  cpu: Cpu,
   moon: Moon,
   sun: Sun,
 };
@@ -113,18 +135,18 @@ const DIAGNOSTIC_POINTS = [
 ];
 
 const AUTOMATION_SERVICES = [
-  { icon: 'messagecircle', title: 'WhatsApp Automation' },      // round speech bubble
+  { icon: 'whatsapp', title: 'WhatsApp Automation' },
   { icon: 'instagram', title: 'Instagram Automation' },
   { icon: 'linkedin', title: 'LinkedIn Automation' },
   { icon: 'bot', title: 'AI Chatbots' },
-  { icon: 'mic', title: 'Voice AI Receptionists' },   // microphone
-  { icon: 'filter', title: 'Lead Qualification' },       // funnel
-  { icon: 'database', title: 'CRM Automation' },           // database stack
-  { icon: 'calendarcheck', title: 'Appointment Booking' },      // calendar + checkmark
-  { icon: 'hash', title: 'Slack & Teams Automation' }, // # channel icon
+  { icon: 'mic', title: 'Voice AI Receptionists' },
+  { icon: 'filter', title: 'Lead Qualification' },
+  { icon: 'database', title: 'CRM Automation' },
+  { icon: 'calendarcheck', title: 'Appointment Booking' },
+  { icon: 'slack', title: 'Slack & Teams Automation' },
   { icon: 'mail', title: 'Email Automation' },
   { icon: 'settings', title: 'Internal Operations' },
-  { icon: 'sparkles', title: 'Custom AI Agents' }          // AI sparkles
+  { icon: 'sparkles', title: 'Custom AI Agents' }
 ];
 
 const SERVICE_CHAINS = {
@@ -209,7 +231,7 @@ const INDUSTRY_SOLUTIONS = [
       { name: 'Patient Inquiry', icon: 'heart' },
       { name: 'AI Receptionist', icon: 'mic' },
       { name: 'Calendar Booking', icon: 'calendarcheck' },
-      { name: 'WhatsApp Reminder', icon: 'clock' }
+      { name: 'WhatsApp Reminder', icon: 'whatsapp' }
     ]
   },
   {
@@ -227,7 +249,7 @@ const INDUSTRY_SOLUTIONS = [
       { icon: 'mail', title: 'Follow-up Sequence' }
     ],
     flow: [
-      { name: 'Instagram Lead', icon: 'messagecircle' },
+      { name: 'Instagram Lead', icon: 'instagram' },
       { name: 'AI Qualification', icon: 'filter' },
       { name: 'CRM Entry', icon: 'database' },
       { name: 'Agent Assignment', icon: 'phone' }
@@ -243,7 +265,7 @@ const INDUSTRY_SOLUTIONS = [
     badgeLabel: 'Solutions by Industry',
     features: [
       { icon: 'calendarcheck', title: 'Table Reservations' },
-      { icon: 'messagecircle', title: 'WhatsApp Orders' },
+      { icon: 'whatsapp', title: 'WhatsApp Orders' },
       { icon: 'heart', title: 'Automated Review Requests' },
       { icon: 'activity', title: 'Kitchen Notifications' }
     ],
@@ -306,13 +328,13 @@ const INDUSTRY_SOLUTIONS = [
     badgeLabel: 'Solutions by Industry',
     features: [
       { icon: 'shoppingcart', title: 'Abandoned Cart Recovery' },
-      { icon: 'messagecircle', title: 'WhatsApp Order Updates' },
+      { icon: 'whatsapp', title: 'WhatsApp Order Updates' },
       { icon: 'bot', title: 'AI Customer Support' },
       { icon: 'heart', title: 'Post-Delivery Reviews' }
     ],
     flow: [
       { name: 'Abandoned Cart', icon: 'shoppingcart' },
-      { name: 'WhatsApp Nudge', icon: 'messagecircle' },
+      { name: 'WhatsApp Nudge', icon: 'whatsapp' },
       { name: 'Dynamic Discount', icon: 'sparkles' },
       { name: 'Order Confirmed', icon: 'check' }
     ]
@@ -335,10 +357,10 @@ const FLOWS = [
     title: 'Social sales pipeline',
     result: '+45% Lead conversion',
     steps: [
-      { name: 'Instagram DM', icon: 'messagecircle', desc: 'Captures lead inquiry' },
+      { name: 'Instagram DM', icon: 'instagram', desc: 'Captures lead inquiry' },
       { name: 'Lead qualification', icon: 'filter', desc: 'Scores intent & budget' },
       { name: 'CRM auto-sync', icon: 'database', desc: 'Updates pipeline stage' },
-      { name: 'Sales call booked', icon: 'phone', desc: 'Schedules calendar slot' }
+      { name: 'Sales call booked', icon: 'calendarcheck', desc: 'Schedules calendar slot' }
     ]
   },
   {
@@ -357,7 +379,7 @@ const FLOWS = [
       { name: 'Patient inquiry', icon: 'heart', desc: 'Web or phone request' },
       { name: 'AI receptionist', icon: 'mic', desc: 'Validates availability' },
       { name: 'Appointment booked', icon: 'calendarcheck', desc: 'Confirms clinic slot' },
-      { name: 'WhatsApp reminder', icon: 'clock', desc: 'Auto-sends 24h prior' }
+      { name: 'WhatsApp reminder', icon: 'whatsapp', desc: 'Auto-sends 24h prior' }
     ]
   }
 ];
@@ -793,7 +815,7 @@ const WhatsAppWidget = () => {
             <div className="flex items-center justify-between pb-3 border-b border-[#eaeaea] dark:border-[#262626]">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366]">
-                  <Icon name="messagecircle" className="w-4 h-4" />
+                  <Icon name="whatsapp" className="w-4 h-4" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold font-display text-[#171717] dark:text-[#ededed]">ScaleUpSky Team</h4>
@@ -822,7 +844,7 @@ const WhatsAppWidget = () => {
               rel="noopener noreferrer"
               className="w-full py-2.5 px-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold font-display text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
             >
-              <Icon name="messagecircle" className="w-3.5 h-3.5" />
+              <Icon name="whatsapp" className="w-3.5 h-3.5" />
               <span>Chat on WhatsApp</span>
             </a>
           </motion.div>
@@ -838,7 +860,7 @@ const WhatsAppWidget = () => {
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
           <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
         </span>
-        <Icon name="messagecircle" className="w-5 h-5 text-white" />
+        <Icon name="whatsapp" className="w-5 h-5 text-white" />
         <span className="text-xs font-bold font-display tracking-tight hidden sm:inline">Chat on WhatsApp</span>
       </button>
     </div>
