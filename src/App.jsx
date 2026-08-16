@@ -737,6 +737,7 @@ export default function App() {
   const [hoveredTool, setHoveredTool] = useState(null);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [formStatus, setFormStatus] = useState('idle'); // idle | submitting | success | error
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   const handleHeroMouseMove = useCallback((e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -1734,15 +1735,126 @@ export default function App() {
               <li><a href="#results" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">About us</a></li>
               <li><a href="#results" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Case studies</a></li>
               <li><a href="#contact" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Contact</a></li>
-              <li><a href="#contact" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Privacy & security</a></li>
+              <li><button onClick={() => setShowPrivacy(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors text-left">Privacy & security</button></li>
             </ul>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto pt-8 border-t border-[#eaeaea] dark:border-[#333333] text-center text-xs text-[#999999] font-sans">
-          © {new Date().getFullYear()} ScaleupSky. All rights reserved.
+        <div className="max-w-7xl mx-auto pt-8 border-t border-[#eaeaea] dark:border-[#333333] text-center text-xs text-[#999999] font-sans flex flex-col sm:flex-row items-center justify-center gap-2">
+          <span>© {new Date().getFullYear()} ScaleupSky. All rights reserved.</span>
+          <span className="hidden sm:inline">·</span>
+          <button onClick={() => setShowPrivacy(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Privacy Policy</button>
         </div>
       </footer>
+
+      {/* PRIVACY POLICY MODAL */}
+      <AnimatePresence>
+        {showPrivacy && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowPrivacy(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Privacy Policy"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white dark:bg-[#0a0a0a] border border-[#eaeaea] dark:border-[#333333] rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="sticky top-0 bg-white dark:bg-[#0a0a0a] border-b border-[#eaeaea] dark:border-[#333333] px-6 py-4 flex items-center justify-between rounded-t-2xl z-10">
+                <div className="flex items-center gap-2">
+                  <Icon name="shield" className="w-5 h-5 text-[#1a73e8]" />
+                  <h2 className="text-lg font-display font-bold text-[#171717] dark:text-[#ededed]">Privacy & Security</h2>
+                </div>
+                <button
+                  onClick={() => setShowPrivacy(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#f3f4f6] dark:hover:bg-[#1a1a1a] transition-colors"
+                  aria-label="Close privacy policy"
+                >
+                  <Icon name="x" className="w-4 h-4 text-[#666666] dark:text-[#888888]" />
+                </button>
+              </div>
+
+              <div className="px-6 py-6 space-y-6 text-sm text-[#444444] dark:text-[#bbbbbb] font-sans leading-relaxed">
+                <p className="text-xs text-[#999999] dark:text-[#666666]">Last updated: August 16, 2026</p>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Information We Collect</h3>
+                  <p>When you submit our contact form, we collect the following information:</p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-[#555555] dark:text-[#aaaaaa]">
+                    <li>Your name</li>
+                    <li>Email address</li>
+                    <li>Phone number (optional)</li>
+                    <li>Your message describing what you'd like to automate</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">How We Use Your Information</h3>
+                  <p>We use the information you provide <strong>solely</strong> to:</p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-[#555555] dark:text-[#aaaaaa]">
+                    <li>Respond to your inquiry and schedule a strategy call</li>
+                    <li>Understand your automation needs before our conversation</li>
+                    <li>Send relevant follow-up communications about our services</li>
+                  </ul>
+                  <p className="mt-2">We will <strong>never</strong> sell, rent, or share your personal data with third parties for marketing purposes.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Third-Party Services</h3>
+                  <p>Our contact form submissions are processed through <strong>Formspree</strong>, a secure form handling service. Formspree processes your data in accordance with their own privacy policy and does not use your data for any purpose other than delivering it to us.</p>
+                  <p className="mt-2">We use <strong>Google Fonts</strong> for typography, which may collect anonymized usage data as described in Google's privacy policy.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Data Security</h3>
+                  <p>We take the security of your data seriously:</p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-[#555555] dark:text-[#aaaaaa]">
+                    <li>Our website is served over <strong>HTTPS</strong> with TLS encryption</li>
+                    <li>We enforce strict <strong>Content Security Policy</strong> headers</li>
+                    <li>Form submissions are transmitted over encrypted channels</li>
+                    <li>For healthcare clients, we offer <strong>HIPAA-compliant</strong> architecture options</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Cookies & Tracking</h3>
+                  <p>We do <strong>not</strong> use cookies, analytics trackers, or any third-party tracking scripts on this website. We respect your privacy and believe in a clean browsing experience.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Your Rights</h3>
+                  <p>You have the right to:</p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-[#555555] dark:text-[#aaaaaa]">
+                    <li>Request access to any personal data we hold about you</li>
+                    <li>Request deletion of your data at any time</li>
+                    <li>Withdraw consent for future communications</li>
+                  </ul>
+                  <p className="mt-2">To exercise any of these rights, please contact us through our website contact form or reach out via our social media channels.</p>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold font-display text-[#171717] dark:text-[#ededed] mb-2">Changes to This Policy</h3>
+                  <p>We may update this privacy policy from time to time. Any changes will be reflected on this page with an updated revision date.</p>
+                </div>
+
+                <div className="pt-4 border-t border-[#eaeaea] dark:border-[#333333]">
+                  <p className="text-xs text-[#999999] dark:text-[#666666]">If you have any questions about this privacy policy, please <button onClick={() => { setShowPrivacy(false); setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 300); }} className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline">contact us</button>.</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
 
       {/* MOBILE STICKY CTA */}
       <div className="md:hidden fixed bottom-0 left-0 w-full p-4 bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-[#eaeaea] dark:border-[#333333] z-50">
