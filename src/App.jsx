@@ -494,19 +494,19 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
   return (
     <div ref={ref} className="w-full flex justify-center py-4 md:py-6 relative pointer-events-none z-10" aria-hidden="true">
       <div className="w-full max-w-6xl px-6 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4">
-        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+        <div className={`h-[1.5px] bg-gradient-to-r from-transparent via-[#06b6d4]/40 to-[#1a73e8] transition-opacity duration-300 ${isActive ? 'opacity-90' : 'opacity-35'}`} />
 
         <div className="relative h-12 w-60 flex items-center justify-center">
           <svg className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 240 48" role="presentation">
             <defs>
               <linearGradient id={cableId} x1="120" y1="0" x2="120" y2="48" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.1" />
-                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.8" />
-                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#f97316" stopOpacity="0.1" />
+                <stop offset="0%" stopColor="#1a73e8" stopOpacity="0.08" />
+                <stop offset="35%" stopColor="#06b6d4" stopOpacity="0.7" />
+                <stop offset="70%" stopColor="#f59e0b" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#f97316" stopOpacity="0.08" />
               </linearGradient>
               <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -518,7 +518,7 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               fill="none"
               stroke={`url(#${cableId})`}
               strokeWidth="2"
-              animate={{ opacity: isActive ? 1 : 0.4 }}
+              animate={{ opacity: isActive ? 0.9 : 0.35 }}
               transition={{ duration: 0.2 }}
             />
             {/* Traveling Node Packet with Multi-Chromatic Glow */}
@@ -533,8 +533,8 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
                 isActive
                   ? {
                       cy: [0, 24, 48],
-                      opacity: [0, 1, 0],
-                      scale: [0.6, 2.2, 0.6]
+                      opacity: [0, 0.9, 0],
+                      scale: [0.6, 2.0, 0.6]
                     }
                   : { opacity: 0 }
               }
@@ -542,14 +542,14 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             />
           </svg>
 
-          {/* Synaptic Fusion Shockwave */}
+          {/* Synaptic Fusion Shockwave (10% reduced opacity) */}
           {isActive && (
             <motion.div
               key={`fusion-shockwave-${packetKey}`}
-              initial={{ opacity: 0.9, scale: 0.9 }}
-              animate={{ opacity: [0.9, 0], scale: [0.9, 1.3] }}
+              initial={{ opacity: 0.8, scale: 0.9 }}
+              animate={{ opacity: [0.8, 0], scale: [0.9, 1.25] }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
-              className="absolute inset-0 rounded-full border border-gradient-to-r border-[#06b6d4] dark:border-[#f97316] pointer-events-none"
+              className="absolute inset-0 rounded-full border border-[#06b6d4]/80 dark:border-[#f97316]/80 pointer-events-none"
             />
           )}
 
@@ -559,15 +559,15 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             animate={{
-              scale: isActive ? [1, 1.04, 1] : 1,
+              scale: isActive ? [1, 1.03, 1] : 1,
               boxShadow: isActive
-                ? '0 0 0 3px rgba(6,182,212,0.2), 0 0 20px rgba(249,115,22,0.4), 0 2px 10px rgba(15,23,42,0.08)'
+                ? '0 0 0 3px rgba(6,182,212,0.16), 0 0 16px rgba(249,115,22,0.32), 0 2px 10px rgba(15,23,42,0.07)'
                 : '0 1px 3px rgba(15,23,42,0.05)'
             }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
             className={`relative flex items-center gap-2 px-4 py-1.5 rounded-full border bg-[#f8fbff]/95 dark:bg-[#0a0a0a]/95 text-[10px] font-mono backdrop-blur overflow-hidden transition-all duration-300 ${
               isActive
-                ? 'border-[#06b6d4] dark:border-[#f97316] text-[#0284c7] dark:text-[#fb923c]'
+                ? 'border-[#06b6d4]/90 dark:border-[#f97316]/90 text-[#0284c7] dark:text-[#fb923c]'
                 : 'border-[#c7d7f5] dark:border-[#26384a] text-[#3f5f99] dark:text-[#93c5fd]/80'
             }`}
           >
@@ -576,8 +576,8 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               animate={
                 isActive
                   ? {
-                      scale: [1, 2.2, 1.4],
-                      boxShadow: ['0 0 0px #06b6d4', '0 0 10px #f97316', '0 0 4px #06b6d4']
+                      scale: [1, 2.0, 1.3],
+                      boxShadow: ['0 0 0px #06b6d4', '0 0 8px rgba(249,115,22,0.8)', '0 0 3px #06b6d4']
                     }
                   : { scale: 1, boxShadow: '0 0 0px transparent' }
               }
@@ -588,15 +588,15 @@ const PipelineDivider = ({ nodeLabel = 'Node 00: Flow Pipeline' }) => {
               {nodeLabel}
             </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f97316]/25 to-transparent"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f97316]/18 to-transparent"
               initial={false}
-              animate={{ x: isActive ? ['-120%', '120%'] : '-120%', opacity: isActive ? [0, 1, 0] : 0 }}
+              animate={{ x: isActive ? ['-120%', '120%'] : '-120%', opacity: isActive ? [0, 0.9, 0] : 0 }}
               transition={{ duration: 0.65, ease: 'easeOut' }}
             />
           </motion.div>
         </div>
 
-        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-40'}`} />
+        <div className={`h-[1.5px] bg-gradient-to-l from-transparent via-[#f59e0b]/40 to-[#f97316] transition-opacity duration-300 ${isActive ? 'opacity-90' : 'opacity-35'}`} />
       </div>
     </div>
   );
