@@ -432,17 +432,27 @@ const AnimatedCounter = ({ value }) => {
 
 // --- REUSABLE SHELL COMPONENTS ---
 
-// --- MINIMALIST RIGHT-SIDE 8-NODE NAVIGATOR (OPTION 1) ---
+// --- MINIMALIST RIGHT-SIDE 8-NODE NAVIGATOR (ARC & POP PHYSICS) ---
 const SideDataRail = () => {
   const { scrollYProgress } = useScroll();
-  const travelTop = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
   const activeStage = useTransform(scrollYProgress, [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1], [0, 1, 2, 3, 4, 5, 6, 7]);
   const [stage, setStage] = useState(0);
   const [isHidden, setIsHidden] = useState(false);
   const [isAwake, setIsAwake] = useState(false);
+  const [packetPos, setPacketPos] = useState({ x: 28, y: 8 });
+
+  // Quadratic Bezier Arc calculations: P0=(28,8), P1=(8,140), P2=(28,272)
+  const getArcPoint = useCallback((t) => {
+    const clampedT = Math.max(0, Math.min(1, t));
+    const inv = 1 - clampedT;
+    const x = inv * inv * 28 + 2 * inv * clampedT * 8 + clampedT * clampedT * 28;
+    const y = inv * inv * 8 + 2 * inv * clampedT * 140 + clampedT * clampedT * 272;
+    return { x, y };
+  }, []);
 
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     setIsAwake(latest > 0.025);
+    setPacketPos(getArcPoint(latest));
   });
 
   useMotionValueEvent(activeStage, 'change', (latest) => {
@@ -450,14 +460,14 @@ const SideDataRail = () => {
   });
 
   const nodes = [
-    { num: '01', label: 'Inbound Capture', targetId: 'top' },
-    { num: '02', label: 'Bottleneck Audit', targetId: 'solutions' },
-    { num: '03', label: 'Automation Engine', targetId: 'services' },
-    { num: '04', label: 'Stack Integration', targetId: 'tools' },
-    { num: '05', label: 'Execution Framework', targetId: 'process' },
-    { num: '06', label: 'Quantified Impact', targetId: 'results' },
-    { num: '07', label: 'Efficiency Simulation', targetId: 'calculator' },
-    { num: '08', label: 'Deploy Autopilot', targetId: 'contact' }
+    { num: '01', label: 'Inbound Capture', targetId: 'top', t: 0 },
+    { num: '02', label: 'Bottleneck Audit', targetId: 'solutions', t: 1 / 7 },
+    { num: '03', label: 'Automation Engine', targetId: 'services', t: 2 / 7 },
+    { num: '04', label: 'Stack Integration', targetId: 'tools', t: 3 / 7 },
+    { num: '05', label: 'Execution Framework', targetId: 'process', t: 4 / 7 },
+    { num: '06', label: 'Quantified Impact', targetId: 'results', t: 5 / 7 },
+    { num: '07', label: 'Efficiency Simulation', targetId: 'calculator', t: 6 / 7 },
+    { num: '08', label: 'Deploy Autopilot', targetId: 'contact', t: 1 }
   ];
 
   const scrollTo = (id) => {
@@ -475,101 +485,146 @@ const SideDataRail = () => {
 
   if (isHidden) {
     return (
-      <button
+      <motion.button
         type="button"
+        initial={{ scale: 0.6, opacity: 0, x: 20 }}
+        animate={{ scale: 1, opacity: 1, x: 0 }}
+        exit={{ scale: 0.6, opacity: 0, x: 20 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.92 }}
+        transition={{ type: 'spring', stiffness: 450, damping: 22 }}
         onClick={() => setIsHidden(false)}
         aria-label="Show node navigator"
-        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/90 dark:bg-[#111111]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#333333] text-[10px] font-mono font-bold text-[#1a73e8] dark:text-[#60a5fa] shadow-xs hover:border-[#1a73e8]/50 cursor-pointer transition-all hover:scale-105"
+        className="hidden xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 dark:bg-[#111111]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#333333] text-[10px] font-mono font-bold text-[#1a73e8] dark:text-[#60a5fa] shadow-sm cursor-pointer"
       >
-        <span>⚡</span>
+        <span className="text-xs">⚡</span>
         <span>Nodes</span>
-      </button>
+      </motion.button>
     );
   }
 
   return (
     <motion.aside
-      initial={{ opacity: 0, x: 20, scale: 0.95 }}
+      initial={{ opacity: 0, x: 30, scale: 0.7 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 20, scale: 0.95 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      exit={{ opacity: 0, x: 30, scale: 0.7 }}
+      transition={{ type: 'spring', stiffness: 380, damping: 24 }}
       aria-label="Interactive workflow node navigator"
       className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 z-30 flex-col items-end select-none"
     >
-      <div className="flex flex-col items-center bg-white/85 dark:bg-[#0c0c0c]/85 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] rounded-2xl p-2.5 shadow-sm">
+      <div className="flex flex-col items-center bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] rounded-3xl p-3 shadow-md">
         {/* Header with Hide Toggle */}
         <div className="w-full flex items-center justify-between gap-3 mb-2 px-1 text-[9px] font-mono text-[#888888] dark:text-[#666666]">
-          <span className="font-bold tracking-wider text-[#1a73e8] dark:text-[#60a5fa]">NODES</span>
+          <span className="font-bold tracking-wider text-[#1a73e8] dark:text-[#60a5fa]">NAV</span>
           <button
             type="button"
             onClick={() => setIsHidden(true)}
             aria-label="Hide node navigator"
-            className="hover:text-[#171717] dark:hover:text-white cursor-pointer px-1 transition-colors"
+            className="hover:text-[#171717] dark:hover:text-white cursor-pointer px-1 transition-colors text-xs font-bold"
             title="Minimize"
           >
             ✕
           </button>
         </div>
 
-        {/* Vertical Track and Nodes */}
-        <div className="relative h-72 w-5 flex flex-col items-center justify-between py-1">
-          {/* Background Track */}
-          <div className="absolute top-1 bottom-1 left-1/2 -translate-x-1/2 w-[2px] bg-[#e5e7eb] dark:bg-[#222222] rounded-full overflow-hidden">
-            <motion.div
-              style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
-              className="w-full h-full bg-gradient-to-b from-[#1a73e8] via-[#06b6d4] via-50% via-[#f59e0b] to-[#f97316]"
+        {/* Curved Arc Canvas Container */}
+        <div className="relative w-12 h-[280px]">
+          <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 48 280">
+            <defs>
+              <linearGradient id="arc-gradient-track" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#1a73e8" />
+                <stop offset="35%" stopColor="#06b6d4" />
+                <stop offset="70%" stopColor="#f59e0b" />
+                <stop offset="100%" stopColor="#f97316" />
+              </linearGradient>
+              <filter id="arc-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Background Arc Track */}
+            <path
+              d="M 28 8 Q 8 140 28 272"
+              fill="none"
+              stroke="currentColor"
+              className="text-[#e5e7eb] dark:text-[#262626]"
+              strokeWidth="2"
+              strokeLinecap="round"
             />
-          </div>
 
-          {/* Traveling Particle Head */}
-          <motion.div
-            style={{ top: travelTop }}
-            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-          >
-            <div className="relative flex items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-[#06b6d4] opacity-50" />
-              <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#06b6d4] to-[#f97316] shadow-[0_0_8px_#f97316] border border-white dark:border-black" />
-            </div>
-          </motion.div>
+            {/* Active Glow Arc */}
+            <motion.path
+              d="M 28 8 Q 8 140 28 272"
+              fill="none"
+              stroke="url(#arc-gradient-track)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              filter="url(#arc-glow)"
+              style={{ pathLength: scrollYProgress }}
+            />
 
-          {/* 8 Clickable Milestone Nodes */}
+            {/* Traveling Particle with Spring Glow */}
+            <g transform={`translate(${packetPos.x} ${packetPos.y})`}>
+              <circle r="6" fill="#f97316" opacity="0.3" filter="url(#arc-glow)" />
+              <circle r="3.5" fill="#06b6d4" />
+              <circle r="1.8" fill="#ffffff" />
+            </g>
+          </svg>
+
+          {/* 8 Clickable Milestone Nodes Positioned Along Arc */}
           {nodes.map((node, i) => {
+            const pos = getArcPoint(node.t);
             const isPassed = stage >= i;
             const isCurrent = stage === i;
-            return (
-              <button
-                key={node.num}
-                type="button"
-                onClick={() => scrollTo(node.targetId)}
-                aria-label={`Jump to Node ${node.num}: ${node.label}`}
-                className="relative flex items-center justify-center group cursor-pointer p-0.5 rounded-full outline-none focus-visible:ring-1 focus-visible:ring-[#1a73e8]"
-              >
-                <div
-                  className={`w-2.5 h-2.5 rounded-full flex items-center justify-center transition-all duration-200 ${
-                    isCurrent
-                      ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_6px_rgba(6,182,212,0.6)] scale-125'
-                      : isPassed
-                      ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-90'
-                      : 'bg-[#d1d5db] dark:bg-[#333333] hover:bg-[#9ca3af]'
-                  }`}
-                >
-                  <span
-                    className={`w-1 h-1 rounded-full transition-colors ${
-                      isCurrent
-                        ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
-                        : isPassed
-                        ? 'bg-white'
-                        : 'bg-transparent'
-                    }`}
-                  />
-                </div>
 
-                {/* Micro Tooltip on Hover / Current */}
-                <div className="absolute right-6 px-2 py-0.5 rounded-md bg-white/95 dark:bg-[#141414]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-150 flex items-center gap-1.5 shadow-sm pointer-events-none group-hover:translate-x-0 translate-x-1">
-                  <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{node.num}</span>
-                  <span className="text-[#333333] dark:text-[#cccccc] font-medium">{node.label}</span>
-                </div>
-              </button>
+            return (
+              <div
+                key={node.num}
+                style={{ left: `${pos.x}px`, top: `${pos.y}px` }}
+                className="absolute -translate-x-1/2 -translate-y-1/2"
+              >
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.4 }}
+                  whileTap={{ scale: 0.85 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                  onClick={() => scrollTo(node.targetId)}
+                  aria-label={`Jump to Node ${node.num}: ${node.label}`}
+                  className="relative flex items-center justify-center group cursor-pointer p-1 rounded-full outline-none focus-visible:ring-1 focus-visible:ring-[#1a73e8]"
+                >
+                  <div
+                    className={`w-3 h-3 rounded-full flex items-center justify-center transition-all duration-200 ${
+                      isCurrent
+                        ? 'bg-white dark:bg-[#111111] ring-2 ring-[#06b6d4] shadow-[0_0_8px_rgba(6,182,212,0.7)] scale-125'
+                        : isPassed
+                        ? 'bg-[#1a73e8] dark:bg-[#60a5fa] scale-95'
+                        : 'bg-[#d1d5db] dark:bg-[#333333] hover:bg-[#9ca3af]'
+                    }`}
+                  >
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        isCurrent
+                          ? 'bg-gradient-to-r from-[#06b6d4] to-[#f97316]'
+                          : isPassed
+                          ? 'bg-white'
+                          : 'bg-transparent'
+                      }`}
+                    />
+                  </div>
+
+                  {/* Micro Tooltip with Pop Spring */}
+                  <motion.div
+                    className="absolute right-7 px-2.5 py-1 rounded-lg bg-white/95 dark:bg-[#141414]/95 backdrop-blur-md border border-[#eaeaea] dark:border-[#262626] text-[10px] font-mono whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-150 flex items-center gap-1.5 shadow-md pointer-events-none group-hover:translate-x-0 translate-x-1"
+                  >
+                    <span className="text-[#1a73e8] dark:text-[#60a5fa] font-bold">{node.num}</span>
+                    <span className="text-[#333333] dark:text-[#cccccc] font-medium">{node.label}</span>
+                  </motion.div>
+                </motion.button>
+              </div>
             );
           })}
         </div>
