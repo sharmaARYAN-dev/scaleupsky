@@ -922,7 +922,7 @@ const WhatsAppWidget = () => {
             </div>
 
             <p className="text-xs text-[#666666] dark:text-[#888888] font-sans my-3 leading-relaxed">
-              Chat directly with our automation engineers on WhatsApp to discuss your systems.
+              Chat directly with our automation engineers on WhatsApp. Typically responds within 15 minutes.
             </p>
 
             <a
@@ -1861,14 +1861,39 @@ export default function App() {
                 ))}
               </ul>
 
-              <div className="pt-4 border-t border-[#eaeaea] dark:border-[#262626] flex items-center gap-4 text-xs text-[#888888] dark:text-[#777777] font-sans">
-                <a href="tel:+919371061901" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors flex items-center gap-1.5 font-medium">
-                  <Icon name="phone" className="w-3.5 h-3.5" /> +91 93710 61901
-                </a>
-                <span>·</span>
-                <a href="mailto:scaleupsky@gmail.com" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors flex items-center gap-1.5 font-medium">
-                  <Icon name="mail" className="w-3.5 h-3.5" /> scaleupsky@gmail.com
-                </a>
+              {/* Clean Quick Connect bar with ~15 min SLA */}
+              <div className="p-4 bg-white dark:bg-[#141414] border border-[#eaeaea] dark:border-[#262626] rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                <div>
+                  <div className="flex items-center gap-1.5 text-xs font-semibold font-sans text-[#171717] dark:text-[#ededed]">
+                    <span className="w-2 h-2 rounded-full bg-[#059669] animate-pulse" />
+                    <span>Direct line: +91 93710 61901</span>
+                  </div>
+                  <span className="text-[11px] text-[#888888] font-sans">Typical response: &lt; 15 mins</span>
+                </div>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <a
+                    href="tel:+919371061901"
+                    className="flex-1 sm:flex-none px-3.5 py-1.5 bg-[#f3f4f6] dark:bg-[#222222] hover:bg-[#eaeaea] dark:hover:bg-[#333333] text-[#171717] dark:text-[#ededed] text-xs font-semibold font-display rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                    aria-label="Call +91 93710 61901"
+                  >
+                    <Icon name="phone" className="w-3 h-3 text-[#1a73e8]" />
+                    <span>Call</span>
+                  </a>
+                  <a
+                    href="https://wa.me/919371061901?text=Hi%20ScaleUpSky!%20I'd%20like%20to%20schedule%20a%20strategy%20discovery%20call."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 sm:flex-none px-3.5 py-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-semibold font-display rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+                    aria-label="WhatsApp +91 93710 61901"
+                  >
+                    <Icon name="messagecircle" className="w-3 h-3" />
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3 flex items-center gap-3 text-xs text-[#888888] dark:text-[#777777] font-sans">
+                <span>Or email: <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a></span>
               </div>
             </div>
 
@@ -1983,7 +2008,7 @@ export default function App() {
                   </button>
 
                   <div className="mt-3 pt-3 border-t border-[#eaeaea] dark:border-[#262626] flex items-center justify-between text-xs text-[#888888] dark:text-[#777777] font-sans">
-                    <span>⚡ Typical response: &lt; 24 hrs</span>
+                    <span>⚡ Typical response: &lt; 15 mins</span>
                     <span className="flex items-center gap-1"><Icon name="shield" className="w-3.5 h-3.5 text-[#059669]" /> NDA on request</span>
                   </div>
                 </form>
