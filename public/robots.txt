@@ -1,4 +1,9 @@
+# Allow all search engine crawlers
 User-agent: *
 Allow: /
 
+# Disallow crawling of internal app bundles or temp assets if any
+Disallow: /assets/*.map$
+
+# Sitemap declaration
 Sitemap: https://scaleupsky.com/sitemap.xml
