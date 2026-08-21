@@ -824,7 +824,7 @@ const RoiCalculator = ({ onApplyEstimate }) => {
 // --- LIVE FLOATING WHATSAPP WIDGET ---
 const WhatsAppWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const whatsappNumber = '919371061901';
+  const whatsappNumber = '919359856192';
   const messageText = encodeURIComponent("Hi ScaleUpSky! I'd like to discuss automating our business workflows.");
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${messageText}`;
 
@@ -1835,10 +1835,15 @@ export default function App() {
               <div className="pt-6 border-t border-[#eaeaea] dark:border-[#262626] space-y-2 text-xs font-sans">
                 <div className="flex flex-wrap items-center gap-2 font-medium text-[#171717] dark:text-[#ededed]">
                   <span className="w-2 h-2 rounded-full bg-[#059669] animate-pulse" />
-                  <a href="tel:+919371061901" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-semibold">+91 93710 61901</a>
-                  <span className="text-[#888888] dark:text-[#777777] font-normal">· Call / WhatsApp (responds &lt; 15m)</span>
+                  <a href="tel:+919359856192" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-semibold">+91 93598 56192</a>
+                  <span className="text-[#888888] dark:text-[#777777] font-normal">· Primary (Call / WhatsApp)</span>
                 </div>
-                <div className="text-[#888888] dark:text-[#777777]">
+                <div className="flex flex-wrap items-center gap-2 text-[#777777] dark:text-[#999999] pl-4">
+                  <span>Alternate:</span>
+                  <a href="tel:+919371061901" className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors font-medium">+91 93710 61901</a>
+                  <span className="text-[#999999] dark:text-[#666666]">· Responds &lt; 15 mins</span>
+                </div>
+                <div className="text-[#888888] dark:text-[#777777] pl-4 pt-0.5">
                   Email: <a href="mailto:scaleupsky@gmail.com" className="text-[#1a73e8] dark:text-[#60a5fa] hover:underline font-medium">scaleupsky@gmail.com</a>
                 </div>
               </div>
