@@ -2023,7 +2023,7 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto pt-8 border-t border-[#eaeaea] dark:border-[#333333] text-center text-xs text-[#999999] font-sans flex flex-col sm:flex-row items-center justify-center gap-2">
-          <span>© {new Date().getFullYear()} ScaleupSky. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} ScaleupSky. Margao, Goa, India • Serving Worldwide.</span>
           <span className="hidden sm:inline">·</span>
           <button onClick={() => setShowPrivacy(true)} className="hover:text-[#1a73e8] dark:hover:text-[#60a5fa] transition-colors">Privacy Policy</button>
           <span className="hidden sm:inline">·</span>
